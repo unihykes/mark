@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+win_all*
+linux_all*

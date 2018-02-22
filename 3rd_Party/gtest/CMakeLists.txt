@@ -1,0 +1,8 @@
+PROJECT(googletest_dir)
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+
+ADD_SUBDIRECTORY(make_gtest)
+ADD_SUBDIRECTORY(make_gmock)
+
