@@ -1,0 +1,26 @@
+PROJECT(ut_mkcore)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_POLICY(VERSION 2.8)
+
+INCLUDE($ENV{MONK_MAKE}/begin.cmake)
+
+#依赖库
+SET(NEED_GTEST TRUE)
+SET(ENABLE_GCOV ON)
+
+#目标类型
+SET(TARGET_TYPE RUNTIME)
+SET(TARGET_NAME ut_mkcore)
+SET(AUTO_RUN OFF)
+
+
+
+
+#使用mkcore
+#seek_base_library_no_install(${LIBS_PATH} mkcore)
+INCLUDE_DIRECTORIES(${MONK_SRC}/mkcore/include;
+					${MONK_SRC}/mkcore/src;)
+SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} mkcore)
+
+	
+INCLUDE($ENV{MONK_MAKE}/end.cmake)
