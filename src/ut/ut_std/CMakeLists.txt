@@ -13,7 +13,8 @@ SET(AUTO_RUN OFF)
 SET(NEED_GTEST TRUE)
 
 # ±àÒëÄ¿Â¼
-#ADD_SOURCE_DIRS()
+ADD_SOURCE_DIRS(./0-Language/0-BasicConcepts;
+				./0-Language/1-Keywords)
 
 INCLUDE($ENV{MONK_MAKE}/end.cmake)
 

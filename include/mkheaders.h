@@ -113,7 +113,7 @@ typedef uint64_t			uint64;
 #endif
 
 #ifdef __DEBUG__
-	#include <assert.h>
+	#include <cassert>
 	#define MK_ASSERT(f)	assert(f)
 #else 
 	#define MK_ASSERT(f)	((void)(f))
