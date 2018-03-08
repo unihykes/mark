@@ -24,24 +24,7 @@ protected:
 };
 
 
-TEST_F(utLanguage, volatile)
-{
-    //防止优化编译器把变量从内存装入CPU寄存器中
-    //volatile的意思是让编译器每次操作该变量时一定要从内存中真正取出，而不是使用已经存在寄存器中的值
-    volatile int i = 0x10;
-    int a = i;
-    MK_PRINT_MSG("i = %d", a);
-    //do something
-    int b = i;
-    MK_PRINT_MSG("i = %d", b);
-    
-    
-    
-    //这个语句用来测试空循环的速度的, 但是编译器肯定要把它优化掉，根本就不执行
-    for ( int i=0; i<100000; i++); 
-    //如果添加volatile,它就会执行了
-    for ( volatile int i=0; i<100000; i++); 
-}
+
 
 //预处理器
 TEST_F(utLanguage, define)
@@ -78,17 +61,6 @@ TEST_F(utLanguage, assign)
     int i = 100;
     int j = {};
     int k = {100};
-}
-
-
-
-//直接赋值
-TEST_F(utLanguage, sizeof)
-{
-    int i = 100;
-    cout << sizeof(int)<<endl;
-    cout << sizeof(i) <<endl;
-    cout << sizeof i <<endl;
 }
 
 
@@ -241,46 +213,6 @@ TEST_F(utLanguage, userdefined)
     mytype y = 123_mytype;
     std::cout << y.m << '\n';
     0x123ABC_print;
-}
-
-
-//当你需要管理多个版本的类库的时候，可以用inline修饰namespace，来达到指定默认版本的目的，
-namespace mk{
-    namespace mk_utLanguage1
-    {
-        struct A
-        {
-            int _val;
-            A():_val(10){}
-        };
-    }
-    
-    inline namespace mk_utLanguage2
-    {
-        struct A
-        {
-            int _val;
-            A():_val(23){}
-        };
-    }
-}
-//命名空间别名
-namespace mk_lan1 = mk::mk_utLanguage1;
-namespace mk_lan2 = mk::mk_utLanguage2;
-
-//inline namespace: C++11
-TEST_F(utLanguage, inlinenamespace)
-{
-    //A a1;     //编译错误: 未声明的标识符
-    
-    mk::mk_utLanguage1::A a2;//使用mk_utLanguage1
-    cout<<a2._val<<endl;
-    
-    mk::A a3;   //默认使用 mk_utLanguage2
-    cout<<a3._val<<endl;
-    
-    mk::mk_utLanguage2::A a4;//显示指定 mk_utLanguage2
-    cout<<a4._val<<endl;
 }
 
 //左值引用,右值引用

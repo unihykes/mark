@@ -28,6 +28,8 @@ info:
 #include <functional>
 #include <memory>
 #include <string>
+#include <bitset>
+#include <array>
 using namespace std;
 
 //windows常用头文件
