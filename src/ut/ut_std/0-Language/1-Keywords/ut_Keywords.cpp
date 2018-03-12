@@ -10,51 +10,6 @@ info:
 #include <mkheaders.h>
 #include <gtest/gtest.h>
 
-template<class T> class Y { void mf() { } }; // 模板定义
-template class Y<int>;              //显式实例化定义
-template void Y<double>::mf();      //显式实例化定义
-extern template class Y<string>;    //显式实例化声明
-
-constexpr int factorial(int n)
-{
-    return n <= 1? 1 : (n * factorial(n - 1));
-}
-
-template<typename... Ts>
-constexpr auto make_array(Ts&&... ts)-> std::array<std::common_type_t<Ts...>, sizeof...(ts)>
-{
-    return { std::forward<Ts>(ts)... };
-}
-
-namespace mk{
-    namespace mk_utLanguage1
-    {
-        struct A
-        {
-            int _val;
-            A():_val(10){}
-        };
-    }
-    
-    //当你需要管理多个版本的类库的时候，可以用inline修饰namespace，来达到指定默认版本的目的，
-    inline namespace mk_utLanguage2
-    {
-        struct A
-        {
-            int _val;
-            A():_val(23){}
-        };
-    }
-}
-//命名空间别名
-namespace mk_lan1 = mk::mk_utLanguage1;
-namespace mk_lan2 = mk::mk_utLanguage2;
-
-
-//模版特化
-template<class T>
-using Vec = vector<T, std::allocator<T>>;
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 //
@@ -112,7 +67,8 @@ TEST_F(ut_Keywords, Keywords)
     #endif
 }
 
-///分类
+
+///C++ 关键词分类
 TEST_F(ut_Keywords, Sort)
 {
     #if 0
@@ -142,8 +98,9 @@ TEST_F(ut_Keywords, Sort)
     #endif
 }
 
+
 ///C++11中有修改
-TEST_F(ut_Keywords, Modify_In_Cplusplus11)
+TEST_F(ut_Keywords, auto)
 {
     /**auto
     auto 自动存储期指定符 (C++11 前)
@@ -152,8 +109,12 @@ TEST_F(ut_Keywords, Modify_In_Cplusplus11)
     //auto int x = 10;  //C++98在此处等价于int x = 10;表示x变量为当前代码段的局部变量;
                         //C++11 起编译错误:“auto”不能与任何其他类型说明符组合
     auto lambda = [](int x) { return x + 3; };
-    
-    
+}
+
+
+///C++11中有修改
+TEST_F(ut_Keywords, class)
+{
     /**class 
     //C++11中,可以定义有作用域枚举, 没有从有作用域枚举项到整数类型的隐式转换，尽管 static_cast 可用于获得枚举项的数值。 
     */
@@ -166,8 +127,29 @@ TEST_F(ut_Keywords, Modify_In_Cplusplus11)
     Color r = Color::blue;
     // int n = r; // 错误：无有作用域枚举到 int 的转换
     int n = static_cast<int>(r); // OK, n = 21
-    
-    
+}
+
+
+///C++11中有修改
+TEST_F(ut_Keywords, struct)
+{
+    /**struct
+    有作用域枚举类型的声明 (C++11 起)
+    同class
+    */
+    enum struct Color2
+    {
+        red, 
+        green = 20, 
+        blue 
+    };
+    Color2 r2 = Color2::blue;
+}
+
+
+///C++11中有修改
+TEST_F(ut_Keywords, default)
+{
     /**default
     显式默认化的函数定义：作为令编译器为类生成[特殊成员函数]的显式指令。(C++11 起) 
     特殊成员函数是仅有能被默认化的函数,即使用 = default 替代函数体定义,具体指的是以下几种:
@@ -189,8 +171,12 @@ TEST_F(ut_Keywords, Modify_In_Cplusplus11)
     A aa1;
     A aa2("str");
     aa2 = aa1;
-    
-    
+}
+
+
+///C++11中有修改
+TEST_F(ut_Keywords, delete)
+{
     /**delete
     1.因为后随delete的一对方括号始终转译为 delete数组形式，故在delete后的拥有空捕获列表的 lambda 表达式必须用括号环绕。 
     2.表示被删除的函数,若取代函数体使用特殊语法 = delete ; 则函数定义为被删除。调用被删除函数编译错误;
@@ -203,8 +189,12 @@ TEST_F(ut_Keywords, Modify_In_Cplusplus11)
         void* operator new[](std::size_t) = delete;
     };
     //sometype* p = new sometype; // 编译错误：尝试引用已删除的函数 sometype::operator new
-    
-    
+}
+
+
+///C++11中有修改
+TEST_F(ut_Keywords, export)
+{
     /**export
     1.用于标注一个模板定义被导出，这允许在其它翻译单元中声明，但不定义同一模板。(C++11 前)
         export template < parameter-list > class-declaration (C++11 前)
@@ -213,16 +203,51 @@ TEST_F(ut_Keywords, Modify_In_Cplusplus11)
         export 的实现稀少而且在细节上互不一致。 
     2.不使用，并保留该关键词。(C++11 起)
     */
-    
-    
+}
+
+
+///C++11中有修改
+template<class T> class ut_Keywords_Y {void mf(){}}; // 模板定义
+template class ut_Keywords_Y<int>;              //显式实例化定义
+template void ut_Keywords_Y<double>::mf();      //显式实例化定义
+extern template class ut_Keywords_Y<string>;    //显式实例化声明
+TEST_F(ut_Keywords, extern)
+{
     /**extern
     显示模板实例化声明: extern template class|struct template-name < argument-list > ; (C++11 起) 
     显式实例化声明（ extern 模板）跳过隐式实例化的步骤：
         使用其他地方提供的显式实例化定义替代此外情况下产生的隐式实例化（若不存在这种实例化则产生链接错误）。
         这可用于减少编译时间，通过显式声明所有模板实例化于使用模板的源文件中，并在剩余文件中显式定义它。
     */
-    //参考template<class T> class Y 模版类;
+    //参考template<class T> class ut_Keywords_Y 模版类;
+}
+
+
+///C++11中有修改
+namespace mk{
+    namespace mk_utLanguage1
+    {
+        struct A
+        {
+            int _val;
+            A():_val(10){}
+        };
+    }
     
+    //当你需要管理多个版本的类库的时候，可以用inline修饰namespace，来达到指定默认版本的目的，
+    inline namespace mk_utLanguage2
+    {
+        struct A
+        {
+            int _val;
+            A():_val(23){}
+        };
+    }
+}
+namespace mk_lan1 = mk::mk_utLanguage1;//命名空间别名
+namespace mk_lan2 = mk::mk_utLanguage2;//命名空间别名
+TEST_F(ut_Keywords, inline)
+{
     /**inline
     当你需要管理多个版本的类库的时候，可以用inline修饰namespace，来达到指定默认版本的目的，
     */
@@ -233,8 +258,12 @@ TEST_F(ut_Keywords, Modify_In_Cplusplus11)
     cout<<a3._val<<endl;
     mk::mk_utLanguage2::A a4;//显示指定 mk_utLanguage2
     cout<<a4._val<<endl;
-    
-    
+}
+
+
+///C++11中有修改
+TEST_F(ut_Keywords, mutable)
+{
     /**mutable
     移除以[=]捕获参数 const 限定的 lambda 声明器 (C++11 起) 
         在调用时执行 lambda 表达式体。
@@ -248,48 +277,45 @@ TEST_F(ut_Keywords, Modify_In_Cplusplus11)
         auto m1 = [a, &b, &c]() {
             //a = 4;              //编译错误:“a”: 无法在非可变 lambda 中修改 通过复制捕获
             b = 4; c = 4;
-            std::cout << "mutable testB" << a << b << c << endl;
+            std::cout << "mutable testA" << a << b << c << endl;
         };
         m1();
-        std::cout << "mutable testD"<<  a << b << c << endl;
+        std::cout << "mutable testB"<<  a << b << c << endl;
     }
     {
         int a = 1, b = 1, c = 1;
         auto m1 = [a, &b, &c]() mutable {
+            a = 4; 
+            b = 4; c = 4;
             std::cout << "mutable testA" << a << b << c << endl;
-            a = 4; b = 4; c = 4;
-            std::cout << "mutable testB" << a << b << c << endl;
         };
         
-        std::cout << "mutable testC"<<  a << b << c << endl;
         m1();
-        std::cout << "mutable testD"<<  a << b << c << endl;
+        std::cout << "mutable testB"<<  a << b << c << endl;
     }
-    
-    
+}
+
+///C++11中有修改
+template<typename... Ts>
+constexpr auto make_array(Ts&&... ts)-> std::array<std::common_type_t<Ts...>, sizeof...(ts)>
+{
+    return { std::forward<Ts>(ts)... };
+}
+TEST_F(ut_Keywords, sizeof)
+{
     /**sizeof
     查询形式参数包中的元素数量,返回 std::size_t 类型常量 sizeof...( parameter_pack ) (C++11 起) 
     */
     auto arr = make_array(1, 2, 3);
     for (auto i : arr) {
-        std::cout << i << ' ';
+        std::cout << i <<endl;
     }
-    
-    
-    /**struct
-    有作用域枚举类型的声明 (C++11 起)
-    同class
-    */
-    enum class Color2
-    {
-        red, 
-        green = 20, 
-        blue 
-    };
-    Color2 r2 = Color2::blue;
-    
-    
-    
+}
+
+///C++11中有修改
+template<class T> using Vec = vector<T, std::allocator<T>>;//模版特化
+TEST_F(ut_Keywords, using)
+{
     /**using
     类型别名与别名模板声明 (C++11 起) 
     类型别名是指代先前定义类型的名称（同 typedef ）。 
@@ -300,35 +326,226 @@ TEST_F(ut_Keywords, Modify_In_Cplusplus11)
 }
 
 
+
 ///C++11中新增
-TEST_F(ut_Keywords, Add_In_Cplusplus11)
+TEST_F(ut_Keywords, alignas)
 {
-    //alignas
+    //alignas:指定类型或对象的对齐要求。
     struct alignas(8) S {};
+}
+
+
+///C++11中新增
+TEST_F(ut_Keywords, alignof)
+{
+    //alignof:查询类型的对齐要求。 
+    struct S1 {};
+    MK_PRINT_MSG("alignof(S1) = %d", alignof(S1));
     
-    
-    //alignof
-    MK_PRINT_MSG("alignof(S) = %d", alignof(S));
-    
-    
+    struct S2 alignas(8) {};
+    MK_PRINT_MSG("alignof(S2) = %d", alignof(S2));
+}
+
+
+///C++11中新增
+TEST_F(ut_Keywords, char16_t)
+{
+    char16_t x = u'A';
+    MK_PRINT_MSG("x =0x%04x", x);
+}
+
+
+///C++11中新增
+TEST_F(ut_Keywords, char32_t)
+{
+    char32_t x = u'A';
+    MK_PRINT_MSG("x =0x%08x", x);
+}
+
+///C++11中新增
+constexpr int factorial(int n) { return n <= 1? 1 : (n * factorial(n - 1)); }//阶乘
+TEST_F(ut_Keywords, constexpr)
+{
     /**constexpr 
     const expression的简写,常量表达式,
     */
-    cout<<factorial(4)<<endl; // 在编译时计算
+    cout<<factorial(4)<<endl; // 在编译时计算:4*3*2*1
 }
 
+
+///C++11中新增
+TEST_F(ut_Keywords, decltype)
+{
+    struct A { double x; };
+    const A* a = new A();
+    MK_PRINT_MSG("a = %p", a);
+    
+    /**检查实体的声明类型或表达式的类型及值分类。
+    若参数为无括号的 id 表达式或无括号的类成员访问表达式，则 decltype 产生以此表达式命名的实体的类型。
+    若对象名称被括号括着，则它被当做通常的左值表达式，从而 decltype(x) 和 decltype((x)) 通常是不同的类型。 
+    decltype 在声明难以或不可能以标准记号声明的类型时适用，例如 lambda 相关类型或依赖于模板形参的类型。 
+    */
+    decltype(a->x) y;       // y 的类型是 double （声明类型）
+    decltype((a->x)) z = y; // z 的类型是 const double& （左值表达式）
+    
+    auto f = [](int a, int b) -> int{return a * b;};
+    decltype(f) g = f; // lambda 的类型是独有且无名的
+    int i = f(2, 2);
+    int j = g(3, 3);
+    MK_PRINT_MSG("i =%d, j = %d", i, j);
+}
+
+
+///C++11中新增
+void ut_Keywords_f0();
+void ut_Keywords_f1() noexcept; // 函数 f1() 不抛出
+void ut_Keywords_f2() noexcept(true);//等价于f1
+void ut_Keywords_f3() noexcept(false);//函数可能抛出异常
+TEST_F(ut_Keywords, noexcept)
+{
+    /**
+    noexcept 运算符:noexcept 运算符进行编译时检查，若表达式声明为不抛出任何异常则返回 true 。
+                    noexcept 运算符不对 expression 求值。
+    noexcept 指定符:指定函数是否抛出异常。 
+    */
+    cout<< noexcept(ut_Keywords_f0()) <<endl;
+    cout<< noexcept(ut_Keywords_f1()) <<endl;
+    cout<< noexcept(ut_Keywords_f2()) <<endl;
+    cout<< noexcept(ut_Keywords_f3()) <<endl;
+    
+}
+
+
+///C++11中新增
+template<class F, class A> 
+void Fwd(F f, A a){f(a);}
+
+void g(int* i){std::cout << "Function g called\n";}
+TEST_F(ut_Keywords, nullptr)
+{
+    /**关键词 nullptr 指代指针字面量。
+    它是 std::nullptr_t 类型的纯右值。
+    存在从 nullptr 到任何指针类型及任何指向成员指针类型的隐式转换。
+    同样的转换对于任何空指针常量，空指针常量包含 std::nullptr_t 的值，还有宏 NULL 。 
+    */
+    g(NULL);           // 良好
+    g(0);              // 良好
+    Fwd(g, nullptr);   // 良好
+    //Fwd(g, NULL);    // 错误：不存在函数 g(int)
+}
+
+
+///C++11中新增
+//#include <type_traits>
+template <class T>
+struct ut_Keywords_D
+{
+    //强制要求T提供默认构造
+    static_assert(std::is_default_constructible<T>::value,"ut_Keywords_D requires default-constructible");
+    void show(){MK_PRINT_MSG("test static_assert");}
+};
+ 
+struct ut_Keywords_str
+{
+    ut_Keywords_str() = delete;//删除默认构造函数
+};
+TEST_F(ut_Keywords, static_assert)
+{
+    /**
+    进行编译时断言检查。 
+    static_assert ( bool_constexpr , message )
+        :bool_constexpr 按照语境转换成 bool 类型的表达式 
+        :message 若 bool_constexpr 为 false 则会出现的字符串字面量 
+        若 bool_constexpr 返回 true ，则此声明没有效果,否则发布一个编译时错误
+    */
+    ut_Keywords_D<int> val_1;
+    val_1.show();
+    //ut_Keywords_D<ut_Keywords_str> val_2; // 编译错误
+}
+
+
+///C++11中新增
+#include <thread>
+thread_local unsigned int ut_Keywords_global = 0;
+static thread_local unsigned int ut_Keywords_global_static = 10;
+class ut_Keywords_X
+{
+public:
+    //thread_local int _val;//编译错误: thread_local 仅对命名空间和块范围内的静态成员和变量有效
+    static thread_local int _val_static; //A thread-local static class data member
+};
+thread_local int ut_Keywords_X::_val_static = 100;
+
+void ut_Keywords_fun()
+{
+    //全局
+    ++ut_Keywords_global;
+    cout<<"global = " << ut_Keywords_global <<endl;
+    
+    //全局+static
+    ++ut_Keywords_global_static;
+    cout<<"global_static = " << ut_Keywords_global_static <<endl;
+    
+    //类成员变量,
+    //编译错误,类的非static成员变量不能是thread_local
+    //ut_Keywords_X x;
+    //++x._val;
+    //cout<<"cls_val = " << x._val <<endl;
+    
+    //类static成员变量
+    ++ut_Keywords_X::_val_static;
+     cout<<"cls_val_static = " << ut_Keywords_X::_val_static <<endl;
+    
+    //函数内部局部变量
+    thread_local int local = 1000;  //A thread-local local variable
+    local++;
+    cout << "fun_local = "<<local <<endl<<endl;
+}
+
+TEST_F(ut_Keywords, thread_local)
+{
+    /**thread_local 线程局部变量
+    线程局域存储期指定符 (C++11 起) 
+    thread_local 关键词只对声明于命名空间作用域的对象、声明于块作用域的对象及静态数据成员允许。
+    它指示对象拥有线程存储期。
+    
+    它能与 static 或 extern 结合，以分别指定内部或外部链接（除了静态数据成员始终拥有外部链接），
+    但附加的 static 不影响存储期。
+    
+    对象在线程开始时分配，而在线程结束时解分配。每个线程拥有其自身的对象实例。
+    唯有声明为 thread_local 的对象拥有此存储期。 
+    thread_local 能与 static 或 extern 一同出现，以调整链接。 
+    
+    声明为thread_local的本地变量在线程中是持续存在的，
+    不同于普通临时变量的生命周期，它具有static变量一样的初始化特征和生命周期，虽然它并没有被声明为static。
+    */
+    
+    ut_Keywords_fun();//global = 1, global_static = 11, cls_val_static = 101, fun_local = 1001
+    ut_Keywords_fun();//global = 2, global_static = 12, cls_val_static = 102, fun_local = 1002
+    ut_Keywords_fun();//global = 3, global_static = 13, cls_val_static = 103, fun_local = 1003
+    
+    std::thread t1(ut_Keywords_fun);
+    t1.join(); //global = 1, global_static = 11, cls_val_static = 101, fun_local = 1001
+    std::thread t2(ut_Keywords_fun);
+    t2.join();//global = 1, global_static = 11, cls_val_static = 101, fun_local = 1001
+    std::thread t3(ut_Keywords_fun);
+    t3.join();//global = 1, global_static = 11, cls_val_static = 101, fun_local = 1001
+}
+
+
+///C++98不常用关键字
 TEST_F(ut_Keywords, volatile)
 {
-    //防止优化编译器把变量从内存装入CPU寄存器中
-    //volatile的意思是让编译器每次操作该变量时一定要从内存中真正取出，而不是使用已经存在寄存器中的值
+    /**volatile
+    防止优化编译器把变量从内存装入CPU寄存器中
+    volatile的意思是让编译器每次操作该变量时一定要从内存中真正取出，而不是使用已经存在寄存器中的值
+    */
     volatile int i = 0x10;
     int a = i;
     MK_PRINT_MSG("i = %d", a);
     //do something
     int b = i;
     MK_PRINT_MSG("i = %d", b);
-    
-    
     
     //这个语句用来测试空循环的速度的, 但是编译器肯定要把它优化掉，根本就不执行
     for ( int i=0; i<100000; i++); 
