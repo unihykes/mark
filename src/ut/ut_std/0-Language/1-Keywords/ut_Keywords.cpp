@@ -109,6 +109,9 @@ TEST_F(ut_Keywords, auto)
     //auto int x = 10;  //C++98在此处等价于int x = 10;表示x变量为当前代码段的局部变量;
                         //C++11 起编译错误:“auto”不能与任何其他类型说明符组合
     auto lambda = [](int x) { return x + 3; };
+    
+    auto a = 1 + 2; 
+    decltype(auto) c1 = a; //C++14
 }
 
 
@@ -295,7 +298,7 @@ TEST_F(ut_Keywords, mutable)
     }
 }
 
-///C++11中有修改
+///C++11中有修改 sizeof
 template<typename... Ts>
 constexpr auto make_array(Ts&&... ts)-> std::array<std::common_type_t<Ts...>, sizeof...(ts)>
 {
@@ -312,7 +315,7 @@ TEST_F(ut_Keywords, sizeof)
     }
 }
 
-///C++11中有修改
+///C++11中有修改 using
 template<class T> using Vec = vector<T, std::allocator<T>>;//模版特化
 TEST_F(ut_Keywords, using)
 {
@@ -362,12 +365,18 @@ TEST_F(ut_Keywords, char32_t)
     MK_PRINT_MSG("x =0x%08x", x);
 }
 
-///C++11中新增
-constexpr int factorial(int n) { return n <= 1? 1 : (n * factorial(n - 1)); }//阶乘
+///C++11中新增 constexpr
+constexpr int factorial(int n) 
+{
+    //阶乘:n*(n-1)*(n-2)*...
+    return n <= 1? 1 : (n * factorial(n - 1)); 
+}
 TEST_F(ut_Keywords, constexpr)
 {
     /**constexpr 
     const expression的简写,常量表达式,
+    constexpr 指定符声明可以在编译时求得函数或变量的值。
+    然后这些变量和函数（若给定了合适的函数参数）可用于仅允许编译时常量表达式之处。
     */
     cout<<factorial(4)<<endl; // 在编译时计算:4*3*2*1
 }

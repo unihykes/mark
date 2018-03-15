@@ -47,20 +47,73 @@ TEST_F(ut_Declaration, Lvalue_rvalue)
     
     //右值引用可用于为临时对象延长生存期（注意，左值引用亦能延长临时对象生存期，但不能通过左值引用修改他们）： 
     std::string s1 = "Test";
-    //std::string&& r1 = s1;           // 错误：不能绑定到左值
-    const std::string& r2 = s1 + s1; // okay ：到 const 的左值引用延长生存期
-    //r2 += "Test";                    // 错误：不能通过到 const 的引用修改
-    std::string&& r3 = s1 + s1;      // okay ：右值引用延长生存期
-    r3 += "Test";                    // okay ：能通过到非 const 的引用修改
-    std::cout << r3 << '\n';
+    //std::string&& s2 = s1;           // 错误：不能绑定到左值
+    const std::string& s2 = s1 + s1; // okay ：到 const 的左值引用延长生存期
+    //s2 += "Test";                    // 错误：不能通过到 const 的引用修改
+    std::string&& s3 = s1 + s1;      // okay ：右值引用延长生存期
+    s3 += "Test";                    // okay ：能通过到非 const 的引用修改
+    std::cout << s3 << '\n';
 }
 
 // 转发引用 Forwarding references C++11
 TEST_F(ut_Declaration,  Forwarding_references)
 {
-    //转发引用 Forwarding references
-    //todo:
-    http://zh.cppreference.com/w/cpp/language/reference
-    
+    /**转发引用 Forwarding references (C++11 起)
+    1) 声明为到无 cv 限定的右值引用的同一函数模板的模板参数的函数参数： 
+    2) auto&& ，除非从花括号初始化器列表推导。 
+    */
 }
 
+// 枚举声明
+enum ut_Declaration_Color_1
+{
+    red = 100, 
+    green = 200, 
+    blue = 201
+};
+
+enum class ut_Declaration_Color_2
+{
+    red = 100, 
+    green = 200, 
+    blue = 201
+};
+
+enum ut_Declaration_Color_3 : int16_t
+{
+    red2 = 100, 
+    green2 = 200, 
+    blue2 = 201
+};
+
+enum class ut_Declaration_Color_4 : char
+{
+    red2 = 'r', 
+    green2 = 'g', 
+    //blue2 = 129, // 枚举数的值“129”不能表示为“char”，值是“-127” 
+    blue2 = 127, // C++11 允许尾随逗号
+};
+
+enum class ut_Declaration_Color_5 : bool
+{
+    red2 = 'r', 
+    green2 = 'g', 
+    blue2 = 'b', // C++11 允许尾随逗号
+};
+
+//枚举声明
+TEST_F(ut_Declaration,  enumeration)
+{
+    //枚举声明
+}
+
+
+//属性指定符序列(C++11 起)
+TEST_F(ut_Declaration,  Attributes)
+{
+    /**属性指定符序列(C++11 起)
+    为类型、对象、代码等引入实现定义的属性。 
+    
+    */
+    
+}

@@ -223,7 +223,91 @@ TEST_F(ut_Expressions, user_defined_conversion)
 
 
 //字符&&字符串
+#include <cstdlib>//for itoa
 TEST_F(ut_Expressions, character)
+{
+    /**
+    'c-char' (1)
+    u8'c-char' (2) (C++17 起) 
+    u 'c-char' (3) (C++11 起) 
+    U 'c-char' (4) (C++11 起) 
+    L 'c-char' (5) 
+    ' c-char-sequence ' (6) 
+    
+    1) 窄字符字面量或通常字符字面量，例如 'a' 或 '\n' 或 '\13' 。
+        这种字面量拥有 char 类型和等 c-char 的表示在执行字符集中的值。
+        若 c-char 在执行字符集中不可以单字节表示，则字面量拥有 int 类型和实现定义的值。
+    2) UTF-8 字符字面量，例如 u8'a' 。
+        这种字面量拥有 char 类型和 c-char 的 ISO 10646 码点值，只要码点值能以单个 UTF-8 代码单元。
+        若 c-char 不是基本拉丁或 C0 控制 Unicode 块，则程序为病态。
+    3) UCS-2 字符字面量，例如 u'猫' ，但不是 u'🍌' （ u'\U0001f34c' ）。
+        这种字面量拥有 char16_t 类型和等于 c-char 在 Unicode 中的值，若它是基本多语言平面的一部分。
+        若 c-char 不是基本多语言平面的一部分，则程序为病态。
+    4) UCS-4 字符字面量，例如 U'猫' 或 U'🍌' 。
+        这种字面量拥有 char32_t 类型和等于 c-char 在 Unicode 中的值。
+    5) 宽字符字面量，例如 L'β' 或 L'猫' 。
+        这种字面量拥有 wchar_t 类型和等于 c-char 在执行宽字符集中的值。
+        若 c-char 不可以执行宽字符集表示（例如在 wchar_t 为 16 位的 Windows 上的非 BMP 值），则字面量的值是实现定义的。
+    6) 多字符字面量，例如 'AB' ，拥有 int 类型和实现定义值。
+    */
+    
+    
+    size_t len = 0;
+    
+    //1 窄字符字面量
+    char ch1 = 'M';
+    auto v1 = '中';
+    MK_PRINT_MSG("ch1 = 0x%02x, sizeof(ch1) = %d", ch1, sizeof(ch1));
+    MK_PRINT_MSG("v1 = %d = 0x%04x", v1, v1);
+    MK_PRINT_MSG("v1 = %d = 0x%02x %02x %02x %02x", v1, ((char*)&v1)[0], ((char*)&v1)[1], ((char*)&v1)[2], ((char*)&v1)[3]);
+    char s[33];
+    itoa(v1, s, 2);
+    MK_PRINT_MSG("s = %s", s);
+    
+    /**2 UTF-8 字符字面量
+    C++17起
+    char ch2 = u8'M';
+    auto v2 = u8'中';
+    MK_PRINT_MSG("sizeof(ch2) = %d", sizeof(ch2));
+    MK_PRINT_MSG("sizeof(v2) = %d", sizeof(v2));//int
+    */
+    
+    //3 UCS-2 字符字面量
+    char16_t ch3_en = u'M';
+    char16_t ch3_zh = u'中';
+    const char* ch3_en_char = reinterpret_cast<const char*> (&ch3_en);
+    const char* ch3_zn_char = reinterpret_cast<const char*> (&ch3_zh);
+    MK_PRINT_MSG("ch3_en = 0x%02x %02x, sizeof(ch3_en) = %d", ch3_en_char[0], ch3_en_char[1], sizeof(ch3_en));//2byte
+    MK_PRINT_MSG("ch3_zh = 0x%02x %02x, sizeof(ch3_zh) = %d", ch3_zn_char[0], ch3_zn_char[1], sizeof(ch3_zh));//2byte
+    
+    //4 UCS-4 字符字面量
+    char32_t ch4_en = U'M';
+    char32_t ch4_zh = U'中';
+    const char* ch4_en_char = reinterpret_cast<const char*> (&ch4_en);
+    const char* ch4_zn_char = reinterpret_cast<const char*> (&ch4_zh);
+    MK_PRINT_MSG("ch4_en = 0x%02x %02x %02x %02x, sizeof(ch4_en) = %d", ch4_en_char[0], ch4_en_char[1], ch4_en_char[2], ch4_en_char[3], sizeof(ch4_en));//4byte
+    MK_PRINT_MSG("ch4_zh = 0x%02x %02x %02x %02x, sizeof(ch4_zh) = %d", ch4_zn_char[0], ch4_zn_char[1], ch4_zn_char[2], ch4_zn_char[3], sizeof(ch4_zh));//4byte
+    
+    //5 宽字符字面量
+    wchar_t ch5_en = L'M';
+    wchar_t ch5_zh = L'中';
+    const char* ch5_en_char = reinterpret_cast<const char*> (&ch5_en);
+    const char* ch5_zn_char = reinterpret_cast<const char*> (&ch5_zh);
+    MK_PRINT_MSG("ch5_en = 0x%02x %02x, sizeof(ch5_en) = %d", ch5_en_char[0], ch5_en_char[1], sizeof(ch5_en));//2byte
+    MK_PRINT_MSG("ch5_zh = 0x%02x %02x, sizeof(ch5_zh) = %d", ch5_zn_char[0], ch5_zn_char[1], sizeof(ch5_zh));//2byte
+    
+    //6 多字符字面量,拥有 int类型,最多包含4个字符;
+    //auto ch6_1 = 'ABCDE';//编译错误error C2015: 常量中的字符太多
+    auto ch6_1 = 'abcd';
+    auto ch6_2 = '\1\2\3\4';
+    auto ch6_3 = '1234';
+    MK_PRINT_MSG("ch6_1 = %d = 0x%02x %02x %02x %02x", ch6_1, ((char*)&ch6_1)[0], ((char*)&ch6_1)[1], ((char*)&ch6_1)[2], ((char*)&ch6_1)[3]);//0x64 63 62 61
+    MK_PRINT_MSG("ch6_2 = %d = 0x%02x %02x %02x %02x", ch6_2, ((char*)&ch6_2)[0], ((char*)&ch6_2)[1], ((char*)&ch6_2)[2], ((char*)&ch6_2)[3]);//0x01 02 03 04
+    MK_PRINT_MSG("ch6_3 = %d = 0x%02x %02x %02x %02x", ch6_3, ((char*)&ch6_3)[0], ((char*)&ch6_3)[1], ((char*)&ch6_3)[2], ((char*)&ch6_3)[3]);//0x34 33 32 31
+}
+
+//字符&&字符串
+TEST_F(ut_Expressions, string)
 {
     /**
     " (unescaped_character|escaped_character)* " (1) 
@@ -241,39 +325,36 @@ TEST_F(ut_Expressions, character)
         6) 生字符串字面量。用于避免转义任何字符。分隔符间的任何内容都成为字符串的一部分。 
             prefix 若存在则拥有与上述相同的含义。
     */
-    char ch1 = 'a';
-    char ch2 = u8'a';//utf8
     
-    char16_t ch3 = u'中';
-    char32_t ch4 = U'中';
+    //1 窄多字节字符串字面量, 字符串字面量的类型是 const char[] 
+    const char* str1_cn = "abcd";
+    const char* str1_zh = "中文";
+    MK_PRINT_MSG("str1_cn = %s = 0x%02x %02x %02x %02x", str1_cn, str1_cn[0], str1_cn[1], str1_cn[2], str1_cn[3]);
+    MK_PRINT_MSG("str1_zh = %s = 0x%02x %02x %02x %02x", str1_zh, str1_zh[0], str1_zh[1], str1_zh[2], str1_zh[3]);
     
-    wchar_t ch5 = L'中';
-    int ch6 = '中';
+    //2 宽字符串字面量, 符串字面量的类型是 const wchar_t[] 
+    const wchar_t* str2_cn = L"ab";
+    const wchar_t* str2_zh = L"中文";
+    MK_PRINT_MSG("str2_cn = 0x%02x %02x %02x %02x", ((char*)str2_cn)[0], ((char*)str2_cn)[1], ((char*)str2_cn)[2], ((char*)str2_cn)[3]);
+    MK_PRINT_MSG("str2_zh = 0x%02x %02x %02x %02x", ((char*)str2_zh)[0], ((char*)str2_zh)[1], ((char*)str2_zh)[2], ((char*)str2_zh)[3]);
     
-    //todo:输出目前不准确
-    cout<<ch1 <<endl;
-    cout<<ch2 <<endl;
-    cout<<ch3 <<endl;
-    cout<<ch4 <<endl;
-    cout<<ch5 <<endl;
-    cout<<ch6 <<endl;
+    //3 UTF-8 编码的字符串字面量, 字符串字面量的类型是 const char[] 。
+    const char* str3 = u8"中文";//utf8
+    MK_PRINT_MSG("str3 = %s = 0x%02x %02x %02x %02x %02x %02x", str3, ((char*)str3)[0], ((char*)str3)[1], ((char*)str3)[2], ((char*)str3)[3], ((char*)str3)[4], ((char*)str3)[5]);
     
-    const char* str1 = "abc";
-    const char* str2 = u8"abc";//utf8
+    //4 UTF-16 编码的字符串字面量。字符串字面量的类型是 const char16_t[] 。
+    const char16_t* str4 = u"中文";
+    MK_PRINT_MSG("str4 = 0x%02x %02x %02x %02x", ((char*)str4)[0], ((char*)str4)[1], ((char*)str4)[2], ((char*)str4)[3]);
     
-    const char16_t* str3 = u"中文";
-    const char32_t* str4 = U"中文";
+    //5 UTF-32 编码的字符串字面量。 U"..." 字符串字面量的类型是 const char32_t[] 
+    const char32_t* str5 = U"中文";
+    MK_PRINT_MSG("str5 = 0x%02x %02x %02x %02x %02x %02x %02x %02x"
+                , ((char*)str5)[0], ((char*)str5)[1], ((char*)str5)[2], ((char*)str5)[3]
+                , ((char*)str5)[4], ((char*)str5)[5], ((char*)str5)[6], ((char*)str5)[7]);
     
-    const wchar_t* str5 = L"中文";
-    const char* str6 = R"foo(www)foo";
-    
-    //todo:输出目前不准确
-    cout<<str1 <<endl;
-    cout<<str2 <<endl;
-    cout<<str3 <<endl;
-    cout<<str4 <<endl;
-    cout<<str5 <<endl;
-    cout<<str6 <<endl;
+    //6  生字符串字面量。用于避免转义任何字符。分隔符间的任何内容都成为字符串的一部分。 prefix 若存在则拥有与上述相同的含义。
+    const char* str6 = R"foo(abcd)foo";
+    MK_PRINT_MSG("str6 = %s = 0x%02x %02x %02x %02x", str6, str6[0], str6[1], str6[2], str6[3]);
 }
 
 //用户定义字面量 (C++11 起)
