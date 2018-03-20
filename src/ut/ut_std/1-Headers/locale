@@ -1,0 +1,881 @@
+///概要
+namespace std {
+ 
+    // locale ：
+    class locale;
+    template <class Facet> const Facet& use_facet(const locale&);
+    template <class Facet> bool has_facet(const locale&) noexcept;
+ 
+    // 便利接口：
+    template <class charT> bool isspace (charT c, const locale& loc);
+    template <class charT> bool isprint (charT c, const locale& loc);
+    template <class charT> bool iscntrl (charT c, const locale& loc);
+    template <class charT> bool isupper (charT c, const locale& loc);
+    template <class charT> bool islower (charT c, const locale& loc);
+    template <class charT> bool isalpha (charT c, const locale& loc);
+    template <class charT> bool isdigit (charT c, const locale& loc);
+    template <class charT> bool ispunct (charT c, const locale& loc);
+    template <class charT> bool isxdigit(charT c, const locale& loc);
+    template <class charT> bool isalnum (charT c, const locale& loc);
+    template <class charT> bool isgraph (charT c, const locale& loc);
+    template <class charT> charT toupper(charT c, const locale& loc);
+    template <class charT> charT tolower(charT c, const locale& loc);
+    template <class Codecvt, class Elem = wchar_t,
+              class Wide_alloc = std::allocator<Elem>,
+        class Byte_alloc = std::allocator<char> > class wstring_convert;
+    template <class Codecvt, class Elem = wchar_t,
+              class Tr = char_traits<Elem>> class wbuffer_convert;
+ 
+    // 字符类型：
+    class ctype_base;
+    template <class charT> class ctype;
+    template <>            class ctype<char>; // 特化
+    template <class charT> class ctype_byname;
+    class codecvt_base;
+    template <class internT, class externT, class stateT> class codecvt;
+    template <class internT, class externT, class stateT> class codecvt_byname;
+ 
+    // 数值：
+    template <class charT, class InputIterator = istreambuf_iterator<charT> > class num_get;
+    template <class charT, class OutputIterator = osterambuf_iterator<charT> > class num_put;
+    template <class charT> class numpunct;
+    template <class charT> class numpunct_byname;
+ 
+    // 对照：
+    template <class charT> class collate;
+    template <class charT> class collate_byname;
+ 
+    // 日期与时间：
+    class time_base;	
+    template <class charT, class InputIterator = istreambuf_iterator<charT> >
+        class time_get;	
+    template <class charT, class InputIterator> = istreambuf_iterator<charT> >
+        class time_get_byname;	
+    template <class charT, class OutputIterator> = ostreambuf_iterator<charT> >
+        class time_put;	
+    template <class charT, class OutputIterator> = ostreambuf_iterator<charT> >
+        class time_put_byname;	
+ 
+    // 金钱：	
+    class money_base;	
+    template <class charT, class InputIterator = istreambuf_iterator<charT> > > 
+        class money_get;
+    template <class charT, class OutputIterator = ostreambuf_iterator<charT> > > 
+        class money_put;
+    template <class charT, bool Intl = false> class moneypunct;
+    template <class charT, bool Intl = false> class moneypunct_byname;
+ 
+    // 信息取得：
+    class messages_base;
+    template <class charT> class messages;
+    template <class charT> class messages_byname;
+}
+
+
+///类 std::locale
+class locale
+{
+public:
+    // types:
+    class facet;
+    class id;
+    typedef int category;
+    static const category // 此处所赋之值仅为说明
+        none    = 0,
+        collate = 0x010, 
+        ctype   = 0x020,
+        monetary= 0x040, 
+        numeric = 0x080,
+        time    = 0x100, 
+        messages= 0x200,
+        all = collate | ctype | monetary | numeric | time | messages;
+ 
+    // 构造/复制/销毁：
+    locale() noexcept;
+    locale(const locale& other) noexcept;
+    explicit locale(const char* std_name);
+    explicit locale(const string& std_name);
+    locale(const locale& other, const char* std_name, category);
+    locale(const locale& other, const string& std_name, category);
+    template <class Facet> locale(const locale& other, Facet* f);
+    locale(const locale& other, const locale& one, category);
+    ~locale();
+ 
+    // 非虚函数
+    const locale& operator=(const locale& other) noexcept;
+    template <class Facet> locale combine(const locale& other) const;
+ 
+    // locale 操作：
+    basic_string<char>
+    name() const;
+    bool operator==(const locale& other) const;
+    bool operator!=(const locale& other) const;
+    template <class charT, class traits, class Allocator>
+    bool operator()(const basic_string<charT,traits,Allocator>& s1,
+                    const basic_string<charT,traits,Allocator>& s2) const;
+ 
+    // 全局 locale 对象：
+    static
+    locale global(const locale&);
+    static const locale& classic();
+};
+
+
+///类 std::ctype_base
+class ctype_base
+{
+public:
+    typedef /*T*/ mask;
+ 
+    // 数值仅为说明。
+    static const mask space = 1 << 0;
+    static const mask print = 1 << 1;
+    static const mask cntrl = 1 << 2;
+    static const mask upper = 1 << 3;
+    static const mask lower = 1 << 4;
+    static const mask alpha = 1 << 5;
+    static const mask digit = 1 << 6;
+    static const mask punct = 1 << 7;
+    static const mask xdigit= 1 << 8;
+    static const mask blank = 1 << 9;
+    static const mask alnum = alpha | digit;
+    static const mask graph = alnum | punct;
+ 
+};
+
+
+///类 std::ctype
+template <class charT>
+class ctype : public locale::facet, public ctype_base
+{
+public:
+    typedef charT char_type;
+ 
+    explicit ctype(size_t refs = 0);
+ 
+    bool is(mask m, charT c) const;
+    const charT* is(const charT* low, const charT* high, mask* vec) const;
+    const charT* scan_is(mask m,
+                         const charT* low, const charT* high) const;
+    const charT* scan_not(mask m,
+                          const charT* low, const charT* high) const;
+ 
+    charT           toupper(charT c) const;
+    const charT*    toupper(charT* low, const charT* high) const;
+    charT           tolower(charT c) const;
+    const charT*    tolower(charT* low, const charT* high) const;
+ 
+    charT       widen(char c) const;
+    const char* widen(const char* low, const char* high, charT* to) const;
+    char        narrow(charT c, char dfault) const;
+    const charT*narrow(const charT* low, const charT*, char dfault,
+                        char* to) const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~ctype();
+    virtual bool do_is(mask m, charT c) const;
+    virtual const charT* do_is(const charT* low, const charT* high,
+                               mask* vec) const;
+    virtual const charT* do_scan_is(mask m,
+                                    const charT* low, const charT* high) const;
+    virtual const charT* do_scan_not(mask m,
+                                     const charT* low, const charT* high) const;
+ 
+    virtual charT do_toupper(charT) const;
+    virtual const charT* do_toupper(charT* low, const charT* high) const;
+    virtual charT do_tolower(charT) const;
+    virtual const charT* do_tolower(charT* low, const charT* high) const;
+    virtual charT do_widen(char) const;
+    virtual const char*  do_widen(const char* low, const char* high,
+                                  charT* dest) const;
+    virtual char do_narrow(charT, char dfault) const;
+    virtual const charT* do_narrow(const charT* low, const charT* high,
+                                   char dfault, char* dest) const;
+};
+
+
+
+///类 std::ctype_byname
+template <class charT>
+class ctype_byname : public ctype<charT>
+{
+public:
+    typedef typename ctype<charT>::mask mask;
+    explicit ctype_byname(const char*, size_t refs = 0);
+    explicit ctype_byname(const string&, size_t refs = 0);
+    protected:
+    ~ctype_byname();
+};
+
+
+///类 std::ctype<char>
+template <> class ctype<char>
+    : public locale::facet, public ctype_base
+{
+public:
+    typedef char char_type;
+    explicit ctype(const mask* tab = 0, bool del = false,
+                   size_t refs = 0);
+    bool is(mask m, char c) const;
+    const char* is(const char* low, const char* high, mask* vec) const;
+    const char* scan_is (mask m,
+                         const char* low, const char* high) const;
+    const char* scan_not(mask m,
+                         const char* low, const char* high) const;
+    char        toupper(char c) const;
+    const char* toupper(char* low, const char* high) const;
+    char        tolower(char c) const;
+    const char* tolower(char* low, const char* high) const;
+    char        widen(char c) const;
+    const char* widen(const char* low, const char* high, char* to) const;
+    char        narrow(char c, char dfault) const;
+    const char* narrow(const char* low, const char* high, char dfault,
+                       char* to) const;
+ 
+    static locale::id id;
+ 
+    static const size_t table_size = implementation-defined;
+    const mask* table() const noexcept;
+    static const mask* classic_table() noexcept;
+ 
+protected:
+    ~ctype();
+    virtual char        do_toupper(char c) const;
+    virtual const char* do_toupper(char* low, const char* high) const;
+    virtual char        do_tolower(char c) const;
+    virtual const char* do_tolower(char* low, const char* high) const;
+    virtual char        do_widen(char c) const;
+    virtual const char* do_widen(const char* low,
+                                 const char* high,
+                                 char* to) const;
+    virtual char        do_narrow(char c, char dfault) const;
+    virtual const char* do_narrow(const char* low,
+                                  const char* high,
+                                  char dfault, char* to) const;
+};
+
+
+///类 std::codecvt_base
+class codecvt_base
+{
+public:
+    enum result { ok, partial, error, noconv };
+};
+
+
+///类 std::codecvt
+template <class internT, class externT, class stateT>
+class codecvt : public locale::facet, public codecvt_base
+{
+public:
+        typedef internT intern_type;
+        typedef externT extern_type;
+        typedef stateT state_type;
+        explicit codecvt(size_t refs = 0);
+        result out(stateT& state,
+                   const internT* from, const internT* from_end, 
+                   const internT*& from_next,
+                   externT* to, externT* to_end, externT*& to_next) const;
+        result unshift(stateT& state, externT* to,
+                       externT* to_end, externT*& to_next) const;
+        result in(stateT& state,
+                  const externT* from, const externT* from_end, 
+                  const externT*& from_next,
+                  internT* to,
+                  internT* to_end, internT*& to_next) const;
+        int encoding() const noexcept;
+        bool always_noconv() const noexcept;
+        int length(stateT&, const externT* from, const externT* end,
+                   size_t max) const;
+        int max_length() const noexcept;
+        static locale::id id;
+protected:
+        ~codecvt();
+        virtual result do_out(stateT& state,
+                              const internT* from, const internT* from_end, 
+                              const internT*& from_next,
+                              externT* to,
+                              externT* to_end, externT*& to_next) const;
+        virtual result do_in(stateT& state,
+                             const externT* from, const externT* from_end, 
+                             const externT*& from_next,
+                             internT* to,
+                             internT* to_end, internT*& to_next) const;
+        virtual result do_unshift(stateT& state,
+                                  externT* to,
+                                  externT* to_end, externT*& to_next) const;
+        virtual int do_encoding() const noexcept;
+        virtual bool do_always_noconv() const noexcept;
+        virtual int do_length(stateT&, const externT* from,
+                              const externT* end, size_t max) const;
+        virtual int do_max_length() const noexcept;
+};
+
+
+///类 std::codecvt_byname
+template <class internT, class externT, class stateT>
+class codecvt_byname : public codecvt<internT, externT, stateT>
+{
+public:
+    explicit codecvt_byname(const char*, size_t refs = 0);
+    explicit codecvt_byname(const string&, size_t refs = 0);
+protected:
+    ~codecvt_byname();
+};
+
+
+///类 std::num_get
+template <class charT, class InputIterator = istreambuf_iterator<charT> >
+class num_get : public locale::facet
+{
+public:
+    typedef charT           char_type;
+    typedef InputIterator   iter_type;
+    explicit num_get(size_t refs = 0);
+    iter_type get(iter_type in, iter_type end, ios_base&,
+                  ios_base::iostate& err, bool& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base& ,
+                  ios_base::iostate& err, long& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base& ,
+                  ios_base::iostate& err, long long& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base&,
+                  ios_base::iostate& err, unsigned short& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base&,
+                  ios_base::iostate& err, unsigned int& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base&,
+                  ios_base::iostate& err, unsigned long& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base& ,
+                  ios_base::iostate& err, unsigned long long& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base&,
+                  ios_base::iostate& err, float& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base&,
+                  ios_base::iostate& err, double& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base&,
+                  ios_base::iostate& err, long double& v) const;
+    iter_type get(iter_type in, iter_type end, ios_base&,
+                  ios_base::iostate& err, void*& v) const;
+ 
+    static locale::id id;
+ 
+ 
+protected:
+    ~num_get();
+ 
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, bool& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, long& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, long long& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, unsigned short& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, unsigned int& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, unsigned long& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, unsigned long long& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, float& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, double& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, long double& v) const;
+    virtual iter_type do_get(iter_type, iter_type, ios_base&,
+                             ios_base::iostate& err, void*& v) const;
+};
+
+
+///类 std::num_put
+template <class CharT, class OutputIterator = ostreambuf_iterator<CharT> >
+class num_put : public locale::facet
+{
+public:
+    typedef CharT char_type;
+    typedef OutputIterator iter_type;
+ 
+    explicit num_put(size_t refs = 0);
+ 
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  bool v) const;
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  long v) const;
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  long long v) const;
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  unsigned long v) const;
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  unsigned long long v) const;
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  double v) const;
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  long double v) const;
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  const void* v) const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~num_put();
+ 
+    virtual iter_type do_put(iter_type, ios_base&, char_type fill,
+                             bool v) const;
+    virtual iter_type do_put(iter_type, ios_base&, char_type fill,
+                             long v) const;
+    virtual iter_type do_put(iter_type, ios_base&, char_type fill,
+                             long long v) const;
+    virtual iter_type do_put(iter_type, ios_base&, char_type fill,
+                             unsigned long) const;
+    virtual iter_type do_put(iter_type, ios_base&, char_type fill,
+                             unsigned long long) const;
+    virtual iter_type do_put(iter_type, ios_base&, char_type fill,
+                             double v) const;
+    virtual iter_type do_put(iter_type, ios_base&, char_type fill,
+                             long double v) const;
+    virtual iter_type do_put(iter_type, ios_base&, char_type fill,
+                             const void* v) const;
+};
+
+
+///类 std::numpunct
+template <class CharT>
+class numpunct : public locale::facet
+{
+public:
+    typedef CharT char_type;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit numpunct(size_t refs = 0);
+ 
+    char_type   decimal_point() const;
+    char_type   thousands_sep() const;
+    string      grouping()      const;
+    string_type truename()      const;
+    string_type falsename()     const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~numpunct(); // 虚
+ 
+    virtual char_type   do_decimal_point() const;
+    virtual char_type   do_thousands_sep() const;
+    virtual string      do_grouping()      const;
+    virtual string_type do_truename()      const; // 对于 bool
+    virtual string_type do_falsename()     const; // 对于 bool
+};
+
+
+///类 std::numpunct_byname
+template <class CharT>
+class numpunct_byname : public numpunct<CharT>
+{
+public:
+    typedef CharT char_type;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit numpunct_byname(const char*, size_t refs = 0);
+    explicit numpunct_byname(const string&, size_t refs = 0);
+ 
+protected:
+    ~numpunct_byname();
+};
+
+
+///类 std::collate
+template <class CharT>
+class collate : public locale::facet
+{
+public:
+    typedef CharT char_type;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit collate(size_t refs = 0);
+ 
+    int compare(const CharT* low1, const CharT* high1,
+                const CharT* low2, const CharT* high2) const;
+    string_type transform(const CharT* low, const CharT* high) const;
+    long hash(const CharT* low, const CharT* high) const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~collate();
+ 
+    virtual int do_compare(const CharT* low1, const CharT* high1,
+                           const CharT* low2, const CharT* high2) const;
+    virtual string_type do_transform(const CharT* low,
+                                     const CharT* high) const;
+    virtual long do_hash (const CharT* low, const CharT* high) const;
+};
+
+
+///类 std::collate_byname
+template <class CharT>
+class collate_byname : public collate<CharT>
+{
+public:
+    typedef basic_string<CharT> string_type;
+ 
+    explicit collate_byname(const char*, size_t refs = 0);
+    explicit collate_byname(const string&, size_t refs = 0);
+ 
+protected:
+    ~collate_byname();
+};
+
+
+///类 std::time_base
+class time_base
+{
+public:
+    enum dateorder { no_order, dmy, mdy, ymd, ydm };
+};
+
+
+///类 std::time_get
+template <class CharT, class InputIterator = istreambuf_iterator<CharT> >
+class time_get : public locale::facet, public time_base
+{
+public:
+    typedef CharT char_type;
+    typedef InputIterator iter_type;
+ 
+    explicit time_get(size_t refs = 0);
+ 
+    dateorder date_order() const;
+    iter_type get_time(iter_type s, iter_type end, ios_base& f,
+                       ios_base::iostate& err, tm* t) const;
+    iter_type get_date(iter_type s, iter_type end, ios_base& f,
+                       ios_base::iostate& err, tm* t) const;
+    iter_type get_weekday(iter_type s, iter_type end, ios_base& f,
+                          ios_base::iostate& err, tm* t) const;
+    iter_type get_monthname(iter_type s, iter_type end, ios_base& f,
+                            ios_base::iostate& err, tm* t) const;
+    iter_type get_year(iter_type s, iter_type end, ios_base& f,
+                       ios_base::iostate& err, tm* t) const;
+    iter_type get(iter_type s, iter_type end, ios_base& f,
+                  ios_base::iostate& err, tm* t, char format,
+                  char modifier = 0) const;
+    iter_type get(iter_type s, iter_type end, ios_base& f,
+                  ios_base::iostate& err, tm* t,
+                  const char_type* fmt, const char_type* fmtend) const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~time_get();
+ 
+    virtual dateorder do_date_order() const;
+    virtual iter_type do_get_time(iter_type s, iter_type end, ios_base&,
+                                  ios_base::iostate& err, tm* t) const;
+    virtual iter_type do_get_date(iter_type s, iter_type end, ios_base&,
+                                  ios_base::iostate& err, tm* t) const;
+    virtual iter_type do_get_weekday(iter_type s, iter_type end, ios_base&,
+                                     ios_base::iostate& err, tm* t) const;
+    virtual iter_type do_get_monthname(iter_type s, iter_type end, ios_base&,
+                                       ios_base::iostate& err, tm* t) const;
+    virtual iter_type do_get_year(iter_type s, iter_type end, ios_base&,
+                                  ios_base::iostate& err, tm* t) const;
+    virtual iter_type do_get(iter_type s, iter_type end, ios_base& f,
+                             ios_base::iostate& err, tm* t,
+                             char format, char modifier) const;
+};
+
+
+///类 std::time_get_byname
+template <class CharT, class InputIterator = istreambuf_iterator<CharT> >
+class time_get_byname : public time_get<CharT, InputIterator>
+{
+public:
+    typedef time_base::dateorder dateorder;
+    typedef InputIterator iter_type;
+ 
+    explicit time_get_byname(const char*, size_t refs = 0);
+    explicit time_get_byname(const string&, size_t refs = 0);
+ 
+protected:
+    ~time_get_byname();
+};
+
+
+///类 std::time_put
+template <class CharT, class OutputIterator = ostreambuf_iterator<CharT> >
+class time_put : public locale::facet
+{
+public:
+    typedef CharT char_type;
+    typedef OutputIterator iter_type;
+ 
+    explicit time_put(size_t refs = 0);
+ 
+    // 下列函数以其他成员函数实现。
+    iter_type put(iter_type s, ios_base& f, char_type fill, const tm* tmb,
+                  const CharT* pattern, const CharT* pat_end) const;
+    iter_type put(iter_type s, ios_base& f, char_type fill,
+                  const tm* tmb, char format, char modifier = 0) const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~time_put();
+ 
+    virtual iter_type do_put(iter_type s, ios_base&, char_type, const tm* t,
+                             char format, char modifier) const;
+};
+
+
+///类 std::time_put_byname
+template <class CharT, class OutputIterator = ostreambuf_iterator<CharT> >
+class time_put_byname : public time_put<CharT, OutputIterator>
+{
+public:
+    typedef CharT char_type;
+    typedef OutputIterator iter_type;
+ 
+    explicit time_put_byname(const char*, size_t refs = 0);
+    explicit time_put_byname(const string&, size_t refs = 0);
+ 
+protected:
+    ~time_put_byname();
+};
+
+
+///类 std::money_get
+template <class CharT, class InputIterator = istreambuf_iterator<CharT> >
+class money_get : public locale::facet
+{
+public:
+    typedef CharT char_type;
+    typedef InputIterator iter_type;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit money_get(size_t refs = 0);
+ 
+    iter_type get(iter_type s, iter_type end, bool intl, ios_base& f,
+                  ios_base::iostate& err, long double& units) const;
+    iter_type get(iter_type s, iter_type end, bool intl, ios_base& f,
+                  ios_base::iostate& err, string_type& digits) const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~money_get();
+ 
+    virtual iter_type do_get(iter_type, iter_type, bool, ios_base&,
+                             ios_base::iostate& err,
+                             long double& units) const;
+    virtual iter_type do_get(iter_type, iter_type, bool, ios_base&,
+                             ios_base::iostate& err,
+                             string_type& digits) const;
+};
+
+
+///类 std::money_put
+template <class CharT, class OutputIterator = ostreambuf_iterator<CharT> >
+class money_put : public locale::facet
+{
+public:
+    typedef CharT char_type;
+    typedef OutputIterator iter_type;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit money_put(size_t refs = 0);
+ 
+    iter_type put(iter_type s, bool intl, ios_base& f,
+                  char_type fill, long double units) const;
+    iter_type put(iter_type s, bool intl, ios_base& f,
+                  char_type fill, const string_type& digits) const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~money_put();
+ 
+    virtual iter_type do_put(iter_type, bool, ios_base&, char_type fill,
+                             long double units) const;
+    virtual iter_type do_put(iter_type, bool, ios_base&, char_type fill,
+                             const string_type& digits) const;
+};
+
+
+///类 std::money_base
+class money_base
+{
+public:
+    enum part { none, space, symbol, sign, value };
+    struct pattern { char field[4]; };
+};
+
+
+///类 std::moneypunct
+template <class CharT, bool International = false>
+class moneypunct : public locale::facet, public money_base
+{
+public:
+    typedef CharT char_type;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit moneypunct(size_t refs = 0);
+ 
+    CharT       decimal_point() const;
+    CharT       thousands_sep() const;
+    string      grouping()      const;
+    string_type curr_symbol()   const;
+    string_type positive_sign() const;
+    string_type negative_sign() const;
+    int         frac_digits()   const;
+    pattern     pos_format()    const;
+    pattern     neg_format()    const;
+ 
+    static locale::id id;
+    static const bool intl = International;
+ 
+protected:
+    ~moneypunct();
+ 
+    virtual CharT       do_decimal_point() const;
+    virtual CharT       do_thousands_sep() const;
+    virtual string      do_grouping()      const;
+    virtual string_type do_curr_symbol()   const;
+    virtual string_type do_positive_sign() const;
+    virtual string_type do_negative_sign() const;
+    virtual int         do_frac_digits()   const;
+    virtual pattern     do_pos_format()    const;
+    virtual pattern     do_neg_format()    const;
+};
+
+
+///类 std::moneypunct_byname
+template <class CharT, bool Intl = false>
+class moneypunct_byname : public moneypunct<CharT, Intl>
+{
+public:
+    typedef money_base::pattern pattern;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit moneypunct_byname(const char*, size_t refs = 0);
+    explicit moneypunct_byname(const string&, size_t refs = 0);
+ 
+protected:
+    ~moneypunct_byname();
+};
+
+
+///类 std::messages_base
+class messages_base
+{
+public:
+    typedef /* 未指定的有符号整数类型 */ catalog;
+};
+
+
+///类 std::messages
+template <class CharT>
+class messages : public locale::facet, public messages_base {
+public:
+    typedef CharT char_type;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit messages(size_t refs = 0);
+ 
+    catalog open(const basic_string<char>& fn, const locale&) const;
+    string_type get(catalog c, int set, int msgid,
+                    const string_type& dfault) const;
+    void close(catalog c) const;
+ 
+    static locale::id id;
+ 
+protected:
+    ~messages();
+ 
+    virtual catalog do_open(const basic_string<char>&, const locale&) const;
+    virtual string_type do_get(catalog, int set, int msgid,
+                               const string_type& dfault) const;
+    virtual void do_close(catalog) const;
+};
+
+
+///类 std::messages_byname
+template <class CharT>
+class messages_byname : public messages<CharT>
+{
+public:
+    typedef messages_base::catalog catalog;
+    typedef basic_string<CharT> string_type;
+ 
+    explicit messages_byname(const char*, size_t refs = 0);
+    explicit messages_byname(const string&, size_t refs = 0);
+ 
+protected:
+    ~messages_byname();
+};
+
+
+///类 std::wstring_convert
+template<class Codecvt, class Elem = wchar_t,
+    class Wide_alloc = std::allocator<Elem>,
+    class Byte_alloc = std::allocator<char> >
+class wstring_convert
+{
+public:
+    typedef std::basic_string<char, char_traits<char>, Byte_alloc> byte_string;
+    typedef std::basic_string<Elem, char_traits<Elem>, Wide_alloc> wide_string;
+    typedef typename Codecvt::state_type state_type;
+    typedef typename wide_string::traits_type::int_type int_type;
+ 
+    explicit wstring_convert(Codecvt* pcvt = new Codecvt);
+    wstring_convert(Codecvt* pcvt, state_type state);
+    explicit wstring_convert(const byte_string& byte_err,
+                             const wide_string& wide_err = wide_string());
+    ~wstring_convert();
+ 
+    wstring_convert(const wstring_convert&) = delete;
+    wstring_convert& operator=(const wstring_convert&) = delete;
+ 
+    wide_string from_bytes(char byte);
+    wide_string from_bytes(const char* ptr);
+    wide_string from_bytes(const byte_string& str);
+    wide_string from_bytes(const char* first, const char* last);
+    byte_string to_bytes(Elem wchar);
+    byte_string to_bytes(const Elem* wptr);
+    byte_string to_bytes(const wide_string& wstr);
+    byte_string to_bytes(const Elem* first, const Elem* last);
+    size_t converted() const noexcept;
+    state_type state() const;
+ 
+private:
+    byte_string byte_err_string; // 仅为说明
+    wide_string wide_err_string; // 仅为说明
+    Codecvt* cvtptr;             // 仅为说明
+    state_type cvtstate;         // 仅为说明
+    size_t cvtcount;             // 仅为说明
+};
+
+///类 std::wbuffer_convert
+template<class Codecvt,
+    class Elem = wchar_t,
+    class Tr = std::char_traits<Elem> >
+class wbuffer_convert : public std::basic_streambuf<Elem, Tr>
+{
+public:
+    typedef typename Codecvt::state_type state_type;
+ 
+    explicit wbuffer_convert(std::streambuf* bytebuf = 0,
+                             Codecvt* pcvt = new Codecvt,
+                             state_type state = state_type());
+    ~wbuffer_convert();
+ 
+    wbuffer_convert(const wbuffer_convert&) = delete;
+    wbuffer_convert& operator=(const wbuffer_convert&) = delete;
+ 
+    std::streambuf* rdbuf() const;
+    std::streambuf* rdbuf(std::streambuf* bytebuf);
+    state_type state() const;
+private:
+    std::streambuf* bufptr; // 仅为说明
+    Codecvt* cvtptr;        // 仅为说明
+    state_type cvtstate;    // 仅为说明
+};

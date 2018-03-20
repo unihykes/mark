@@ -177,10 +177,10 @@ TEST_F(ut_Templates, VariableParameters)
     printf("int = %d, string = %s\n", 100, "ischar");
     
     //int = 100, string = ischar
-    printf("int = %d, string = %s\n", 100, "ischar", 200);// warning C4474: printf: 格式字符串中传递的参数太多
+    //printf("int = %d, string = %s\n", 100, "ischar", 200);// warning C4474: printf: 格式字符串中传递的参数太多
     
     //int = 100, string = ischar, val = 0
-    printf("int = %d, string = %s, val = %d\n", 100, "ischar");// warning C4473: “printf”: 没有为格式字符串传递足够的参数
+    //printf("int = %d, string = %s, val = %d\n", 100, "ischar");// warning C4473: “printf”: 没有为格式字符串传递足够的参数
 }
 
 

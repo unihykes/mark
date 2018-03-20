@@ -1,0 +1,15 @@
+﻿
+namespace std {
+  using sig_atomic_t = /*see description*/ ;
+  extern "C" using /*signal-handler*/ = void(int); // 仅为说明
+  /*signal-handler*/ * signal(int sig, /*signal-handler*/ * func);
+}
+#define SIG_DFL /*see description*/
+#define SIG_ERR /*see description*/
+#define SIG_IGN /*see description*/
+#define SIGABRT /*see description*/
+#define SIGFPE /*see description*/
+#define SIGILL /*see description*/
+#define SIGINT /*see description*/
+#define SIGSEGV /*see description*/
+#define SIGTERM /*see description*/

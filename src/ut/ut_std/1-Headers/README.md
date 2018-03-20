@@ -1,3 +1,11 @@
+win10下,
+
+标准C头文件:
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt
+
+标准C++头文件:
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include
+
 ## 工具库
 ```c++
 <cstdlib>                        通用工具：程序控制、动态内存分配、随机数、排序与查找 
