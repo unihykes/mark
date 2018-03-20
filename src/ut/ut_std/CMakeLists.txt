@@ -14,6 +14,7 @@ SET(NEED_GTEST TRUE)
 
 # ±àÒëÄ¿Â¼
 ADD_SOURCE_DIRS(./0-Language;
+                ./3-LanguageSupportLibrary;
                 )
 
 INCLUDE($ENV{MONK_MAKE}/end.cmake)
