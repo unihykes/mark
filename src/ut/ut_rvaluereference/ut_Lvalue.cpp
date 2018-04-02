@@ -43,10 +43,10 @@ string& Categories(string& val)
 //定义一个struct
 struct ncCategoriesObj
 {
-    static const int n = 0; 
+    static const int n; 
     void fun(){}
 };
-
+const int ncCategoriesObj::n = 0;
 
 TEST(ut_Lvalue, L_value_1)
 {

@@ -35,7 +35,8 @@ TEST(ut_xRvalue, xRvalue1)
     /// a[n]，内建的下标表达式，其操作数之一是数组右值； 
     {
         using arrType = int[4];
-        MK_PRINT_MSG("arrType[2]            is %c-value", IsRight(arrType{0,1,2,3}[2]));///??todo:这里怎么还是左值arrType{0,1,2,3}[2]
+        MK_PRINT_MSG("arrType{0,1,2,3}      is %c-value", IsRight(arrType{0,1,2,3}) );
+        MK_PRINT_MSG("arrType{0,1,2,3}[2]   is %c-value", IsRight(arrType{0,1,2,3}[2]));///??todo:这里怎么还是左值arrType{0,1,2,3}[2]
     }
     
     /// a.m，对象成员表达式，其中 a 是右值且 m 是非引用类型的非静态数据成员； 
@@ -46,7 +47,7 @@ TEST(ut_xRvalue, xRvalue1)
             int n;
             int fun(){return 0;}
         };
-        &ncObj().n;
+        //&ncObj().n; // 编译错误, 在gcc 版本 4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) //错误：取临时变量的地址 [-fpermissive]
         MK_PRINT_MSG("ncObj().n             is %c-value", IsRight(ncObj().n));///经在vs2015测试, 这里是左值(C++11起)
     }
     

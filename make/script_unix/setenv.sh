@@ -14,7 +14,7 @@ fi
 
 # 进入根目录
 cd ../../
-MONK_PATH=`pwd`
+export MONK_PATH=`pwd`
 
 
 #设置环境变量
@@ -37,7 +37,7 @@ export MONK_DEPS=$MONK_PATH/deps/deps_monk
 export MONK_SRC=$MONK_PATH/src
 
 export PATH=$PATH:$MONK_MAKE/script_unix:$MONK_MAKE/script_unix/bin
-chmod -R +x $MONK_MAKE/*.sh
+chmod -R +x $MONK_MAKE/script_unix/*.sh
 chmod -R +x $MONK_MAKE/script_unix/bin/*
 
 #关闭回显

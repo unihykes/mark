@@ -12,7 +12,11 @@ info:
 
 #include <iostream>
 #include <fstream>
-#include <io.h>//for access()
+
+#ifdef __WINDOWS__
+    #include <io.h>//for access()
+#endif
+
 //wchar -> char
 inline string WcharToChar(const wchar_t* wp)
 {

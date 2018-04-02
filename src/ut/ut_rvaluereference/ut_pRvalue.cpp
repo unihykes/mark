@@ -126,7 +126,7 @@ TEST(ut_pRvalue, pRvalue1)
     /// a ? b : c ，某些 b 和 c 的三元条件表达式（细节见定义）；  
     {
         int a = 100;
-        MK_PRINT_MSG("a,b                   is %c-value", IsRight((a, 12)));
+        MK_PRINT_MSG("a,b                   is %c-value", IsRight((a++, 12)));
         MK_PRINT_MSG("a?b:c                 is %c-value", IsRight((true?32:12)));
     }
     

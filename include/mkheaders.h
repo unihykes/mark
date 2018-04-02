@@ -178,7 +178,10 @@ typedef uint64_t			uint64;
 	{
 		va_list ap;
 		va_start (ap, fmt);
-		int len = nc_vsnprintf (buf, bufSize, fmt, ap);
+		
+        int len;
+        //todo
+        //len = nc_vsnprintf (buf, bufSize, fmt, ap);
 		va_end (ap);
 		return len;
 	}
