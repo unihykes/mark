@@ -80,22 +80,22 @@ TEST(ut_Lvalue, L_value_2)
 TEST(ut_Lvalue, L_value_3)
 {
     ///a = b ， a += b ， a %= b，以及所有其他内建的赋值及复合赋值表达式； 
+    ///++a 及 --a，内建的前置自增与前置自减表达式； 
+    ///*p ，内建的间接寻址表达式； 
     {
         int a = 10;
         int b = 2;
         MK_PRINT_MSG("a = b                 is %c-value", IsRight(a = b));//赋值表达式
         MK_PRINT_MSG("a += b                is %c-value", IsRight(a += b));//复合赋值表达式
-        MK_PRINT_MSG("a = b                 is %c-value", IsRight(a %= b));//复合赋值表达式
+        MK_PRINT_MSG("a %= b                is %c-value", IsRight(a %= b));//复合赋值表达式
     }
     
-    ///++a 及 --a，内建的前置自增与前置自减表达式； 
     {
         int a = 0;
         MK_PRINT_MSG("++a                   is %c-value", IsRight(++a));
         MK_PRINT_MSG("--a                   is %c-value", IsRight(--a));
     }
     
-    ///*p ，内建的间接寻址表达式； 
     {
         int n = 1;
         int* p = &n;
@@ -113,16 +113,18 @@ TEST(ut_Lvalue, L_value_4)
         int* p = &array[0];
         MK_PRINT_MSG("array[2]              is %c-value", IsRight(array[2]));
         MK_PRINT_MSG("p[2]                  is %c-value", IsRight(p[2]));
+        
         using arrType = int[4];
-        MK_PRINT_MSG("arrType[2]            is %c-value", IsRight(arrType{0,1,2,3}[2]));///??todo:这里怎么还是左值arrType{0,1,2,3}[2]
+        //MK_PRINT_MSG("arrType[2]            is %c-value", IsRight(arrType{0,1,2,3}[2]));///??todo:这里怎么还是左值arrType{0,1,2,3}[2]
     }
 }
 
 TEST(ut_Lvalue, L_value_5)
 {
-    ///a.m ,对象成员表达(除了m 为成员枚举符或非静态成员函数,或者a 为右值且 m 为非引用类型的非静态数据成员的情况 )
-    ///      备注:a 为右值且 m 为非引用类型的非静态数据成员的情况在 C++11 前为纯右值,C++11起为亡值
+    ///a.m ,对象成员表达式(除了m 为成员枚举符或非静态成员函数,或者a 为右值且 m 为非引用类型的非静态数据成员的情况 )
     ///p->m ，内建的指针成员表达式,(除了 m 为成员枚举符或非静态成员函数的情况) 
+    
+    //备注:a 为右值且 m 为非引用类型的非静态数据成员的情况在 C++11 前为纯右值,C++11起为亡值
     {
         struct ncObj
         {
@@ -133,10 +135,11 @@ TEST(ut_Lvalue, L_value_5)
         
         ncObj obj;
         MK_PRINT_MSG("obj.n                 is %c-value", IsRight(obj.n));
-        MK_PRINT_MSG("ncObj().n             is %c-value", IsRight(ncObj().n));///经在vs2015测试, 这里是左值(C++11起)
         
         ncObj* p = &obj;
         MK_PRINT_MSG("p->n                  is %c-value", IsRight(p->n));
+        
+        //MK_PRINT_MSG("ncObj().n             is %c-value", IsRight(ncObj().n));///经在vs2015测试, 这里是左值(C++11起)
 
     }
 }
@@ -194,27 +197,22 @@ void func()
 {
 }
 
-using funcType = void(*)();
+//到函数的右值引用
+using funcType = void(&&)();
 
-funcType&& fun_returnRvalueRef()
+//返回到函数的右值引用
+funcType fun_returnRvalueRef()
 {
-    funcType fun = func;
-    return std::move(fun);
-}
-
-string&& fun_returnStringRef()
-{
-    return std::move(string());
+    return std::move(func);
 }
 
 TEST(ut_Lvalue, L_value_10)
 {
     ///函数调用表达式或重载的运算符表达式，其返回类型是到函数的右值引用； (C++11 起)
     {
-        MK_PRINT_MSG("fun_returnRvalueRef   is %c-value", IsRight(fun_returnRvalueRef()));
-        MK_PRINT_MSG("fun_returnStringRef   is %c-value", IsRight(fun_returnStringRef()));
+        MK_PRINT_MSG("fun_returnRvalueRef               is %c-value", IsRight(fun_returnRvalueRef()));
     }
-    
+       
     ///转换为函数的右值引用类型的转型表达式，如 static_cast<void (&&)(int)>(x) 。 (C++11 起)
     {
         MK_PRINT_MSG("static_cast<void(&&)()>(func)     is %c-value", IsRight(static_cast<void(&&)()>(func) ));
