@@ -19,69 +19,6 @@ protected:
     virtual void TearDown(){}
 };
 
-//左/右值以及左/右值引用
-struct ncTest
-{
-    int m;
-    
-    ncTest(){cout << "ncTest()" << endl;}
-    ncTest(const ncTest& t){cout << "ncTest(const ncTest&)" << endl;}
-    ncTest(ncTest&& t){cout << "ncTest(ncTest&&)" << endl;}
-    ~ncTest(){cout << "~ncTest()" << endl;}
-};
-
-ncTest&& ReturnRvalueRef()
-{
-    return ncTest(); //不安全！返回局部对象的引用（用于演示）！
-}
-
-ncTest ReturnRvalue()
-{
-    return ncTest(); 
-}
-
-TEST_F(ut_RvalueReference, Start)
-{
-    //1. 左、右值判断
-    int i = 0;
-    int&& ri = i++; //i++为右值，表达式返回是i的拷贝，是个匿名变量。故为右值。
-    int&  li = ++i; //++i返回的是i本身，是具名变量，故为左值。
-    
-    int* p = &i;
-    int& lp = *p;    //*p是左值，因为可以取*p的地址，即&(*p);
-    int* && rp = &i; //取地址表达式结果是个地址值，故&i是纯右值。
-    
-    int&& xi1 = std::move(i); //std::move(i)是个xvalue
-    int&& xi2 = static_cast<int&&>(i); // static_cast<int&&>(i)是个xvalue
-    
-    auto&& fn = [](int x){ return x * x; }; //lambda表达式是右值,可以用来初始化右值引用
-    cout << std::is_rvalue_reference<decltype(fn)>::value << endl; //1
-    
-    ncTest t;
-    int& rm1  = t.m; //由于t是左值，而m为普通成员变量，所以m也为左值。
-    int&& rm2 = ncTest().m; //由于Test()是个右值，所以m也是右值
-    
-    int ncTest::*pm = &ncTest::m; //定义指向成员变量的指针，指向non-static member data;
-    //int&& rm3 = t.*pm; //error，由于t是左值，*pm也是左值，不能用来初始化右值引用。
-    int& rm3 = t.*pm;    //ok
-    
-    ///windows下编译错误:error C2440: “初始化”: 无法从“int”转换为“int &&”
-    ///int&& rm4 = ncTest().*pm; //ok，Test()是临时变量，为右值。所以*pm也是右值
-    
-    //2. 左/右值引用的初始化
-    int a;
-    int&  b = a;  //ok
-    //int&& b = a;  //error，右值引用只能绑定到右值上    
-    
-    ncTest&& t1 = ReturnRvalue();  //返回值是个临时对象(右值) 被绑定到t1上，使其“重获新生”，
-                                 //生命期与t1一样。
-    ncTest   t2 = ReturnRvalue();  //返回值是个临时对象(右值)，用于构造t2，之后该临时对象
-                                 //就会马上被释放。
-    //ncTest&  t3 = ReturnRvalue();    //普通左值引用不能绑定到右值
-    const ncTest& t4 = ReturnRvalue(); //常左值引用是个“万能引用”，可以绑定到右值    
-}
-
-
 
 class Widget{};
 template<typename T>
@@ -120,7 +57,7 @@ public:
     void emplace_back(Args&&...args);
 };
 
-TEST_F(ut_RvalueReference, Start2)
+TEST_F(ut_RvalueReference, Start)
 {
     void f(Widget&& param);   //没有类型推导，param为右值引用
     Widget&& var1 = Widget(); //没有类型推导，var1为右值引用

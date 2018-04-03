@@ -26,11 +26,13 @@ char IsRight(const T&& value)//添加const以禁用universal&&
 
 TEST(ut_pRvalue, pRvalue1)
 {
-    /// （除了字符串字面量之外的）字面量，例如 42 、 true 或 nullptr ； 
+    /// （除了字符串字面量之外的）字面量，例如 42 、 true 或 nullptr ；
+    /// 匿名变量/对象
     {
         MK_PRINT_MSG("42                    is %c-value", IsRight(42));
         MK_PRINT_MSG("true                  is %c-value", IsRight(true));
         MK_PRINT_MSG("nullptr               is %c-value", IsRight(nullptr));
+        MK_PRINT_MSG("string()              is %c-value", IsRight(string("")));
     }
 }
 
@@ -38,7 +40,8 @@ TEST(ut_pRvalue, pRvalue2)
 {
     /// 函数调用或重载运算符表达式，其返回类型是非引用，例如 str.substr(1, 2)、str1 + str2 或 it++ ； 
     {
-        MK_PRINT_MSG("pow                   is %c-value", IsRight(pow(2,2)));
+        MK_PRINT_MSG("pow(2,2)              is %c-value", IsRight(pow(2,2)));
+        
         vector<int> v = {1,2,3,4,5};
         auto iter = v.begin();
         MK_PRINT_MSG("iter++                is %c-value", IsRight(iter++));
@@ -58,82 +61,67 @@ TEST(ut_pRvalue, pRvalue3)
 TEST(ut_pRvalue, pRvalue4)
 {
     /// a + b 、 a % b 、 a & b 、 a << b ，以及其他所有内建的算术表达式； 
+    /// a && b 、 a || b 、 !a ，内建的逻辑表达式；
+    /// a < b 、 a == b 、 a >= b 以及其他所有内建的比较表达式； 
+    /// &a，内建的取地址表达式； 
     {
         int a = 10;
         int b = 2;
+        
         MK_PRINT_MSG("a+b                   is %c-value", IsRight(a+b));
         MK_PRINT_MSG("a%%b                   is %c-value", IsRight(a%b));
         MK_PRINT_MSG("a&b                   is %c-value", IsRight(a&b));
         MK_PRINT_MSG("a<<b                  is %c-value", IsRight(a<<b));
-    }
-    
-    /// a && b 、 a || b 、 !a ，内建的逻辑表达式； 
-    {
-        int a = 10;
-        int b = 2;
+        
         MK_PRINT_MSG("a&&b                  is %c-value", IsRight(a&&b));
         MK_PRINT_MSG("a||b                  is %c-value", IsRight(a||b));
         MK_PRINT_MSG("!a                    is %c-value", IsRight(!a));
-    }
-    
-    /// a < b 、 a == b 、 a >= b 以及其他所有内建的比较表达式； 
-    {
-        int a = 10;
-        int b = 2;
+        
         MK_PRINT_MSG("a<b                   is %c-value", IsRight(a<b));
         MK_PRINT_MSG("a==b                  is %c-value", IsRight(a==b));
         MK_PRINT_MSG("a>=b                  is %c-value", IsRight(a>=b));
-    }
-    
-    /// &a，内建的取地址表达式； 
-    {
-        int a = 10;
+        
         MK_PRINT_MSG("&a                    is %c-value", IsRight(&a));
     }
 }
 
 TEST(ut_pRvalue, pRvalue5)
 {
+    /// a.m，对象成员表达式，其中 m 是成员枚举符或非静态成员函数
+    /// p->m，内建的指针成员表达式，其中 m 为成员枚举符或非静态成员函数
     struct ncObj
     {
         enum ncObjEnum{NC_OBJ_ENUM0,NC_OBJ_ENUM1};
         int n;
         int fun(){return 0;}
     };
-    
-    /// a.m，对象成员表达式，其中 m 是成员枚举符或非静态成员函数，或其中 a 为右值且 m 为非引用类型的非静态数据成员 (C++11 前为纯右值,C++11起为亡值)； 
-    /// p->m，内建的指针成员表达式，其中 m 为成员枚举符或非静态成员函数[2]； 
     {
         ncObj obj;
         MK_PRINT_MSG("obj.NC_OBJ_ENUM0      is %c-value", IsRight(obj.NC_OBJ_ENUM0));//成员枚举符:右值
         MK_PRINT_MSG("obj.fun()             is %c-value", IsRight(obj.fun()));//非静态成员函数表达式:右值
-        MK_PRINT_MSG("ncObj().n             is %c-value", IsRight(ncObj().n));///经在vs2015测试, 这里是左值(C++11起)
         
         ncObj* p = &obj;
-        MK_PRINT_MSG("p->NC_OBJ_ENUM0       is %c-value", IsRight(p->NC_OBJ_ENUM0));
-        MK_PRINT_MSG("p->fun()              is %c-value", IsRight(p->fun()));
+        MK_PRINT_MSG("p->NC_OBJ_ENUM0      is %c-value", IsRight(p->NC_OBJ_ENUM0));
+        MK_PRINT_MSG("p->fun()             is %c-value", IsRight(p->fun()));
     }
 }
 
 TEST(ut_pRvalue, pRvalue6)
 {
+    /// a.*mp，对象的成员指针表达式，其中 mp 是指向成员函数的指针 
+    /// p->*mp，内建的指针的成员指针表达式，其中 mp 是指向成员函数的指针 
     struct ncObj
     {
         enum ncObjEnum{NC_OBJ_ENUM0,NC_OBJ_ENUM1};
         int n;
         int fun(){return 0;}
     };
-    
-    /// a.*mp，对象的成员指针表达式，其中 mp 是指向成员函数的指针[2]，或其中 a 为右值且 mp 为指向数据成员的指针 (C++11 前)； 
-    /// p->*mp，内建的指针的成员指针表达式，其中 mp 是指向成员函数的指针[2]； 
     {
         //void (ncObj::*pFun)() = &ncObj::fun;
         decltype(&ncObj::fun) pFun = &ncObj::fun;
-        int ncObj::*pn = &ncObj::n;
         
         ncObj obj;
-        MK_PRINT_MSG("obj.*pFun             is %c-value", IsRight((obj.*pFun)()) );//这里如果函数返回void会编译错误,但是返回void的函数表达式也是右值
-        MK_PRINT_MSG("obj.*pn               is %c-value", IsRight(ncObj().*pn));///经vs2015测试,这里是L-value
+        MK_PRINT_MSG("obj.*pFun             is %c-value", IsRight((obj.*pFun)()) ); //这里如果函数返回void会编译错误,但是返回void的函数表达式也是右值
         
         ncObj* pObj = &obj;
         MK_PRINT_MSG("pObj->*pFun           is %c-value", IsRight((pObj->*pFun)()));
@@ -182,16 +170,25 @@ TEST(ut_pRvalue, pRvalue10)
 {
     /// 枚举项; 
     {
-        enum ncObjEnum{NC_OBJ_ENUM0,NC_OBJ_ENUM1};
+        enum ncObjEnum
+        {
+            NC_OBJ_ENUM0,
+            NC_OBJ_ENUM1
+        };
+        
         MK_PRINT_MSG("NC_OBJ_ENUM0          is %c-value", IsRight(NC_OBJ_ENUM0));
     }
 }
     
 TEST(ut_pRvalue, pRvalue11)
 {
-    /// Lambda 表达式，例如 [](int x){ return x * x; } ；(C++11 起)
+    /// Lambda 表达式，例如 [](int x){ return x * x; } 
     {
-        int x = 1;
-        MK_PRINT_MSG("[](int x){ return x * x; }  is %c-value", IsRight([](int x){ return x * x; }));
+        
+        MK_PRINT_MSG("[](int x){ return x * x; }  is %c-value", IsRight([](int x){ return x * x; }) );
+        
+        auto&& lam = [](int x){ return x * x; };
+        bool isRValueRef = std::is_rvalue_reference<decltype(lam)>::value;
+        MK_PRINT_MSG("isRValueRef = %d", isRValueRef);
     }
 }

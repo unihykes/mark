@@ -85,21 +85,16 @@ TEST(ut_Lvalue, L_value_3)
     {
         int a = 10;
         int b = 2;
-        MK_PRINT_MSG("a = b                 is %c-value", IsRight(a = b));//赋值表达式
-        MK_PRINT_MSG("a += b                is %c-value", IsRight(a += b));//复合赋值表达式
-        MK_PRINT_MSG("a %= b                is %c-value", IsRight(a %= b));//复合赋值表达式
-    }
-    
-    {
-        int a = 0;
+        MK_PRINT_MSG("a = b                 is %c-value", IsRight(a = b));  //赋值表达式
+        MK_PRINT_MSG("a += b                is %c-value", IsRight(a += b)); //复合赋值表达式
+        MK_PRINT_MSG("a %%= b                is %c-value", IsRight(a %= b));//复合赋值表达式
+        
         MK_PRINT_MSG("++a                   is %c-value", IsRight(++a));
         MK_PRINT_MSG("--a                   is %c-value", IsRight(--a));
-    }
-    
-    {
+        
         int n = 1;
         int* p = &n;
-        MK_PRINT_MSG("*p                   is %c-value", IsRight(*p));
+        MK_PRINT_MSG("*p                    is %c-value", IsRight(*p));
     }
 }
 
