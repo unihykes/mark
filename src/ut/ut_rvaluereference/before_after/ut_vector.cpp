@@ -11,7 +11,7 @@ using namespace std;
 
 #include <gtest/gtest.h>
 #include "ncAutoProfilePoint.h"
-#include "../ncLargeStruct.h"
+#include "ncLargeStruct.h"
 
 static int loopCount = 200;//用来定义循环次数
 static double usedSecond = 0;  //用来保存指定作用域所消耗时间

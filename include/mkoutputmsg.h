@@ -16,6 +16,16 @@ info:
 #ifdef __WINDOWS__
     #include <io.h>//for access()
 #endif
+#include <ctime>
+
+inline string getCurrentTime()
+{
+    time_t rawtime;
+    time(&rawtime); 
+    string result = ctime(&rawtime);
+    result.erase(result.find('\n'), 1);//移除末尾\n
+    return result;
+}
 
 //wchar -> char
 inline string WcharToChar(const wchar_t* wp)
@@ -75,7 +85,7 @@ inline void formatlog(char* logbuf, const char* moduleName, const char* file, in
 	va_end (ap);
 	
 	//获取日志buff: [modulename] [date time]: (file:line) func() custom
-	::sprintf(logbuf,"[%s] [%s %s]: (%s:%d) %s() %s", moduleName, __DATE__, __TIME__, fileName, line, funcName, customBuf);
+	::sprintf(logbuf,"[%s] [%s]: (%s:%d) %s() %s", moduleName, getCurrentTime().c_str(), fileName, line, funcName, customBuf);
 }
 
 //format日志
@@ -99,7 +109,7 @@ inline void formatlog(char* logbuf, const char* moduleName, const char* file, in
 	string customBufStr = WcharToChar(customBuf);
 	
 	//获取日志buff: [modulename] [date time]: (file:line) func() custom
-	::sprintf(logbuf,"[%s] [%s %s]: (%s:%d) %s() %s", moduleName, __DATE__, __TIME__, fileName, line, funcName, customBufStr.c_str());
+    ::sprintf(logbuf,"[%s] [%s]: (%s:%d) %s() %s", moduleName, getCurrentTime().c_str(), fileName, line, funcName, customBufStr.c_str());
 }
 
 //输出日志

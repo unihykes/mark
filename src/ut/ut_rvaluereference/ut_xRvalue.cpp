@@ -69,7 +69,7 @@ TEST(ut_xRvalue, xRvalue4)
         };
         
         int ncObj::*pn = &ncObj::n;
-        MK_PRINT_MSG("obj.*pn               is %c-value", IsRight(ncObj().*pn));///在vs2015测试, 这里是左值,g++测试是右值
+        MK_PRINT_MSG("ncObj().*pn           is %c-value", IsRight(ncObj().*pn));///在vs2015测试, 这里是左值,g++测试是右值
     }
 }
 
