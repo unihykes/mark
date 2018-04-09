@@ -10,3 +10,9 @@
 [submodule "3rd_Party/private/yunpan"]
 	path = 3rd_Party/private/yunpan
 	url = git@gitee.com:3385/yunpan.git
+[submodule "3rd_Party/jsoncpp"]
+	path = 3rd_Party/jsoncpp
+	url = https://github.com/open-source-parsers/jsoncpp.git
+[submodule "3rd_Party/cpprestsdk"]
+	path = 3rd_Party/cpprestsdk
+	url = https://github.com/Microsoft/cpprestsdk
