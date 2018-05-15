@@ -57,7 +57,7 @@ ELSE()
 ENDIF()
 
 #默认包含引用目录
-INCLUDE_DIRECTORIES(${MONK_PATH}/include;)
+INCLUDE_DIRECTORIES(${MONK_SRC}/baseutil/include;)
 
 # 配置msvc库相关依赖
 IF(${NEED_MSVC})
