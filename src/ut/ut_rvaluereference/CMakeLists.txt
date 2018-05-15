@@ -12,6 +12,12 @@ SET(AUTO_RUN OFF)
 #依赖库
 SET(NEED_GTEST TRUE)
 
+# 编译目录
+ADD_SOURCE_DIRS(./valueType;
+                ./referenceType;
+                ./usage;
+                ./collapsing;)
+
 IF(WIN32)
 ELSE()
     #禁用返回值优化RVO

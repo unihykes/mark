@@ -35,7 +35,7 @@ public:
         
         _str = new char[strlen(source)+1];
         strcpy(_str, source);
-        usleep (LOSS_TIME * strlen(source) );//模拟其他数据成员的memcopy
+        usleep (LOSS_TIME * (int)strlen(source) );//模拟其他数据成员的memcopy
     }
     
     ncNewCustomString(const ncNewCustomString& source)
@@ -44,7 +44,7 @@ public:
         
         _str = new char[strlen(source._str) + 1];
         strcpy(_str, source._str);
-        usleep (LOSS_TIME * strlen(source._str) );//模拟其他数据成员的memcopy
+        usleep (LOSS_TIME * (int)strlen(source._str) );//模拟其他数据成员的memcopy
     }
     
     ncNewCustomString& operator = (const ncNewCustomString& source)
@@ -54,7 +54,7 @@ public:
         if (this != &source){
             char *tmp = new char[strlen(source._str) + 1];
             strcpy(tmp, source._str);
-            usleep (LOSS_TIME * strlen(source._str) );//模拟其他数据成员的memcopy
+            usleep (LOSS_TIME * (int)strlen(source._str) );//模拟其他数据成员的memcopy
             delete []_str;
             _str = tmp;
         }
