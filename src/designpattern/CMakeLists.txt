@@ -1,4 +1,4 @@
-PROJECT(ut_designpattern)
+PROJECT(mk_designpattern)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
@@ -8,7 +8,7 @@ CMAKE_POLICY(VERSION 2.8)
 INCLUDE($ENV{MONK_MAKE}/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
-SET(TARGET_NAME ut_designpattern)
+SET(TARGET_NAME mk_designpattern)
 SET(AUTO_RUN OFF)
 
 #“¿¿µø‚
