@@ -4,7 +4,8 @@ Author:liu.hao
 Time:2018-4
 
 info:
-
+    如何判断是否为universal引用?
+    一个简单的判断条件是, 参数既能是右值又可以是左值,则是universal引用;
 ***************************************************************************************************/
 
 #include <mkheaders.h>
@@ -12,37 +13,7 @@ info:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template<typename T> 
-void fun_universal_a(T&& param_a)
-{
-    MK_PRINT_MSG("type of param_a    is %c-value Ref", std::is_lvalue_reference<decltype(param_a)>::value? 'L':'R');
-}
-
-void fun_universal_b(int&& param_b)
-{
-    MK_PRINT_MSG("type of param_b    is %c-value Ref", std::is_lvalue_reference<decltype(param_b)>::value? 'L':'R');
-}
-
-template<typename T> 
-void fun_universal_c(const T&& param_c)
-{
-    MK_PRINT_MSG("type of param_c    is %c-value Ref", std::is_lvalue_reference<decltype(param_c)>::value? 'L':'R');
-}
-
-TEST(ut_UniversalRef, template)
-{
-    
-    int n = 10;
-    fun_universal_a(n);//传入左值,  T&&存在类型推导, 是universal引用
-    fun_universal_a(10);//传入右值, T&&存在类型推导, 是universal引用
-    
-    //fun_universal_b(n);//编译错误,int&&是右值引用类型,不能接受左值
-    fun_universal_b(10);//传入右值
-    
-    //fun_universal_c(n);//编译错误,const T&&尽管存在类型推导,但他不符合universal规则,因此此处是const右值引用;
-    fun_universal_c(10);//传入右值
-}
-
+//universal引用
 TEST(ut_UniversalRef, auto)
 {
     //给auto&& 传入左值
@@ -54,4 +25,131 @@ TEST(ut_UniversalRef, auto)
     auto&& v2 = 512;
     MK_PRINT_MSG("type of v2         is %c-value Ref", std::is_lvalue_reference<decltype(v2)>::value? 'L':'R');
 }
+
+//universal引用
+template<typename T> 
+void fun_universal_a(T&& param_a)
+{
+    MK_PRINT_MSG("type of param_a    is %c-value Ref", std::is_lvalue_reference<decltype(param_a)>::value? 'L':'R');
+}
+TEST(ut_UniversalRef, fun_universal_a)
+{
+    
+    int n = 10;
+    fun_universal_a(n);//传入左值,  T&&存在类型推导, 是universal引用
+    fun_universal_a(10);//传入右值, T&&存在类型推导, 是universal引用
+    
+    //fun_universal_a<int>(n);
+    fun_universal_a<int&>(n);
+    //fun_universal_a<int&&>(n);
+    
+    fun_universal_a<int>(10);
+    //fun_universal_a<int&>(10);
+    fun_universal_a<int&&>(10);
+}
+
+
+
+//非universal引用
+void fun_universal_b(int&& param_b)
+{
+    MK_PRINT_MSG("type of param_b    is %c-value Ref", std::is_lvalue_reference<decltype(param_b)>::value? 'L':'R');
+}
+TEST(ut_UniversalRef, fun_universal_b)
+{
+    int n = 10;
+    //fun_universal_b(n);//编译错误,int&&是右值引用类型,不能接受左值
+    fun_universal_b(10);//传入右值
+}
+
+
+//非universal引用,因为const
+template<typename T> 
+void fun_universal_c(const T&& param_c)
+{
+    MK_PRINT_MSG("type of param_c    is %c-value Ref", std::is_lvalue_reference<decltype(param_c)>::value? 'L':'R');
+}
+TEST(ut_UniversalRef, fun_universal_c)
+{
+    
+    int n = 10;
+    //fun_universal_c(n);//编译错误,const T&&尽管存在类型推导,但他不符合universal规则,因此此处是const右值引用;
+    fun_universal_c(10);//传入右值
+    
+    //fun_universal_c<int>(n);
+    fun_universal_c<int&>(n);
+    //fun_universal_c<int&&>(n);
+    
+    fun_universal_c<int>(10);
+    //fun_universal_c<int&>(10);
+    fun_universal_c<int&&>(10);
+    
+}
+
+
+//非universal引用, 因为当给func传入实参时，T被推导后vector<T>&&的类型是确定的。
+template<typename T>
+void fun_universal_d(vector<T>&& param_d)
+{
+    MK_PRINT_MSG("type of param_d    is %c-value Ref", std::is_lvalue_reference<decltype(param_d)>::value? 'L':'R');
+}
+
+TEST(ut_UniversalRef, fun_universal_d)
+{
+    vector<int> v;
+    
+    //fun_universal_d(v);
+    fun_universal_d(vector<int>());
+}
+
+
+
+
+template<class T, class Allocator=allocator<T>>
+class Vector_Lite
+{
+public:
+    //虽然push_back的形参符合T&&格式，但不是universal引用
+    //因为Vector实例化后，push_back的形参类型就确定下来
+    //所以在调用时push_back函数时并不存在类型推导。
+    void push_back(T&& param)
+    {
+        MK_PRINT_MSG("type of param    is %c-value Ref", std::is_lvalue_reference<decltype(param)>::value? 'L':'R');
+    }
+    
+    //Arg&&存在类型推导，所以args的参数是universal引用。
+    //因为参数Args独立于vector的类型参数T，所以每次emplace_back被调用的时候，Args必须被推导。
+    template<class ...Args>
+    void emplace_back(Args&&...  args)
+    {
+        ncLittleObj obj(std::forward<Args>(args)...);
+    }
+};
+
+struct ncLittleObj
+{
+    ncLittleObj(int&& a, int&& b)
+    {
+        MK_PRINT_MSG("type of a    is %c-value Ref", std::is_lvalue_reference<decltype(a)>::value? 'L':'R');
+    }
+    
+    ncLittleObj(const int& a, const int& b)
+    {
+        MK_PRINT_MSG("type of a    is %c-value Ref", std::is_lvalue_reference<decltype(a)>::value? 'L':'R');
+    }
+};
+
+TEST(ut_UniversalRef, Vector_Lite)
+{
+    Vector_Lite<int> v;
+    int n = 1;
+    
+    //v.push_back(n);
+    v.push_back(100);
+    
+    v.emplace_back(n, n);
+    v.emplace_back(34, 46);
+    
+}
+
 
