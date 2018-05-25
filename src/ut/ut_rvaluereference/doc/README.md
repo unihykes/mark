@@ -39,7 +39,7 @@
 [toc]
 
 
-`...正文开始...`
+**`...正文开始...`**
 
 
 # 1.为什么要了解右值引用?
@@ -231,7 +231,7 @@ C++11运行结果:<br>
 >>c++11, constructon2中,obj2大幅度优于obj1;
 
 >结论:
-某些特殊场景下,使用右值引用会得到不可思议的性能提升;
+>>某些特殊场景下,使用右值引用会得到不可思议的性能提升;
 
 
 ### 摘要
@@ -294,7 +294,6 @@ char IsRight(const T&& value)//添加const以禁用universal&&
 }
 
 /*
-备注:
 上述函数判断右值的重载添加了const以禁用universal&&;
 实际项目中右值引用不会使用const(const右值引用没有实际使用场景);
 universal&&的概念后文再述;
@@ -452,7 +451,7 @@ TEST(ut_Lvalue, L_value_5)
     MK_PRINT_MSG("p->n                  is %c-value", IsRight(p->n));
 }
 
-//备注:a 为右值且 m 为非引用类型的非静态数据成员的情况在 C++11 前为纯右值,C++11起为亡值
+//a 为右值且 m 为非引用类型的非静态数据成员的情况在 C++11 前为纯右值,C++11起为亡值
 ```
 运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/2018052418011587?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
@@ -492,6 +491,7 @@ TEST(ut_Lvalue, L_value_6)
 
 ### 左值示例7
 `a, b ，内建的逗号表达式，其中 b 是左值`<br>
+
 `a ? b : c ，某些 b 和 c 的三元条件表达式`<br>
 （例如，它们都是同类型左值时，但细节见定义）
 
@@ -578,7 +578,7 @@ TEST(ut_Lvalue, L_value_10)
 }
 
 /*
-备注,函数指针和引用的语法:
+函数指针和引用的语法:
 指向函数的指针:     using funcPtr = void(*)();
 到函数的右值引用:   using funcRvalueRef = void(&&)();
 */
@@ -599,6 +599,7 @@ TEST(ut_Lvalue, L_value_10)
 ### 纯右值示例1
 `除了字符串字面量之外的字面量`<br>
 例如 42 、 true 或 nullptr
+
 `匿名变量/对象`<br>
 
 ```c++
@@ -984,10 +985,10 @@ vs2015运行结果:<br>
 gcc -4.8.5运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180719265?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-备注:
-vs-2015环境下,   arrType{0,1,2,3}是左值, arrType{0,1,2,3}[2]是左值;
-gcc-4.8.5环境下, arrType{0,1,2,3}是右值, arrType{0,1,2,3}[2]是左值;
-测试结果与C++11标准规定的结果不符.
+备注:<br>
+vs-2015环境下,   arrType{0,1,2,3}是左值, arrType{0,1,2,3}[2]是左值;<br>
+gcc-4.8.5环境下, arrType{0,1,2,3}是右值, arrType{0,1,2,3}[2]是左值;<br>
+测试结果与C++11标准规定的结果不符.<br>
 
 
 
@@ -1015,10 +1016,10 @@ gcc -4.8.5运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180749980?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
-备注:
-VS-2015环境下,    ncObj().n 是左值;
-gcc-4.8.5环境下,   ncObj().n 是右值; 
-VS2015的测试结果与C++11标准规定的结果不符, 可能是vs2015的兼容性问题;
+备注:<br>
+VS-2015环境下,    ncObj().n 是左值;<br>
+gcc-4.8.5环境下,   ncObj().n 是右值; <br>
+VS2015的测试结果与C++11标准规定的结果不符, 可能是vs2015的兼容性问题;<br>
 
 
 
@@ -1046,10 +1047,10 @@ vs2015运行结果:<br>
 gcc -4.8.5运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180821571?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-备注:
-VS-2015环境下,    ncObj().*pn 是左值;
-gcc-4.8.5环境下,   ncObj().*pn 是右值; 
-VS2015的测试结果与C++11标准规定的结果不符, 可能是vs2015的兼容性问题;
+备注:<br>
+VS-2015环境下,    ncObj().*pn 是左值;<br>
+gcc-4.8.5环境下,   ncObj().*pn 是右值; <br>
+VS2015的测试结果与C++11标准规定的结果不符, 可能是vs2015的兼容性问题;<br>
 
 
 
@@ -1085,14 +1086,13 @@ TEST(ut_xRvalue, xRvalue6)
 
 运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180852676?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-
-
+<br>
 
 
 ### 亡值示例-汇总
 ![这里写图片描述](https://img-blog.csdn.net/201805241809045?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-
-
+<br>
+<br>
 
 
 
@@ -1102,14 +1102,16 @@ TEST(ut_xRvalue, xRvalue6)
 ![这里写图片描述](https://img-blog.csdn.net/20180524181026484?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
-示例:
-右值       是表达式的值,   例如42;
-右值引用,  是表达式的类型, 例如int&&
+示例:<br>
+右值       是表达式的值,   例如42;<br>
+右值引用,  是表达式的类型, 例如int&&<br>
 
 
 ### 左右值与表达式类型没有直接关系，它们都是表达式的属性
-右值引用类型的具名变量/对象是左值,  例如下面例子中的num
-右值引用类型的匿名变量/对象是右值,  例如下面例子中的func_R()
+
+右值引用类型的`具名`变量/对象是`左`值,  例如下面例子中的num<br>
+右值引用类型的`匿名`变量/对象是`右`值,  例如下面例子中的func_R()<br>
+
 ```c++
 int&& func_R()
 {
@@ -1169,11 +1171,10 @@ ut_rvaluereference\referenceType\ut_RvalueRef.cpp
 ```
 总结:
 ![这里写图片描述](https://img-blog.csdn.net/20180524181051655?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-
-常量左值引用是个“万能”的引用类型。它可以接受非常量左值、常量左值、右值对其进行初始化。
-常量左值引用可以使用右值进行初始化，这时它可以像右值引用一样将右值的生命期延长(但所引用的右值在之后的生命周期内是只读);
-
-
+<br>
+常量左值引用是个“万能”的引用类型。它可以接受非常量左值、常量左值、右值对其进行初始化。<br>
+<br>
+<br>
 
 
 
@@ -1189,15 +1190,15 @@ C++中, 一个类通常会与其上层和下层打交道, 若要最大化利用�
 
 
 
-* [类访问者]: 在恰当的时机, vistor调用classA提供的接受右值引用参数的方法(可能是普通方法, 构造函数, 拷贝构造函数等);
+* 访问者:在恰当的时机, vistor调用classA提供的接受右值引用参数的方法;<br>
 
-* [类实现者]: 实现所有接受右值引用参数的方法;
+* 实现者:实现所有接受右值引用参数的方法;<br>
 
-* [下层类] : 下层类subClass实现所有接受右值引用参数的方法,供clasA在实现时调用(这时候,classA相当于vistor的角色了);
+* 下层类:下层类subClass实现所有接受右值引用参数的方法,供clasA在实现时调用(这时classA相当于vistor的角色了);<br>
 
 
 ### 例1:类访问者
-[类访问者]: 在恰当的时机, vistor调用实现者(ncMetadataObj)提供的接受右值引用参数的方法
+类访问者:在恰当的时机, vistor调用实现者(ncMetadataObj)提供的接受右值引用参数的方法;
 
 
 `测试不同的访问方式带来的性能差异`<br>
@@ -1257,12 +1258,12 @@ ut_rvaluereference\usage\ut_metadataObj.cpp
 ![这里写图片描述](https://img-blog.csdn.net/20180524181155477?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
-备注:
+备注:<br>
 访问者不同的访问方式,调用的接口不同, 关键点在于待访问类的具体实现
 
 
 ### 例2:类实现者
-[类实现者]: 提供并实现所有接受右值引用参数的方法
+类实现者:提供并实现所有接受右值引用参数的方法
 
 ```c++
 //类实现者
@@ -1326,7 +1327,7 @@ ut_rvaluereference\usage\ncMetadataObj.h
 ```
 
 ### 例3 下层类
-[下层类] : 下层类subClass实现所有接受右值引用参数的方法,供上层类在实现右值方法时调用;
+下层类subClass实现所有接受右值引用参数的方法,供上层类在实现右值方法时调用;
 
 
 ```c++
@@ -1413,8 +1414,7 @@ TEST(ut_metadataObj, return_Value)
 
 
 ##### [测试按值传参]:
-类实现了按值传参函数, 本例中是类ncMetadataObj的构造函数,
-是否能提升性能,还取决于参数类(下层类)是否对右值引用做了兼容;
+类实现了右值引用函数后,是否能提升性能,还取决于下层类是否对右值引用做了兼容;
 
 ```c++
 TEST(ut_metadataObj, constructor)
@@ -1438,6 +1438,9 @@ TEST(ut_metadataObj, constructor)
 运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524181229653?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
+说明:<br>
+本例中类ncMetadataObj的构造函数对oldString和newString都实现了有右值传参,<br>
+但传入oldString的构造函数性能没有明显提升;<br>
 
 
 
@@ -1447,16 +1450,15 @@ TEST(ut_metadataObj, constructor)
 
 
 ### T&&的特性:
-实际上T&&并不是一定总是表示右值引用
-
-当存在类型推导时(例如template参数或者auto类型), 它的引用类型是未定的;
-此时的T&&称为universal引用(可以认为它是种通用的引用类型);
+实际上T&&并不是一定总是表示右值引用;<br>
+当存在类型推导时(例如template参数或者auto类型), 它的引用类型是未定的;<br>
+此时的T&&称为universal引用(可以认为它是种通用的引用类型);<br>
 
 即:可能是左值引用也可能是右值引用;
 
 ### Universal引用规则:
-规则1:&&为universal 引用时的唯一条件是有类型推断发生;
-规则2:universal references仅仅在T&&下发生，任何一点附加条件都会使之失效，而变成一个右值引用;
+规则1:&&为universal 引用时的唯一条件是有类型推断发生;<br>
+规则2:universal references仅仅在T&&下发生，任何一点附加条件都会使之失效，而变成一个右值引用;<br>
 
 
 ### 模板实参推导规则:
@@ -1467,6 +1469,7 @@ http://en.cppreference.com/w/cpp/language/template_argument_deduction
 
 
 ### 例1:universal引用(auto推导)
+
 ```c++
 TEST(ut_UniversalRef, auto)
 {
@@ -1521,6 +1524,7 @@ TEST(ut_UniversalRef, fun_universal_a)
 运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524195002425?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
+
 ### 例3:非universal引用(不存在类型推导)
 
 ```c++
@@ -1535,6 +1539,7 @@ TEST(ut_UniversalRef, fun_universal_b)
     fun_universal_b(10);//传入右值
 }
 ```
+
 运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524195012922?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
@@ -1571,6 +1576,7 @@ TEST(ut_UniversalRef, fun_universal_c)
 
 ### 例5:非universal引用(不存在类型推导)
 因为当给func传入实参时，T被推导后vector<T>&&的类型是确定的。
+
 ```c++
 template<typename T>
 void fun_universal_d(vector<T>&& param_d)
@@ -1645,11 +1651,11 @@ TEST(ut_UniversalRef, Vector_Lite)
 
 
 ### 总结:
-1:T&&为universal 引用时的唯一条件是有类型推断发生;
-2:universal 引用仅仅在T&&下发生，const T&&是一个固定的右值引用;
-3.当T&&是universal引用时, Universal引用最终的引用类型, 是与接受的[值]相关;
-    接受左值参数,T&&就是左值引用;
-    接受右值参数,T&&就是右值引用;
+1:T&&为universal 引用时的唯一条件是有类型推断发生;<br>
+2:universal 引用仅仅在T&&下发生，const T&&是一个固定的右值引用;<br>
+3.当T&&是universal引用时, Universal引用最终的引用类型, 是与接受的[值]相关;<br>
+    接受左值参数,T&&就是左值引用;<br>
+    接受右值参数,T&&就是右值引用;<br>
 
 
 
@@ -1657,16 +1663,16 @@ TEST(ut_UniversalRef, Vector_Lite)
 # 6.引用折叠
 
 ### 引用折叠规则:
-1.引用本身不是一个对象，C++标准不允许直接定义引用的引用。
-如“int& & a = b;”（注意两个&中间有空格，不是int&&）这样的语句是编译不过的。
+1.引用本身不是一个对象，C++标准不允许直接定义引用的引用。<br>
+如“int& & a = b;”（注意两个&中间有空格，不是int&&）这样的语句是编译不过的。<br>
 
-2.容许通过模板或 typedef 中的类型操作组成到引用的引用;
-该情况下应用引用折叠规则：
-->到右值引用的右值引用折叠成右值引用，X& &、X& &&和X&& &都折叠成类型X&。
-->所有其他组合折叠成左值引用, 即类型X&& &&折叠成X&&。
+2.容许通过模板或 typedef 中的类型操作组成到引用的引用;<br>
+该情况下应用引用折叠规则：<br>
+->到右值引用的右值引用折叠成右值引用，X& &、X& &&和X&& &都折叠成类型X&。<br>
+->所有其他组合折叠成左值引用, 即类型X&& &&折叠成X&&。<br>
 
-3.引用折叠规则暗示我们，可以将任意类型的实参传递给T&&类型的函数模板参数.
-->参考上节universal引用的介绍;
+3.引用折叠规则暗示我们，可以将任意类型的实参传递给T&&类型的函数模板参数.<br>
+参考上节universal引用的介绍;<br>
 
 
 ### 例1:引用折叠(typedef)
@@ -1697,6 +1703,7 @@ TEST(ut_ReferenceCollapsing, typedef)
 
 
 ### 例2:引用折叠(decltype)
+
 ```c++
 TEST(ut_ReferenceCollapsing, decltype)
 {
@@ -1833,11 +1840,11 @@ TEST(ut_ReferenceCollapsing, template3)
 
 
 ### 总结:
-引用折叠, 是与接受的[引用类型]相关;
-到左值引用类型(lRef)的左值引用&,    折叠为左值引用;
-到左值引用类型(lRef)的右值引用&&, 折叠为左值引用;
-到右值引用类型(rRef)的左值引用&,    折叠为左值引用;
-到右值引用类型(rRef)的右值引用&&, 折叠为右值引用;
+引用折叠, 是与接受的[引用类型]相关;<br>
+到左值引用类型(lRef)的左值引用&, 折叠为左值引用;<br>
+到左值引用类型(lRef)的右值引用&&, 折叠为左值引用;<br>
+到右值引用类型(rRef)的左值引用&, 折叠为左值引用;<br>
+到右值引用类型(rRef)的右值引用&&, 折叠为右值引用;<br>
 
 
 
@@ -1853,11 +1860,11 @@ todo...
 
 
 # 9.右值引用在STL中的使用举例
-std::move实现原理
-std::forward实现原理
-string和String性能对比
-在stl中的使用
-万能的函数包装器
+std::move实现原理<br>
+std::forward实现原理<br>
+string和String性能对比<br>
+在stl中的使用<br>
+万能的函数包装器<br>
 
 todo...
 
