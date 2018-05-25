@@ -16,7 +16,7 @@
 
 * 1.文中测试代码均为手写, 如发现错误, 请不吝告知 :
 >> 作者邮箱: liu.hao@eisoo.com <br>
->> 源码地址: [点击这里](https://github.com/six-th/monk/tree/master/src/ut/ut_rvaluereference)
+>> 源码地址: [点击这里](https://github.com/six-th/monk/tree/master/src/rvaluereference)
 
 * 2.转载请注明出处：
 >> https://blog.csdn.net/WOW542621126/article/details/80428174
@@ -85,7 +85,7 @@ TEST(ut_vector, vector)
 }
 /*
 源码路径:
-ut_rvaluereference\before_after\ut_vector.cpp  
+rvaluereference\before_after\ut_vector.cpp  
 测试环境:
 linux: 3.10.0-327.el7.x86_64 #1 
 gcc:  4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) 
@@ -202,7 +202,7 @@ TEST(ut_normalObj, Construction2)
 
 /*
 源码路径:
-ut_rvaluereference\before_after\ut_vector.cpp  
+rvaluereference\before_after\ut_vector.cpp  
 测试环境:
 linux: 3.10.0-327.el7.x86_64 #1 
 gcc:  4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) 
@@ -299,7 +299,7 @@ char IsRight(const T&& value)//添加const以禁用universal&&
 universal&&的概念后文再述;
 
 源码路径:
-ut_rvaluereference\valueType\ut_Lvalue.cpp
+rvaluereference\valueType\ut_Lvalue.cpp
 */
 
 ```
@@ -338,7 +338,7 @@ TEST(ut_Lvalue, L_value_1)
 }
 /*
 源码路径:
-ut_rvaluereference\valueType\ut_pRvalue.cpp
+rvaluereference\valueType\ut_pRvalue.cpp
 下同;
 */
 ```
@@ -612,7 +612,7 @@ TEST(ut_pRvalue, pRvalue1)
 }
 /*
 源码路径:
-ut_rvaluereference\valueType\ut_pRvalue.cpp
+rvaluereference\valueType\ut_pRvalue.cpp
 下同;
 */
 ```
@@ -949,7 +949,7 @@ TEST(ut_xRvalue, xRvalue1)
 }
 /*
 源码路径:
-ut_rvaluereference\valueType\ut_xRvalue.cpp
+rvaluereference\valueType\ut_xRvalue.cpp
 下同
 */
 ```
@@ -1132,7 +1132,7 @@ TEST(ut_RvalueRef, RvalueRef1)
 }
 /*
 源码路径:
-ut_rvaluereference\referenceType\ut_RvalueRef.cpp
+rvaluereference\referenceType\ut_RvalueRef.cpp
 */
 ```
 
@@ -1166,7 +1166,7 @@ TEST(ut_RvalueRef, RvalueRef2)
 }
 /*
 源码路径:
-ut_rvaluereference\referenceType\ut_RvalueRef.cpp
+rvaluereference\referenceType\ut_RvalueRef.cpp
 */
 ```
 总结:
@@ -1250,7 +1250,7 @@ TEST(ut_metadataObj, push_back)
 
 /*
 源码路径:
-ut_rvaluereference\usage\ut_metadataObj.cpp
+rvaluereference\usage\ut_metadataObj.cpp
 */
 ```
 
@@ -1321,7 +1321,7 @@ ncMetadataObj::ncMetadataObj(ncMetadataObj&& source)
 }
 /*
 源码路径:
-ut_rvaluereference\usage\ncMetadataObj.h
+rvaluereference\usage\ncMetadataObj.h
 */
 // ...略
 ```
@@ -1485,7 +1485,7 @@ TEST(ut_UniversalRef, auto)
 
 /*
 源码路径:
-ut_rvaluereference\referenceType\ut_UniversalRef.cpp
+rvaluereference\referenceType\ut_UniversalRef.cpp
 下同
 */
 ```

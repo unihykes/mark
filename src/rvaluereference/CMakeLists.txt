@@ -1,4 +1,4 @@
-PROJECT(ut_rvaluereference)
+PROJECT(rvaluereference)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
@@ -6,7 +6,7 @@ CMAKE_POLICY(VERSION 2.8)
 INCLUDE($ENV{MONK_MAKE}/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
-SET(TARGET_NAME ut_rvaluereference)
+SET(TARGET_NAME rvaluereference)
 SET(AUTO_RUN OFF)
 
 #“¿¿µø‚
