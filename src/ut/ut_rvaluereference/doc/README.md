@@ -1,4 +1,4 @@
-摘要:
+摘要:<br>
 &#8195; 突然决定整理一篇c++右值引用相关的文章,内容暂且分为以下几个主题:
 
 * 1.为什么要了解右值引用?
@@ -13,23 +13,23 @@
 
 
 备注:
->1.文中测试源码均为手写, 如发现错误, 请不吝告知 :
->>作者邮箱: [liu.hao@eisoo.com](liu.hao@eisoo.com)
->>源码地址: [点击这里](https://github.com/six-th/monk/tree/master/src/ut/ut_rvaluereference)
->
->2.转载请注明出处：
+* 1.文中测试源码均为手写, 如发现错误, 请不吝告知 :
+>> 作者邮箱: liu.hao@eisoo.com <br>
+>> 源码地址: [点击这里](https://github.com/six-th/monk/tree/master/src/ut/ut_rvaluereference)<br>
+
+* 2.转载请注明出处：
 >> https://blog.csdn.net/WOW542621126/article/details/80428174
 
->3.参考资料:
->>http://en.cppreference.com/w/
->>https://www.cnblogs.com/5iedu/p/7698710.html
->https://www.cnblogs.com/qicosmos/p/3369940.html
->>等等
+* 3.参考资料:
+>> http://en.cppreference.com/w/<br>
+>> https://www.cnblogs.com/5iedu/p/7698710.html<br>
+>> https://www.cnblogs.com/qicosmos/p/3369940.html<br>
+>> 等等
 
->4.流量预警: 
->>文章很长... 
->>图片很大... 
->>代码很多...
+* 4.流量预警: 
+>> 文章很长... <br>
+>> 图片很大... <br>
+>> 代码很多... <br>
 
 
 目录:
@@ -37,9 +37,7 @@
 [toc]
 
 
-...
-正文开始
-...
+...正文开始...
 
 
 # 1.为什么要了解右值引用?
