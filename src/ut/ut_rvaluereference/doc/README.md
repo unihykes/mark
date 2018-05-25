@@ -12,10 +12,11 @@
 * 9.右值引用在STL中的使用举例
 
 
-备注:
-* 1.文中测试源码均为手写, 如发现错误, 请不吝告知 :
+备注:<br>
+
+* 1.文中测试代码均为手写, 如发现错误, 请不吝告知 :
 >> 作者邮箱: liu.hao@eisoo.com <br>
->> 源码地址: [点击这里](https://github.com/six-th/monk/tree/master/src/ut/ut_rvaluereference)<br>
+>> 源码地址: [点击这里](https://github.com/six-th/monk/tree/master/src/ut/ut_rvaluereference)
 
 * 2.转载请注明出处：
 >> https://blog.csdn.net/WOW542621126/article/details/80428174
@@ -24,7 +25,7 @@
 >> http://en.cppreference.com/w/<br>
 >> https://www.cnblogs.com/5iedu/p/7698710.html<br>
 >> https://www.cnblogs.com/qicosmos/p/3369940.html<br>
->> 等等
+>> 等等...
 
 * 4.流量预警: 
 >> 文章很长... <br>
@@ -32,17 +33,17 @@
 >> 代码很多... <br>
 
 
-目录:
+
+目录:<br>
 
 [toc]
 
 
-...正文开始...
+`...正文开始...`
 
 
 # 1.为什么要了解右值引用?
 
-    
 ### 例1:按值返回
 判断以下2个函数在c++98和c++11中的性能表现:
 ```c++
@@ -91,13 +92,13 @@ gcc:  4.8.5 20150623 (Red Hat 4.8.5-4) (GCC)
 */
 ```
 
-C++98运行结果:
+C++98运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524113803271?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-C++11运行结果:
+C++11运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524113815715?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-数据分析:
+数据分析:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524113827310?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -116,9 +117,7 @@ C++11运行结果:
 >结论:
 >>c++11中, "按值返回"风格的函数变为可接受了;
 
-    
-    
-        
+
 ### 例2:按值传参
 判断以下2个类的构造函数在c++98和c++11中的性能表现;
 
@@ -210,14 +209,14 @@ gcc:  4.8.5 20150623 (Red Hat 4.8.5-4) (GCC)
 */
 ```
 
-C++98运行结果:
+C++98运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/2018052417123863?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-C++11运行结果:
+C++11运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/2018052417125253?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
-数据分析:
+数据分析:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524171301132?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -233,8 +232,6 @@ C++11运行结果:
 
 >结论:
 某些特殊场景下,使用右值引用会得到不可思议的性能提升;
-
-
 
 
 ### 摘要
@@ -253,33 +250,32 @@ C++11运行结果:
 * 代码风格更灵活, 例如返回一个容器或者***返回一个巨大的对象***成为可能;
 * 即使你的代码中并不直接使用右值引用，也可以通过标准库，间接从这一新特性中受益;
     
-    
 
 
-#2.左值和右值
+# 2.左值和右值
 
 ## 2.1.左值右值的关系
-左值和右值都属于c++表达式, 具体关系如下:
+左值和右值都属于c++表达式, 具体关系如下:<br>
 ![这里写图片描述](https://img-blog.csdn.net/2018052417583090?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ## 2.2.值类别定义
 
-### 值类别-官方定义:
+### 值类别-官方定义:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524175843837?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-参考:
-"New" Value Terminology by Bjarne Stroustrup, 2010.
-http://www.stroustrup.com/terminology.pdf
+参考:<br>
+>"New" Value Terminology by Bjarne Stroustrup, 2010.<br>
+>http://www.stroustrup.com/terminology.pdf<br>
 
 
 ### 值类别-简单定义:
 ![这里写图片描述](https://img-blog.csdn.net/20180524175854767?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
->简而言之, 一般情况下:
->>左值: 有名字,可以取地址;
->>右值: 没名字,不能取地址;
+简而言之, 一般情况下:
+>左值: 有名字,可以取地址;<br>
+>右值: 没名字,不能取地址;<br>
 
 
 ## 2.3.值类别判断
@@ -312,8 +308,9 @@ ut_rvaluereference\valueType\ut_Lvalue.cpp
 ## 2.4.左值示例
 
 ### 左值示例1
-** 变量、函数或静态数据成员之名，由其名字构成的表达式**
+`变量、函数或静态数据成员之名，由其名字构成的表达式 `<br>
 (这里不论该变量的类型,即使变量的类型是右值引用同样符合)
+
 ```c++
 //定义一个返回左值引用的函数
 string& Categories(string& val)
@@ -347,14 +344,15 @@ ut_rvaluereference\valueType\ut_pRvalue.cpp
 */
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180019460?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
 ### 左值示例2
-** 返回类型是左值引用的函数调用表达式**
-** 返回类型是左值引用的重载运算符表达式**
+`返回类型是左值引用的函数调用表达式`<br>
+`返回类型是左值引用的重载运算符表达式`<br>
+
 ```c++
 //定义一个返回左值引用的函数
 string& Categories(string& val)
@@ -375,14 +373,14 @@ TEST(ut_Lvalue, L_value_2)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180035178?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 左值示例3
-** a = b ， a += b ， a %= b，以及所有其他内建的赋值及复合赋值表达式**
-** ++a 及 --a，内建的前置自增与前置自减表达式**
-** *p ，内建的间接寻址表达式**
+`a = b ， a += b ， a %= b，以及所有其他内建的赋值及复合赋值表达式`<br>
+`++a 及 --a，内建的前置自增与前置自减表达式`<br>
+`*p ，内建的间接寻址表达式`<br>
 
 ```c++
 TEST(ut_Lvalue, L_value_3)
@@ -402,7 +400,7 @@ TEST(ut_Lvalue, L_value_3)
 }
 
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180048314?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -410,7 +408,7 @@ TEST(ut_Lvalue, L_value_3)
 
 
 ### 左值示例4
-** a[n] 及 p[n] ，内建的下标表达式**
+`a[n] 及 p[n] ，内建的下标表达式`<br>
 (除了 a 为数组右值的情况)
 
 ```c++
@@ -423,7 +421,7 @@ TEST(ut_Lvalue, L_value_4)
 }
 
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180100854?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -431,9 +429,10 @@ TEST(ut_Lvalue, L_value_4)
 
 
 ### 左值示例5
-** a.m ,对象的成员表达式**
-(除了m 为成员枚举符或非静态成员函数,或者a 为右值且 m 为非引用类型的非静态数据成员的情况 )
-** p->m ，内建的指针的成员表达式**
+`a.m ,对象的成员表达式`<br>
+(除了m 为成员枚举符或非静态成员函数,或者a 为右值且 m 为非引用类型的非静态数据成员的情况 )<br>
+
+`p->m ，内建的指针的成员表达式`<br>
 (除了 m 为成员枚举符或非静态成员函数的情况) 
 
 ```c++
@@ -455,7 +454,7 @@ TEST(ut_Lvalue, L_value_5)
 
 //备注:a 为右值且 m 为非引用类型的非静态数据成员的情况在 C++11 前为纯右值,C++11起为亡值
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/2018052418011587?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -463,8 +462,8 @@ TEST(ut_Lvalue, L_value_5)
 
 
 ### 左值示例6
-** a.*mp ，对象的成员指针表达式，其中 a 是左值且 mp 是指向数据成员的指针**
-** p->*mp ，内建的指针的成员指针表达式，其中 mp 是指向数据成员的指针**
+`a.*mp ，对象的成员指针表达式，其中 a 是左值且 mp 是指向数据成员的指针`<br>
+`p->*mp ，内建的指针的成员指针表达式，其中 mp 是指向数据成员的指针`<br>
 
 ```c++
 TEST(ut_Lvalue, L_value_6)
@@ -484,7 +483,7 @@ TEST(ut_Lvalue, L_value_6)
 }
 
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180130655?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -492,8 +491,8 @@ TEST(ut_Lvalue, L_value_6)
 
 
 ### 左值示例7
-** a, b ，内建的逗号表达式，其中 b 是左值**
-** a ? b : c ，某些 b 和 c 的三元条件表达式**
+`a, b ，内建的逗号表达式，其中 b 是左值`<br>
+`a ? b : c ，某些 b 和 c 的三元条件表达式`<br>
 （例如，它们都是同类型左值时，但细节见定义）
 
 ```c++
@@ -505,7 +504,7 @@ TEST(ut_Lvalue, L_value_7)
 }
 
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180144796?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -515,8 +514,9 @@ TEST(ut_Lvalue, L_value_7)
 
 
 ### 左值示例8
-** 字符串字面量**
+`字符串字面量`<br>
 例如 "Hello, world!"； 
+
 ```c++
 TEST(ut_Lvalue, L_value_8)
 {
@@ -524,7 +524,7 @@ TEST(ut_Lvalue, L_value_8)
 }
 
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180159414?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -533,7 +533,7 @@ TEST(ut_Lvalue, L_value_8)
 
 
 ### 左值示例9
-** 转换为左值引用类型的转型表达式**
+`转换为左值引用类型的转型表达式`<br>
 例如 static_cast<int&>(x)；
 
 ```c++
@@ -544,7 +544,7 @@ TEST(ut_Lvalue, L_value_9)
 }
 
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180210769?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -552,8 +552,8 @@ TEST(ut_Lvalue, L_value_9)
 
 
 ### 左值示例10
-** 函数调用表达式或重载的运算符表达式，其返回类型是到函数的右值引用**
-** 转换为函数的右值引用类型的转型表达式**
+`函数调用表达式或重载的运算符表达式，其返回类型是到函数的右值引用`<br>
+`转换为函数的右值引用类型的转型表达式`<br>
 如 static_cast<void (&&)(int)>(x)
 
 ```c++
@@ -584,7 +584,7 @@ TEST(ut_Lvalue, L_value_10)
 */
 
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180224798?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -597,9 +597,10 @@ TEST(ut_Lvalue, L_value_10)
 ## 2.5.纯右值示例
 
 ### 纯右值示例1
-** 除了字符串字面量之外的字面量**
+`除了字符串字面量之外的字面量`<br>
 例如 42 、 true 或 nullptr
-** 匿名变量/对象**
+`匿名变量/对象`<br>
+
 ```c++
 TEST(ut_pRvalue, pRvalue1)
 {
@@ -614,7 +615,7 @@ ut_rvaluereference\valueType\ut_pRvalue.cpp
 下同;
 */
 ```
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180321990?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -623,7 +624,7 @@ ut_rvaluereference\valueType\ut_pRvalue.cpp
 
 
 ### 纯右值示例2
-** 函数调用或重载运算符表达式，其返回类型是非引用**
+`函数调用或重载运算符表达式，其返回类型是非引用`<br>
 例如 str.substr(1, 2)、str1 + str2 或 it++ 
 
 ```c++
@@ -637,7 +638,7 @@ TEST(ut_pRvalue, pRvalue2)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180333773?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -650,7 +651,7 @@ TEST(ut_pRvalue, pRvalue2)
 
 
 ### 纯右值示例3
-** a++ 与 a--，内建的后置自增与后置自减表达式**
+`a++ 与 a--，内建的后置自增与后置自减表达式`<br>
 
 ```c++
 TEST(ut_pRvalue, pRvalue3)
@@ -661,7 +662,7 @@ TEST(ut_pRvalue, pRvalue3)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/2018052418034645?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -674,10 +675,10 @@ TEST(ut_pRvalue, pRvalue3)
 
 
 ### 纯右值示例4
-** a + b 、 a % b 、 a & b 、 a << b ，以及其他所有内建的算术表达式**
-** a && b 、 a || b 、 !a ，内建的逻辑表达式**
-** a < b 、 a == b 、 a >= b 以及其他所有内建的比较表达式**
-** &a，内建的取地址表达式**
+`a + b 、 a % b 、 a & b 、 a << b ，以及其他所有内建的算术表达式`<br>
+`a && b 、 a || b 、 !a ，内建的逻辑表达式`<br>
+`a < b 、 a == b 、 a >= b 以及其他所有内建的比较表达式`<br>
+`&a，内建的取地址表达式`<br>
 
 ```c++
 TEST(ut_pRvalue, pRvalue4)
@@ -702,7 +703,7 @@ TEST(ut_pRvalue, pRvalue4)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180401478?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -715,8 +716,8 @@ TEST(ut_pRvalue, pRvalue4)
 
 
 ### 纯右值示例5
-** a.m，对象成员表达式，其中 m 是成员枚举符或非静态成员函数**
-** p->m，内建的指针成员表达式，其中 m 为成员枚举符或非静态成员函数**
+`a.m，对象成员表达式，其中 m 是成员枚举符或非静态成员函数`<br>
+`p->m，内建的指针成员表达式，其中 m 为成员枚举符或非静态成员函数`<br>
 
 ```c++
 TEST(ut_pRvalue, pRvalue5)
@@ -738,7 +739,7 @@ TEST(ut_pRvalue, pRvalue5)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180417449?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -752,8 +753,8 @@ TEST(ut_pRvalue, pRvalue5)
 
 
 ### 纯右值示例6
-** a.*mp，对象的成员指针表达式，其中 mp 是指向成员函数的指针**
-** p->*mp，内建的指针的成员指针表达式，其中 mp 是指向成员函数的指针 **
+`a.*mp，对象的成员指针表达式，其中 mp 是指向成员函数的指针`<br>
+`p->*mp，内建的指针的成员指针表达式，其中 mp 是指向成员函数的指针 `<br>
 
 ```c++
 TEST(ut_pRvalue, pRvalue6)
@@ -777,7 +778,7 @@ TEST(ut_pRvalue, pRvalue6)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180435127?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -791,8 +792,8 @@ TEST(ut_pRvalue, pRvalue6)
 
 
 ### 纯右值示例7
-** a, b，内建的逗号表达式，其中 b 是右值**
-** a ? b : c ，某些 b 和 c 的三元条件表达式（细节见定义）**
+`a, b，内建的逗号表达式，其中 b 是右值`<br>
+`a ? b : c ，某些 b 和 c 的三元条件表达式（细节见定义）`<br>
 
 ```c++
 TEST(ut_pRvalue, pRvalue7)
@@ -803,7 +804,7 @@ TEST(ut_pRvalue, pRvalue7)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180448731?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -816,7 +817,7 @@ TEST(ut_pRvalue, pRvalue7)
 
 
 ### 纯右值示例8
-** 转换为非引用类型的转型表达式**
+`转换为非引用类型的转型表达式`<br>
 例如 static_cast<double>(x)、std::string{} 或 (int)42；
 
 ```c++
@@ -829,7 +830,7 @@ TEST(ut_pRvalue, pRvalue8)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/2018052418050265?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -842,7 +843,7 @@ TEST(ut_pRvalue, pRvalue8)
 
 
 ### 纯右值示例9
-** this 指针**
+`this 指针`<br>
 
 ```c++
 TEST(ut_pRvalue, pRvalue9)
@@ -860,7 +861,7 @@ TEST(ut_pRvalue, pRvalue9)
 
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180515361?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -873,7 +874,7 @@ TEST(ut_pRvalue, pRvalue9)
 
 
 ### 纯右值示例10
-** 枚举项**
+`枚举项`<br>
 
 ```c++
 TEST(ut_pRvalue, pRvalue10)
@@ -888,7 +889,7 @@ TEST(ut_pRvalue, pRvalue10)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180528870?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -901,7 +902,7 @@ TEST(ut_pRvalue, pRvalue10)
 
 
 ### 纯右值示例11
-** Lambda 表达式**
+`Lambda 表达式`<br>
 例如 [](int x){ return x * x; } 
 
 ```c++
@@ -915,7 +916,7 @@ TEST(ut_pRvalue, pRvalue11)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180543745?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -936,7 +937,7 @@ TEST(ut_pRvalue, pRvalue11)
 
 
 ### 亡值示例1
-** 函数调用或重载运算符表达式，其返回类型为右值引用**
+`函数调用或重载运算符表达式，其返回类型为右值引用`<br>
 例如 std::move(x)
 
 ```c++
@@ -952,7 +953,7 @@ ut_rvaluereference\valueType\ut_xRvalue.cpp
 */
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180646563?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -966,7 +967,7 @@ ut_rvaluereference\valueType\ut_xRvalue.cpp
 
 
 ### 亡值示例2
-** a[n]，内建的下标表达式，其操作数之一是数组右值**
+`a[n]，内建的下标表达式，其操作数之一是数组右值`<br>
 
 ```c++
 TEST(ut_xRvalue, xRvalue2)
@@ -977,10 +978,10 @@ TEST(ut_xRvalue, xRvalue2)
 }
 ```
 
-vs2015运行结果:
+vs2015运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180659385?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-gcc -4.8.5运行结果:
+gcc -4.8.5运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180719265?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 备注:
@@ -991,7 +992,7 @@ gcc-4.8.5环境下, arrType{0,1,2,3}是右值, arrType{0,1,2,3}[2]是左值;
 
 
 ### 亡值示例3
-** a.m，对象成员表达式，其中 a 是右值且 m 是非引用类型的非静态数据成员**
+`a.m，对象成员表达式，其中 a 是右值且 m 是非引用类型的非静态数据成员`<br>
 
 ```c++
 TEST(ut_xRvalue, xRvalue3)
@@ -1007,10 +1008,10 @@ TEST(ut_xRvalue, xRvalue3)
 }
 ```
 
-vs2015运行结果:
+vs2015运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180737987?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-gcc -4.8.5运行结果:
+gcc -4.8.5运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180749980?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -1022,7 +1023,7 @@ VS2015的测试结果与C++11标准规定的结果不符, 可能是vs2015的兼�
 
 
 ### 亡值示例4
-** a.*mp，对象的成员指针表达式，其中 a 为右值且 mp 为指向数据成员的指针**
+`a.*mp，对象的成员指针表达式，其中 a 为右值且 mp 为指向数据成员的指针`<br>
 
 ```c++
 TEST(ut_xRvalue, xRvalue4)
@@ -1038,11 +1039,11 @@ TEST(ut_xRvalue, xRvalue4)
 }
 ```
 
-vs2015运行结果:
+vs2015运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180806555?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
-gcc -4.8.5运行结果:
+gcc -4.8.5运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180821571?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 备注:
@@ -1054,7 +1055,7 @@ VS2015的测试结果与C++11标准规定的结果不符, 可能是vs2015的兼�
 
 
 ### 亡值示例5
-** a ? b : c ，某些 b 和 c 的三元条件表达式（细节见定义）**
+`a ? b : c ，某些 b 和 c 的三元条件表达式（细节见定义）`<br>
 
 ```c++
 TEST(ut_xRvalue, xRvalue5)
@@ -1065,13 +1066,13 @@ TEST(ut_xRvalue, xRvalue5)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180838907?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
 ### 亡值示例6
-** 转换为对象的右值引用类型的转型表达式**
+`转换为对象的右值引用类型的转型表达式`<br>
 例如 static_cast<char&&>(x)
 
 ```c++
@@ -1082,7 +1083,7 @@ TEST(ut_xRvalue, xRvalue6)
 }
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524180852676?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -1133,7 +1134,7 @@ ut_rvaluereference\referenceType\ut_RvalueRef.cpp
 */
 ```
 
-运行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524181040555?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -1199,7 +1200,8 @@ C++中, 一个类通常会与其上层和下层打交道, 若要最大化利用�
 [类访问者]: 在恰当的时机, vistor调用实现者(ncMetadataObj)提供的接受右值引用参数的方法
 
 
-** 测试不同的访问方式带来的性能差异**
+`测试不同的访问方式带来的性能差异`<br>
+
 ```c++
 //类实现者
 class ncMetadataObj
@@ -1251,7 +1253,7 @@ ut_rvaluereference\usage\ut_metadataObj.cpp
 */
 ```
 
-执行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524181155477?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -1405,7 +1407,7 @@ TEST(ut_metadataObj, return_Value)
 }
 ```
 
-执行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524181214982?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -1433,7 +1435,7 @@ TEST(ut_metadataObj, constructor)
 }
 ```
 
-执行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524181229653?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -1457,10 +1459,11 @@ TEST(ut_metadataObj, constructor)
 规则2:universal references仅仅在T&&下发生，任何一点附加条件都会使之失效，而变成一个右值引用;
 
 
-### 模板实参推导规则
-参考文档:
-http://en.cppreference.com/w/cpp/language/template_argument_deduction
+### 模板实参推导规则:
+![这里写图片描述](https://img-blog.csdn.net/20180524194939272?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
+参考文档:<br>
+http://en.cppreference.com/w/cpp/language/template_argument_deduction
 
 
 ### 例1:universal引用(auto推导)
@@ -1484,7 +1487,7 @@ ut_rvaluereference\referenceType\ut_UniversalRef.cpp
 */
 ```
 
-执行结果:
+运行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180524181337421?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
@@ -1515,9 +1518,8 @@ TEST(ut_UniversalRef, fun_universal_a)
     fun_universal_a<int&&>(10);//类型固定,存在引用折叠,非universal引用
 }
 ```
-执行结果:
-//todo
-
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180524195002425?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 ### 例3:非universal引用(不存在类型推导)
 
@@ -1533,8 +1535,8 @@ TEST(ut_UniversalRef, fun_universal_b)
     fun_universal_b(10);//传入右值
 }
 ```
-执行结果:
-//todo
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180524195012922?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 例4:非universal引用(const T&& 和T&&的概念不同)
@@ -1564,8 +1566,8 @@ TEST(ut_UniversalRef, fun_universal_c)
     fun_universal_c<int&&>(10);//类型固定,非universal, 存在引用折叠,折叠后为const int&&
 }
 ```
-执行结果:
-//todo
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/2018052419502521?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 ### 例5:非universal引用(不存在类型推导)
 因为当给func传入实参时，T被推导后vector<T>&&的类型是确定的。
@@ -1584,8 +1586,8 @@ TEST(ut_UniversalRef, fun_universal_d)
     fun_universal_d(vector<int>());//非universal引用
 }
 ```
-执行结果：
-//todo
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/2018052419503660?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -1638,8 +1640,8 @@ TEST(ut_UniversalRef, Vector_Lite)
     v.emplace_back(34, 46);//universal引用,可接受右值
 }
 ```
-执行结果:
-//todo
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180524195048788?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 总结:
@@ -1690,8 +1692,8 @@ TEST(ut_ReferenceCollapsing, typedef)
     MK_PRINT_MSG("type of r4        is %c-value Ref", std::is_lvalue_reference<rRef&&>::value? 'L':'R');
 }
 ```
-执行结果:
-//todo
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180524200014750?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 例2:引用折叠(decltype)
@@ -1710,8 +1712,8 @@ TEST(ut_ReferenceCollapsing, decltype)
     MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v2)&&>::value? 'L':'R');//R
 }
 ```
-执行结果:
-//todo
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180524200041390?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 例3:引用折叠(T&)
@@ -1733,8 +1735,8 @@ TEST(ut_ReferenceCollapsing, template1)
     //fun_collapsing_a(100);T推导为int,无需折叠,T&相当于int&, 编译错误,左值引用无法接受右值
 }
 ```
-执行结果:
-//todo
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/2018052420005347?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -1777,8 +1779,8 @@ TEST(ut_ReferenceCollapsing, template2)
 }
 
 ```
-执行结果:
-//todo
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180524200109293?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -1826,8 +1828,8 @@ TEST(ut_ReferenceCollapsing, template3)
     fun_collapsing_c<int&&>(100);//T为int&&,触发了引用折叠,折叠后等价于const int&&
 }
 ```
-执行结果:
-//todo
+运行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180524200120643?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 总结:
