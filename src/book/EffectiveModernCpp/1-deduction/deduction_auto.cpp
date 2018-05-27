@@ -28,12 +28,12 @@ TEST(ut_deduction, func5)
 {
     int x =11;
     
-    const auto& rx = x;//情况1,auto推导为int,所声明的变量类型为const int&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(rx)>().pretty_name().c_str());
+    const auto& rx1 = x;//情况1,auto推导为int,所声明的变量类型为const int&
+    MK_PRINT_MSG("type of rx1 is : %s", type_id_with_cvr<decltype(rx1)>().pretty_name().c_str());
     
     
-    auto& rx2 = rx;//情况1,auto推导为const int,所声明的变量类型为const int&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(rx2)>().pretty_name().c_str());
+    auto& rx2 = rx1;//情况1,auto推导为const int,所声明的变量类型为const int&
+    MK_PRINT_MSG("type of rx2 is : %s", type_id_with_cvr<decltype(rx2)>().pretty_name().c_str());
 }
 
 //情况2
@@ -43,41 +43,41 @@ TEST(ut_deduction, func6)
     const int cx = x;
     
     auto&& ur1 = x; //情况2,auto推导为int&,所声明的变量类型为int&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(ur1)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of ur1 is : %s", type_id_with_cvr<decltype(ur1)>().pretty_name().c_str());
     
     
     auto&& ur2 = cx;//情况2,auto推导为const int&,所声明的变量类型为 const int&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(ur2)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of ur2 is : %s", type_id_with_cvr<decltype(ur2)>().pretty_name().c_str());
     
     
     auto&& ur3 = 11;//情况2,auto推导为int,,所声明的变量类型为int&&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(ur3)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of ur3 is : %s", type_id_with_cvr<decltype(ur3)>().pretty_name().c_str());
 }
 
 //情况3
 TEST(ut_deduction, func7)
 {
     auto x = 11;        //情况3,auto推导为int,所声明的变量类型为int
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(x)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of x is : %s", type_id_with_cvr<decltype(x)>().pretty_name().c_str());
     
     const auto cx = x;//情况3,auto推导为int,所声明的变量类型为const int
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(cx)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of cx is : %s", type_id_with_cvr<decltype(cx)>().pretty_name().c_str());
 }
 
 //特例
 TEST(ut_deduction, func8)
 {
     auto v1 = 11;
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());//int
+    MK_PRINT_MSG("type of v1 is : %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());//int
     
     auto v2(11);
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());//int
+    MK_PRINT_MSG("type of v2 is : %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());//int
     
     auto v3 = {11};
     //std::initializer_list<int> 
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(v3)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of v3 is : %s", type_id_with_cvr<decltype(v3)>().pretty_name().c_str());
     
     auto v4{11};
-    //windows是int,linux是std::initializer_list<int> 
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(v4)>().pretty_name().c_str());
+    //vs2015执行结果是int,gcc结果是std::initializer_list<int> 
+    MK_PRINT_MSG("type of v4 is : %s", type_id_with_cvr<decltype(v4)>().pretty_name().c_str());
 }

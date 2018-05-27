@@ -1,9 +1,11 @@
-﻿C++类型推导
+﻿
+<<示例详解----C++类型推导>>
+>转载请注明出处: https://blog.csdn.net/WOW542621126/article/details/80474681
 
 
 
 暂且只讲函数模板和auto的类型推导,decltype的类型推导略过不谈;<br>
-内容不多,直接开讲<br>
+内容不多,直接开始:<br>
 
 # 1.函数模板类型推导
 
@@ -42,8 +44,10 @@ int main()
 >> 忽略引用性之后,若expr是个const对象或volatile对象,也忽略之;<br>
 
 
-### 示例--情形1:
+### 示例--情形1
 
+
+* 模板形参类型:T&
 ```cpp
 
 /** 1.形参类型ParamType具有指针或引用类型,但不是universal引用;
@@ -74,11 +78,12 @@ TEST(ut_deduction, func1)
 }
 ```
 
-执行结果:
-//todo
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/2018052801012890?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
+* 模板形参类型:const T&
 ```cpp
 template<typename T>
 void func2(const T& param)
@@ -99,8 +104,8 @@ TEST(ut_deduction, func2)
 }
 ```
 
-执行结果:
-//todo
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528010256816?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -136,8 +141,8 @@ TEST(ut_deduction, func3)
 }
 ```
 
-执行结果:
-//todo
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528010309814?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 示例--情形3:
@@ -168,7 +173,8 @@ TEST(ut_deduction, func4)
 }
 ```
 
-
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528010330264?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -192,17 +198,17 @@ TEST(ut_deduction, func5)
 {
     int x =11;
     
-    const auto& rx = x;//情况1,auto推导为int,所声明的变量类型为const int&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(rx)>().pretty_name().c_str());
+    const auto& rx1 = x;//情况1,auto推导为int,所声明的变量类型为const int&
+    MK_PRINT_MSG("type of rx1 is : %s", type_id_with_cvr<decltype(rx1)>().pretty_name().c_str());
     
     
     auto& rx2 = rx;//情况1,auto推导为const int,所声明的变量类型为const int&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(rx2)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of rx2 is : %s", type_id_with_cvr<decltype(rx2)>().pretty_name().c_str());
 }
 
 ```
-执行结果:
-//todo
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528010349315?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -216,20 +222,20 @@ TEST(ut_deduction, func6)
     const int cx = x;
     
     auto&& ur1 = x; //情况2,auto推导为int&,所声明的变量类型为int&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(ur1)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of ur1 is : %s", type_id_with_cvr<decltype(ur1)>().pretty_name().c_str());
     
     
     auto&& ur2 = cx;//情况2,auto推导为const int&,所声明的变量类型为 const int&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(ur2)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of ur2 is : %s", type_id_with_cvr<decltype(ur2)>().pretty_name().c_str());
     
     
     auto&& ur3 = 11;//情况2,auto推导为int,,所声明的变量类型为int&&
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(ur3)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of ur3 is : %s", type_id_with_cvr<decltype(ur3)>().pretty_name().c_str());
 }
 
 ```
-执行结果:
-//todo
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528010359359?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -239,14 +245,14 @@ TEST(ut_deduction, func6)
 TEST(ut_deduction, func7)
 {
     auto x = 11;        //情况3,auto推导为int,所声明的变量类型为int
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(x)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of x is : %s", type_id_with_cvr<decltype(x)>().pretty_name().c_str());
     
     const auto cx = x;//情况3,auto推导为int,所声明的变量类型为const int
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(cx)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of cx is : %s", type_id_with_cvr<decltype(cx)>().pretty_name().c_str());
 }
 ```
-执行结果:
-//todo
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528010408297?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -257,22 +263,22 @@ TEST(ut_deduction, func7)
 TEST(ut_deduction, func8)
 {
     auto v1 = 11;
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());//int
+    MK_PRINT_MSG("type of v1 is : %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());//int
     
     auto v2(11);
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());//int
+    MK_PRINT_MSG("type of v2 is : %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());//int
     
     auto v3 = {11};
     //std::initializer_list<int> 
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(v3)>().pretty_name().c_str());
+    MK_PRINT_MSG("type of v3 is : %s", type_id_with_cvr<decltype(v3)>().pretty_name().c_str());
     
     auto v4{11};
-    //windows是int,linux是std::initializer_list<int> 
-    MK_PRINT_MSG("type is : %s", type_id_with_cvr<decltype(v4)>().pretty_name().c_str());
+    //vs2015执行结果是int,gcc结果是std::initializer_list<int> 
+    MK_PRINT_MSG("type of v4 is : %s", type_id_with_cvr<decltype(v4)>().pretty_name().c_str());
 }
 ```
-执行结果:
-//todo
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528010421454?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
