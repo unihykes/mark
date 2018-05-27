@@ -9,9 +9,10 @@ info:
 
 #include <mkheaders.h>
 #include <gtest/gtest.h>
+#include <boost/type_index.hpp>
+using boost::typeindex::type_id_with_cvr;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 TEST(ut_ReferenceCollapsing, typedef)
 {
@@ -20,17 +21,17 @@ TEST(ut_ReferenceCollapsing, typedef)
     
     int n = 100;
     
-    lRef&  r1 = n; // r1 的类型是 int&, 到左值引用类型(lRef)的左值引用&,折叠为左值引用
-    MK_PRINT_MSG("type of r1        is %c-value Ref", std::is_lvalue_reference<lRef&>::value? 'L':'R');
-     
-    lRef&& r2 = n; // r2 的类型是 int&, 到左值引用类型(lRef)的右值引用&&,折叠为左值引用
-    MK_PRINT_MSG("type of r2        is %c-value Ref", std::is_lvalue_reference<lRef&&>::value? 'L':'R');
+    lRef&  r1 = n;
+    MK_PRINT_MSG("type of r1 is %s", type_id_with_cvr<decltype(r1)>().pretty_name().c_str());
+            
+    lRef&& r2 = n;
+    MK_PRINT_MSG("type of r2 is %s", type_id_with_cvr<decltype(r2)>().pretty_name().c_str());
     
-    rRef&  r3 = n; // r3 的类型是 int&, 到右值引用类型(rRef)的左值引用&,折叠为左值引用
-    MK_PRINT_MSG("type of r3        is %c-value Ref", std::is_lvalue_reference<rRef&>::value? 'L':'R');
+    rRef&  r3 = n; 
+    MK_PRINT_MSG("type of r3 is %s", type_id_with_cvr<decltype(r3)>().pretty_name().c_str());
     
-    rRef&& r4 = 1; // r4 的类型是 int&&, 到右值引用类型(rRef)的右值引用&&,折叠为右值引用
-    MK_PRINT_MSG("type of r4        is %c-value Ref", std::is_lvalue_reference<rRef&&>::value? 'L':'R');
+    rRef&& r4 = 1;
+    MK_PRINT_MSG("type of r4 is %s", type_id_with_cvr<decltype(r4)>().pretty_name().c_str());
 }
 
 TEST(ut_ReferenceCollapsing, decltype)
@@ -39,12 +40,11 @@ TEST(ut_ReferenceCollapsing, decltype)
     int& v1 = n;
     int&& v2 = 100;
     
+    MK_PRINT_MSG("type of decltype(v1)& is %s", type_id_with_cvr<decltype(v1)&>().pretty_name().c_str());
+    MK_PRINT_MSG("type of decltype(v1)&& is %s", type_id_with_cvr<decltype(v1)&&>().pretty_name().c_str());
     
-    MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v1)&>::value? 'L':'R');//L
-    MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v1)&&>::value? 'L':'R');//L
-    
-    MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v2)&>::value? 'L':'R');//L
-    MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v2)&&>::value? 'L':'R');//R
+    MK_PRINT_MSG("type of decltype(v2)& is %s", type_id_with_cvr<decltype(v2)&>().pretty_name().c_str());
+    MK_PRINT_MSG("type of decltype(v2)&& is %s", type_id_with_cvr<decltype(v2)&&>().pretty_name().c_str());
 }
 
 
@@ -53,7 +53,9 @@ TEST(ut_ReferenceCollapsing, decltype)
 template<typename T> 
 void fun_collapsing_a(T& param_a)
 {
-    MK_PRINT_MSG("type of param_a    is %c-value Ref", std::is_lvalue_reference<decltype(param_a)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s , type of param_a is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_a)>().pretty_name().c_str());
 }
 
 TEST(ut_ReferenceCollapsing, template1)
@@ -75,7 +77,9 @@ TEST(ut_ReferenceCollapsing, template1)
 template<typename T> 
 void fun_collapsing_b(T&& param_b)
 {
-    MK_PRINT_MSG("type of param_b    is %c-value Ref", std::is_lvalue_reference<decltype(param_b)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s , type of param_b is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
 }
 
 TEST(ut_ReferenceCollapsing, template2)
@@ -84,23 +88,23 @@ TEST(ut_ReferenceCollapsing, template2)
     int& nL = n;
     int&& nR = 100;
     
-    fun_collapsing_b(n);//T推导为int&,无折叠, 此处T&&是universal引用,因此可接受左值和右值
-    fun_collapsing_b(nL);//T推导为int,无折叠, 此处T&&是universal引用,因此可接受左值和右值
-    fun_collapsing_b(nR);//T推导为int,无折叠, 此处T&&是universal引用,因此可接受左值和右值
-    fun_collapsing_b(100);//T推导为int,无折叠, 此处T&&是universal引用,因此可接受左值和右值
-    
+    fun_collapsing_b(n);//n是左值, T推导为int&,形参折叠为int&
+    fun_collapsing_b(nL);//nL是左值, T推导为int&,形参折叠为int&
+    fun_collapsing_b(nR);//nR是左值, T推导为int&,形参折叠为int&
+    fun_collapsing_b(100);//100是右值, T推导为int,形参无折叠,为int&&
+    cout<<endl;
     
     ///fun_collapsing_b<int>(n);//T为int,无折叠,编译错误,无法将左值绑定到右值引用
     ///fun_collapsing_b<int>(nL);//T为int,无折叠,编译错误,无法将左值绑定到右值引用
     ///fun_collapsing_b<int>(nR);//T为int,无折叠,编译错误,无法将左值绑定到右值引用
     fun_collapsing_b<int>(100);//T为int,无折叠
-    
+    cout<<endl;
     
     fun_collapsing_b<int&>(n);//T为int&, 触发引用折叠T&&等价于int&
     fun_collapsing_b<int&>(nL);//T为int&, 触发引用折叠T&&等价于int&
     fun_collapsing_b<int&>(nR);//T为int&, 触发引用折叠T&&等价于int&
     ///fun_collapsing_b<int&>(100);//T为int&, 触发引用折叠T&&等价于int&, 编译错误,无法将参数 从“int”转换为“int &” 
-    
+    cout<<endl;
     
     ///fun_collapsing_b<int&&>(n);//T为int&&, 引用折叠T&&等价于int&&, 编译错误:无法将左值绑定到右值引用
     ///fun_collapsing_b<int&&>(nL);//T为int&&, 引用折叠T&&等价于int&&, 编译错误:无法将左值绑定到右值引用
@@ -115,7 +119,9 @@ TEST(ut_ReferenceCollapsing, template2)
 template<typename T> 
 void fun_collapsing_c(const T&& param_c)
 {
-    MK_PRINT_MSG("type of param_c    is %c-value Ref", std::is_lvalue_reference<decltype(param_c)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s , type of param_c is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_c)>().pretty_name().c_str());
 }
 
 TEST(ut_ReferenceCollapsing, template3)
@@ -129,29 +135,27 @@ TEST(ut_ReferenceCollapsing, template3)
     ///fun_collapsing_c(nL);//T推导为int, 编译错误:无法将左值绑定到右值引用
     ///fun_collapsing_c(nR);//T推导为int, 编译错误:无法将左值绑定到右值引用
     fun_collapsing_c(100);//T推导为int 
-    
+    cout<<endl;
     
     
     //fun_collapsing_c<int>(n);//T固定为int,不触发引用折叠, 编译错误:无法将左值绑定到右值引用
     //fun_collapsing_c<int>(nL);//T固定为int,不触发引用折叠, 编译错误:无法将左值绑定到右值引用
     //fun_collapsing_c<int>(nR);//T固定为int,不触发引用折叠, 编译错误:无法将左值绑定到右值引用
     fun_collapsing_c<int>(100);//T固定为int,不触发引用折叠
+    cout<<endl;
     
     
     
+    fun_collapsing_c<int&>(n);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const
+    fun_collapsing_c<int&>(nL);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const 
+    fun_collapsing_c<int&>(nR);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const
+    ///fun_collapsing_c<int&>(100);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const,编译错误
+    cout<<endl;
     
-    fun_collapsing_c<int&>(n);//T为int&,触发了引用折叠,折叠后const T&& 等价于const int&, 
-    fun_collapsing_c<int&>(nL);//T为int&,触发了引用折叠,折叠后const T&& 等价于const int&, 
-    fun_collapsing_c<int&>(nR);//T为int&,触发了引用折叠,折叠后const T&& 等价于const int&, 
-    ///fun_collapsing_c<int&>(100);//T为int&,触发了引用折叠,折叠后const T&& 等价于const int&, 编译错误, 无法将参数 1 从“int”转换为“int &”,暂未搞明白
-    
-    
-    
-    
-    ///fun_collapsing_c<int&&>(n);//T为int&&,触发了引用折叠,折叠后等价于const int&&, 编译错误,无法左值绑定到右值
-    ///fun_collapsing_c<int&&>(nL);//T为int&&,触发了引用折叠,折叠后等价于const int&&, 编译错误,无法左值绑定到右值
-    ///fun_collapsing_c<int&&>(nR);//T为int&&,触发了引用折叠,折叠后等价于const int&&, 编译错误,无法左值绑定到右值
-    fun_collapsing_c<int&&>(100);//T为int&&,触发了引用折叠,折叠后等价于const int&&
+    ///fun_collapsing_c<int&&>(n);//T为int&&,触发了引用折叠,折叠后等价于int&&,去掉了const, 编译错误,无法左值绑定到右值
+    ///fun_collapsing_c<int&&>(nL);//T为int&&,触发了引用折叠,折叠后等价于int&&,去掉了const, 编译错误,无法左值绑定到右值
+    ///fun_collapsing_c<int&&>(nR);//T为int&&,触发了引用折叠,折叠后等价于int&&,去掉了const, 编译错误,无法左值绑定到右值
+    fun_collapsing_c<int&&>(100);//T为int&&,触发了引用折叠,折叠后等价于const int&&,去掉了const
 }
 
 

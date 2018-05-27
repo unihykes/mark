@@ -11,6 +11,7 @@ SET(AUTO_RUN OFF)
 
 #“¿¿µø‚
 SET(NEED_GTEST TRUE)
+SET(NEED_BOOST_HPP TRUE)
 
 # ±‡“Îƒø¬º
 ADD_SOURCE_DIRS(./valueType;

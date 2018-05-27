@@ -102,6 +102,8 @@ public:
         
         _oldCustomStr = std::move(source._oldCustomStr);
         _newCustomStr = std::move(source._newCustomStr);
+        
+        return *this;
     }
     
     void fun()

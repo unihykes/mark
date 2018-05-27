@@ -1462,25 +1462,25 @@ TEST(ut_metadataObj, constructor)
 
 
 ### 模板实参推导规则:
-![这里写图片描述](https://img-blog.csdn.net/20180524194939272?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-
-参考文档:<br>
-http://en.cppreference.com/w/cpp/language/template_argument_deduction
+参考这里:
+https://blog.csdn.net/WOW542621126/article/details/80474681
 
 
 ### 例1:universal引用(auto推导)
 
 ```c++
+
+#include <boost/type_index.hpp>
+using boost::typeindex::type_id_with_cvr;
+
 TEST(ut_UniversalRef, auto)
 {
-    //给auto&& 传入左值
     int n = 100;
     auto&& v1 = n;
-    MK_PRINT_MSG("type of v1         is %c-value Ref", std::is_lvalue_reference<decltype(v1)>::value? 'L':'R');
+    MK_PRINT_MSG("type of v1 is  %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());
     
-    //给auto&& 传入右值
     auto&& v2 = 512;
-    MK_PRINT_MSG("type of v2         is %c-value Ref", std::is_lvalue_reference<decltype(v2)>::value? 'L':'R');
+    MK_PRINT_MSG("type of v2 is  %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());
 }
 
 /*
@@ -1491,7 +1491,7 @@ rvaluereference\referenceType\ut_UniversalRef.cpp
 ```
 
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/20180524181337421?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023741905?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 例2:universal引用(template推导)
@@ -1500,7 +1500,9 @@ rvaluereference\referenceType\ut_UniversalRef.cpp
 template<typename T> 
 void fun_universal_a(T&& param_a)
 {
-    MK_PRINT_MSG("type of param_a    is %c-value Ref", std::is_lvalue_reference<decltype(param_a)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s, type of param_a is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_a)>().pretty_name().c_str());
 }
 
 TEST(ut_UniversalRef, fun_universal_a)
@@ -1522,7 +1524,8 @@ TEST(ut_UniversalRef, fun_universal_a)
 }
 ```
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/20180524195002425?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023755661?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 
 
 ### 例3:非universal引用(不存在类型推导)
@@ -1530,7 +1533,7 @@ TEST(ut_UniversalRef, fun_universal_a)
 ```c++
 void fun_universal_b(int&& param_b)
 {
-    MK_PRINT_MSG("type of param_b    is %c-value Ref", std::is_lvalue_reference<decltype(param_b)>::value? 'L':'R');
+    MK_PRINT_MSG("type of param_b is %s",   type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
 }
 TEST(ut_UniversalRef, fun_universal_b)
 {
@@ -1541,7 +1544,7 @@ TEST(ut_UniversalRef, fun_universal_b)
 ```
 
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/20180524195012922?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023811522?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 ### 例4:非universal引用(const T&& 和T&&的概念不同)
@@ -1549,7 +1552,9 @@ TEST(ut_UniversalRef, fun_universal_b)
 template<typename T> 
 void fun_universal_c(const T&& param_c)
 {
-    MK_PRINT_MSG("type of param_c    is %c-value Ref", std::is_lvalue_reference<decltype(param_c)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s, type of param_c is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_c)>().pretty_name().c_str());
 }
 
 TEST(ut_UniversalRef, fun_universal_c)
@@ -1557,22 +1562,23 @@ TEST(ut_UniversalRef, fun_universal_c)
     
     int n = 10;
     //fun_universal_c(n);//编译错误,const T&&尽管存在类型推导,但不符合universal规则,编译错误
-    fun_universal_c(10);//传入右值
+    fun_universal_c(10);//传入右值,T推导为int,函数形参类型const int&&
     
     //fun_universal_c<int>(n);//T类型固定int,非universal引用,编译错误
-    fun_universal_c<int>(10);//T类型固定int,非universal引用
+    fun_universal_c<int>(10);//T类型固定int,非universal引用, 函数形参类型const int&&
     
     
-    fun_universal_c<int&>(n);//T类型固定int&,非universal引用,存在引用折叠,折叠为const int&
-    //fun_universal_c<int&>(10);T类型固定int&,非universal引用,存在引用折叠,折叠为const int&,存在编译错误, 暂未搞明白编译错误原因.
+    fun_universal_c<int&>(n);//T为int&, 函数形参类型为int&     todo:没搞懂这里的规则,const去哪了?
+    //fun_universal_c<int&>(10);/param_c的类型为int&,不能接受右值,编译错误
     
     
-    //fun_universal_c<int&&>(n);//类型固定int&&,非universal, 存在引用折叠,折叠后为const int&&
-    fun_universal_c<int&&>(10);//类型固定,非universal, 存在引用折叠,折叠后为const int&&
+    //fun_universal_c<int&&>(n);//T为int&&, 函数形参类型为int&&,编译错误,右值引用无法接受左值;
+    fun_universal_c<int&&>(10);//T为int&&, 函数形参类型为int&&, 这里函数形参的const被忽略了.
 }
 ```
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/2018052419502521?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023823567?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 
 ### 例5:非universal引用(不存在类型推导)
 因为当给func传入实参时，T被推导后vector<T>&&的类型是确定的。
@@ -1581,7 +1587,9 @@ TEST(ut_UniversalRef, fun_universal_c)
 template<typename T>
 void fun_universal_d(vector<T>&& param_d)
 {
-    MK_PRINT_MSG("type of param_d    is %c-value Ref", std::is_lvalue_reference<decltype(param_d)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s, type of param_d is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_d)>().pretty_name().c_str());
 }
 
 TEST(ut_UniversalRef, fun_universal_d)
@@ -1593,7 +1601,8 @@ TEST(ut_UniversalRef, fun_universal_d)
 }
 ```
 执行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/2018052419503660?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023834803?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 
 
 
@@ -1603,12 +1612,12 @@ struct ncLittleObj
 {
     ncLittleObj(int&& a, int&& b)
     {
-        MK_PRINT_MSG("type of a    is %c-value Ref", std::is_lvalue_reference<decltype(a)>::value? 'L':'R');
+        MK_PRINT_MSG("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
     }
     
     ncLittleObj(const int& a, const int& b)
     {
-        MK_PRINT_MSG("type of a    is %c-value Ref", std::is_lvalue_reference<decltype(a)>::value? 'L':'R');
+        MK_PRINT_MSG("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
     }
 };
 
@@ -1621,7 +1630,9 @@ public:
     //所以在调用时push_back函数时并不存在类型推导。
     void push_back(T&& param)
     {
-        MK_PRINT_MSG("type of param    is %c-value Ref", std::is_lvalue_reference<decltype(param)>::value? 'L':'R');
+        MK_PRINT_MSG("T is %s, type of param is %s", 
+            type_id_with_cvr<T>().pretty_name().c_str(),
+            type_id_with_cvr<decltype(param)>().pretty_name().c_str());
     }
     
     //Arg&&存在类型推导，所以args的参数是universal引用。
@@ -1647,7 +1658,8 @@ TEST(ut_UniversalRef, Vector_Lite)
 }
 ```
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/20180524195048788?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023845893?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 
 
 ### 总结:
@@ -1678,6 +1690,10 @@ TEST(ut_UniversalRef, Vector_Lite)
 ### 例1:引用折叠(typedef)
 
 ```c++
+
+#include <boost/type_index.hpp>
+using boost::typeindex::type_id_with_cvr;
+
 TEST(ut_ReferenceCollapsing, typedef)
 {
     typedef int&  lRef;
@@ -1685,21 +1701,22 @@ TEST(ut_ReferenceCollapsing, typedef)
     
     int n = 100;
     
-    lRef&  r1 = n; // r1 的类型是 int&, 到左值引用类型(lRef)的左值引用&,折叠为左值引用
-    MK_PRINT_MSG("type of r1        is %c-value Ref", std::is_lvalue_reference<lRef&>::value? 'L':'R');
-     
-    lRef&& r2 = n; // r2 的类型是 int&, 到左值引用类型(lRef)的右值引用&&,折叠为左值引用
-    MK_PRINT_MSG("type of r2        is %c-value Ref", std::is_lvalue_reference<lRef&&>::value? 'L':'R');
+    lRef&  r1 = n;
+    MK_PRINT_MSG("type of r1 is %s", type_id_with_cvr<decltype(r1)>().pretty_name().c_str());
+            
+    lRef&& r2 = n;
+    MK_PRINT_MSG("type of r2 is %s", type_id_with_cvr<decltype(r2)>().pretty_name().c_str());
     
-    rRef&  r3 = n; // r3 的类型是 int&, 到右值引用类型(rRef)的左值引用&,折叠为左值引用
-    MK_PRINT_MSG("type of r3        is %c-value Ref", std::is_lvalue_reference<rRef&>::value? 'L':'R');
+    rRef&  r3 = n; 
+    MK_PRINT_MSG("type of r3 is %s", type_id_with_cvr<decltype(r3)>().pretty_name().c_str());
     
-    rRef&& r4 = 1; // r4 的类型是 int&&, 到右值引用类型(rRef)的右值引用&&,折叠为右值引用
-    MK_PRINT_MSG("type of r4        is %c-value Ref", std::is_lvalue_reference<rRef&&>::value? 'L':'R');
+    rRef&& r4 = 1;
+    MK_PRINT_MSG("type of r4 is %s", type_id_with_cvr<decltype(r4)>().pretty_name().c_str());
 }
 ```
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/20180524200014750?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023903179?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 
 
 ### 例2:引用折叠(decltype)
@@ -1711,16 +1728,16 @@ TEST(ut_ReferenceCollapsing, decltype)
     int& v1 = n;
     int&& v2 = 100;
     
+    MK_PRINT_MSG("type of decltype(v1)& is %s", type_id_with_cvr<decltype(v1)&>().pretty_name().c_str());
+    MK_PRINT_MSG("type of decltype(v1)&& is %s", type_id_with_cvr<decltype(v1)&&>().pretty_name().c_str());
     
-    MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v1)&>::value? 'L':'R');//L
-    MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v1)&&>::value? 'L':'R');//L
-    
-    MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v2)&>::value? 'L':'R');//L
-    MK_PRINT_MSG("type is %c-value Ref", std::is_lvalue_reference<decltype(v2)&&>::value? 'L':'R');//R
+    MK_PRINT_MSG("type of decltype(v2)& is %s", type_id_with_cvr<decltype(v2)&>().pretty_name().c_str());
+    MK_PRINT_MSG("type of decltype(v2)&& is %s", type_id_with_cvr<decltype(v2)&&>().pretty_name().c_str());
 }
 ```
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/20180524200041390?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023914834?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 
 
 ### 例3:引用折叠(T&)
@@ -1728,8 +1745,11 @@ TEST(ut_ReferenceCollapsing, decltype)
 template<typename T> 
 void fun_collapsing_a(T& param_a)
 {
-    MK_PRINT_MSG("type of param_a    is %c-value Ref", std::is_lvalue_reference<decltype(param_a)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s , type of param_a is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_a)>().pretty_name().c_str());
 }
+
 TEST(ut_ReferenceCollapsing, template1)
 {
     int n = 100;
@@ -1743,7 +1763,7 @@ TEST(ut_ReferenceCollapsing, template1)
 }
 ```
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/2018052420005347?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023926634?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
 
@@ -1752,7 +1772,9 @@ TEST(ut_ReferenceCollapsing, template1)
 template<typename T> 
 void fun_collapsing_b(T&& param_b)
 {
-    MK_PRINT_MSG("type of param_b    is %c-value Ref", std::is_lvalue_reference<decltype(param_b)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s , type of param_b is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
 }
 
 TEST(ut_ReferenceCollapsing, template2)
@@ -1761,23 +1783,23 @@ TEST(ut_ReferenceCollapsing, template2)
     int& nL = n;
     int&& nR = 100;
     
-    fun_collapsing_b(n);//T推导为int&,无折叠, 此处T&&是universal引用,因此可接受左值和右值
-    fun_collapsing_b(nL);//T推导为int,无折叠, 此处T&&是universal引用,因此可接受左值和右值
-    fun_collapsing_b(nR);//T推导为int,无折叠, 此处T&&是universal引用,因此可接受左值和右值
-    fun_collapsing_b(100);//T推导为int,无折叠, 此处T&&是universal引用,因此可接受左值和右值
-    
+    fun_collapsing_b(n);//n是左值, T推导为int&,形参折叠为int&
+    fun_collapsing_b(nL);//nL是左值, T推导为int&,形参折叠为int&
+    fun_collapsing_b(nR);//nR是左值, T推导为int&,形参折叠为int&
+    fun_collapsing_b(100);//100是右值, T推导为int,形参无折叠,为int&&
+    cout<<endl;
     
     ///fun_collapsing_b<int>(n);//T为int,无折叠,编译错误,无法将左值绑定到右值引用
     ///fun_collapsing_b<int>(nL);//T为int,无折叠,编译错误,无法将左值绑定到右值引用
     ///fun_collapsing_b<int>(nR);//T为int,无折叠,编译错误,无法将左值绑定到右值引用
     fun_collapsing_b<int>(100);//T为int,无折叠
-    
+    cout<<endl;
     
     fun_collapsing_b<int&>(n);//T为int&, 触发引用折叠T&&等价于int&
     fun_collapsing_b<int&>(nL);//T为int&, 触发引用折叠T&&等价于int&
     fun_collapsing_b<int&>(nR);//T为int&, 触发引用折叠T&&等价于int&
     ///fun_collapsing_b<int&>(100);//T为int&, 触发引用折叠T&&等价于int&, 编译错误,无法将参数 从“int”转换为“int &” 
-    
+    cout<<endl;
     
     ///fun_collapsing_b<int&&>(n);//T为int&&, 引用折叠T&&等价于int&&, 编译错误:无法将左值绑定到右值引用
     ///fun_collapsing_b<int&&>(nL);//T为int&&, 引用折叠T&&等价于int&&, 编译错误:无法将左值绑定到右值引用
@@ -1787,7 +1809,8 @@ TEST(ut_ReferenceCollapsing, template2)
 
 ```
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/20180524200109293?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/2018052802393880?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 
 
 
@@ -1796,7 +1819,9 @@ TEST(ut_ReferenceCollapsing, template2)
 template<typename T> 
 void fun_collapsing_c(const T&& param_c)
 {
-    MK_PRINT_MSG("type of param_c    is %c-value Ref", std::is_lvalue_reference<decltype(param_c)>::value? 'L':'R');
+    MK_PRINT_MSG("T is %s , type of param_c is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param_c)>().pretty_name().c_str());
 }
 
 TEST(ut_ReferenceCollapsing, template3)
@@ -1821,22 +1846,22 @@ TEST(ut_ReferenceCollapsing, template3)
     
     
     
-    fun_collapsing_c<int&>(n);//T为int&,触发了引用折叠,折叠后const T&& 等价于const int&, 
-    fun_collapsing_c<int&>(nL);//T为int&,触发了引用折叠,折叠后const T&& 等价于const int&, 
-    fun_collapsing_c<int&>(nR);//T为int&,触发了引用折叠,折叠后const T&& 等价于const int&, 
-    ///fun_collapsing_c<int&>(100);//T为int&,触发了引用折叠,折叠后const T&& 等价于const int&, 编译错误, 无法将参数 1 从“int”转换为“int &”,暂未搞明白
+    fun_collapsing_c<int&>(n);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const
+    fun_collapsing_c<int&>(nL);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const 
+    fun_collapsing_c<int&>(nR);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const
+    ///fun_collapsing_c<int&>(100);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const,编译错误
     
     
-    
-    
-    ///fun_collapsing_c<int&&>(n);//T为int&&,触发了引用折叠,折叠后等价于const int&&, 编译错误,无法左值绑定到右值
-    ///fun_collapsing_c<int&&>(nL);//T为int&&,触发了引用折叠,折叠后等价于const int&&, 编译错误,无法左值绑定到右值
-    ///fun_collapsing_c<int&&>(nR);//T为int&&,触发了引用折叠,折叠后等价于const int&&, 编译错误,无法左值绑定到右值
-    fun_collapsing_c<int&&>(100);//T为int&&,触发了引用折叠,折叠后等价于const int&&
+    ///fun_collapsing_c<int&&>(n);//T为int&&,触发了引用折叠,折叠后等价于int&&,去掉了const, 编译错误,无法左值绑定到右值
+    ///fun_collapsing_c<int&&>(nL);//T为int&&,触发了引用折叠,折叠后等价于int&&,去掉了const, 编译错误,无法左值绑定到右值
+    ///fun_collapsing_c<int&&>(nR);//T为int&&,触发了引用折叠,折叠后等价于int&&,去掉了const, 编译错误,无法左值绑定到右值
+    fun_collapsing_c<int&&>(100);//T为int&&,触发了引用折叠,折叠后等价于const int&&,去掉了const
 }
+
 ```
 运行结果:<br>
-![这里写图片描述](https://img-blog.csdn.net/20180524200120643?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528023949872?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 
 
 ### 总结:
