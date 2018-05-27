@@ -85,6 +85,21 @@ IF(${NEED_BOOSTBCP})
 	ENDIF()
 ENDIF()
 
+IF(${NEED_BOOST_HPP})
+    INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/boost;)
+ENDIF()
+
+IF(${NEED_BOOST_DYNAMIC})
+    INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/boost;)
+    #todo
+ENDIF()
+
+IF(${NEED_BOOST_STATIC})
+    INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/boost;)
+    #todo
+ENDIF()
+    
+    
 # ≈‰÷√ googletest œ‡πÿ“¿¿µ
 IF(${NEED_GTEST})
 	#gtest
