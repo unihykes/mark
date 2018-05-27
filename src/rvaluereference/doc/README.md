@@ -1814,7 +1814,7 @@ TEST(ut_ReferenceCollapsing, template2)
 
 
 
-### 例5:引用折叠(const T&)
+### 例5:引用折叠(const T&&)
 ```c++
 template<typename T> 
 void fun_collapsing_c(const T&& param_c)
