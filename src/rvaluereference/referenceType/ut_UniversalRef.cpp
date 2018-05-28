@@ -87,7 +87,7 @@ TEST(ut_UniversalRef, fun_universal_c)
     fun_universal_c<int>(10);//T类型固定int,非universal引用, 函数形参类型const int&&
     
     
-    fun_universal_c<int&>(n);//T为int&, 函数形参类型为int&     todo:没搞懂这里的规则,const去哪了?
+    fun_universal_c<int&>(n);//T为int&, 函数形参类型为int&    形参const被去除
     //fun_universal_c<int&>(10);/param_c的类型为int&,不能接受右值,编译错误
     
     

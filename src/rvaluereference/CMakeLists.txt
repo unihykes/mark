@@ -17,7 +17,8 @@ SET(NEED_BOOST_HPP TRUE)
 ADD_SOURCE_DIRS(./valueType;
                 ./referenceType;
                 ./usage;
-                ./collapsing;)
+                ./collapsing;
+                ./move_forward;)
 
 IF(WIN32)
 ELSE()

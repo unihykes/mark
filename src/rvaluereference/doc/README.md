@@ -9,25 +9,23 @@
 * 6.引用折叠
 * 7.移动语义和std::move()
 * 8.完美转发和std::forward()
-* 9.右值引用在STL中的使用举例
 
 
 备注:<br>
 
-* 1.文中测试代码均为手写, 如发现错误, 请不吝告知 :
+> 1.文中测试代码均为手写, 如发现错误, 请不吝告知 :
 >> 作者邮箱: liu.hao@eisoo.com <br>
->> 源码地址: [点击这里](https://github.com/six-th/monk/tree/master/src/rvaluereference)
 
-* 2.转载请注明出处：
+> 2.转载请注明出处：
 >> https://blog.csdn.net/WOW542621126/article/details/80428174
 
-* 3.参考资料:
+> 3.参考资料:
 >> http://en.cppreference.com/w/<br>
 >> https://www.cnblogs.com/5iedu/p/7698710.html<br>
 >> https://www.cnblogs.com/qicosmos/p/3369940.html<br>
 >> 等等...
 
-* 4.流量预警: 
+> 4.流量预警: 
 >> 文章很长... <br>
 >> 图片很大... <br>
 >> 代码很多... <br>
@@ -1457,13 +1455,12 @@ TEST(ut_metadataObj, constructor)
 即:可能是左值引用也可能是右值引用;
 
 ### Universal引用规则:
-规则1:&&为universal 引用时的唯一条件是有类型推断发生;<br>
-规则2:universal references仅仅在T&&下发生，任何一点附加条件都会使之失效，而变成一个右值引用;<br>
+* 规则1:T&&为universal引用时, 必要条件是有类型推导发生;(反之不成立)<br>
+* 规则2:universal references仅仅在T&&下发生，任何一点附加条件都会使之失效，而变成一个右值引用;<br>
 
-
-### 模板实参推导规则:
-参考这里:
-https://blog.csdn.net/WOW542621126/article/details/80474681
+备注:
+>模板实参推导规则, 参考这里:
+>https://blog.csdn.net/WOW542621126/article/details/80474681
 
 
 ### 例1:universal引用(auto推导)
@@ -1568,7 +1565,8 @@ TEST(ut_UniversalRef, fun_universal_c)
     fun_universal_c<int>(10);//T类型固定int,非universal引用, 函数形参类型const int&&
     
     
-    fun_universal_c<int&>(n);//T为int&, 函数形参类型为int&     todo:没搞懂这里的规则,const去哪了?
+    //关于这里为何会去掉const,可参考:https://blog.csdn.net/WOW542621126/article/details/80477911
+    fun_universal_c<int&>(n);//T为int&, 函数形参类型为int&     形参const被去除
     //fun_universal_c<int&>(10);/param_c的类型为int&,不能接受右值,编译错误
     
     
@@ -1663,7 +1661,7 @@ TEST(ut_UniversalRef, Vector_Lite)
 
 
 ### 总结:
-1:T&&为universal 引用时的唯一条件是有类型推断发生;<br>
+1:T&&为universal 引用时的必要条件是有类型推断发生;<br>
 2:universal 引用仅仅在T&&下发生，const T&&是一个固定的右值引用;<br>
 3.当T&&是universal引用时, Universal引用最终的引用类型, 是与接受的[值]相关;<br>
     接受左值参数,T&&就是左值引用;<br>
@@ -1845,7 +1843,7 @@ TEST(ut_ReferenceCollapsing, template3)
     
     
     
-    
+    //关于这里为何会去掉const,可参考:https://blog.csdn.net/WOW542621126/article/details/80477911
     fun_collapsing_c<int&>(n);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const
     fun_collapsing_c<int&>(nL);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const 
     fun_collapsing_c<int&>(nR);//T为int&,触发了引用折叠,折叠后变为形参变为int&,去掉了const
@@ -1873,25 +1871,222 @@ TEST(ut_ReferenceCollapsing, template3)
 
 
 
-
-
-
 # 7.移动语义和std::move()
-todo...
+我们前文中,std::move()函数已经出现过,<br>
+简单来说,move函数的功能是将一个左值强制转换为右值, 从而可以调用右值引用类型形参的函数;
+
+
+> std::move 可能的实现,大致如下面所示:
+```cpp
+template< class T > 
+struct remove_reference
+{
+    typedef T type;
+};
+
+template< class T > 
+struct remove_reference<T&>
+{
+    typedef T type;
+};
+
+template< class T > 
+struct remove_reference<T&&> 
+{
+    typedef T type;
+};
+
+template<typename T>
+typename remove_reference<T>::type&& move(T&& param)
+{
+    using ReturnType = typename remove_reference<T>::type&&;
+    return static_cast<ReturnType>(param);
+}
+```
+
+### 示例1:remove_reference
+为了容易理解 remove_reference 的工作原理,我们山寨一个 remove_reference
+
+```cpp
+#include <boost/type_index.hpp>
+using boost::typeindex::type_id_with_cvr;
+
+template< class T > 
+struct my_remove_reference
+{
+    using type = T;
+    static const int id = 1;
+};
+
+template< class T > 
+struct my_remove_reference<T&>
+{
+    using type = T;
+    static const int id = 2;
+};
+
+template< class T > 
+struct my_remove_reference<T&&> 
+{
+    using type = T;
+    static const int id = 3;
+};
+
+TEST(ut_move, my_remove_reference)
+{
+   {
+        using ReturnType = my_remove_reference<int>::type&&;//int&&
+        int id = my_remove_reference<int>::id;//1
+        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+   }
+   
+   {
+        using ReturnType = my_remove_reference<int&>::type&&;//int&&
+        int id = my_remove_reference<int&>::id;//2
+        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+   }
+   
+   {
+        using ReturnType = my_remove_reference<int&&>::type&&;//int&&
+        int id = my_remove_reference<int&&>::id;//3
+        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+   }
+}
+```
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528171946410?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+
+### 示例2:move
+为了容易理解 std::move 的工作原理,我们再山寨一个 move 模板函数
+```cpp
+template<typename T>
+typename my_remove_reference<T>::type&& my_move(T&& param)
+{
+    MK_PRINT_MSG("T is %s, type of param is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(), 
+        type_id_with_cvr<decltype(param)>().pretty_name().c_str());
+     
+    using ReturnType = typename my_remove_reference<T>::type&&;
+    return static_cast<ReturnType>(param);
+}
+
+TEST(ut_move, my_move)
+{
+    int n = 5;
+    auto&& ret1 = my_move(n);
+    MK_PRINT_MSG("type of ret1 is %s\n", type_id_with_cvr<decltype(ret1)>().pretty_name().c_str());
+    
+    const int m = 12;
+    auto&& ret2 = my_move(m);
+    MK_PRINT_MSG("type of ret2 is %s\n", type_id_with_cvr<decltype(ret2)>().pretty_name().c_str());
+    
+    auto&& ret3 = my_move(100);
+    MK_PRINT_MSG("type of ret3 is %s\n", type_id_with_cvr<decltype(ret3)>().pretty_name().c_str());
+    
+    int n2 = 11;
+    int& nL = n2;
+    auto&& ret4 = my_move(nL);
+    MK_PRINT_MSG("type of ret4 is %s\n", type_id_with_cvr<decltype(ret4)>().pretty_name().c_str());
+}
+```
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528171958969?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+
+
+
+* 总结:
+
+> 移动语义作用:<br>
+>> 替代copy操作,提高性能;<br>
+>> 使得创建只移型对象成为可能,例如std::unique_ptr, std::thread;<br>
+
+> std::move()有几个要点:
+>> 1.std::move函数中的T&&是个universal引用,可以接受任意左值和右值;<br>
+>> 2.std::move实际上并不进行任何移动, 仅仅执行强制类型转换;<br>
+>> 3.std::move无条件的将实参强制转为右值; const实参会转为const T&&类型的右值;<br>
+>> 4.std::move调用之后,所转移的对象及引用变为未定义状态,不可再次使用;<br>
+
+
 
 
 # 8.完美转发和std::forward()
-todo...
+当我们在一个函数中,希望将自身函数的实参传递给其他函数,却又不希望变更实参的类别时,
+(左值仍是左值,右值仍是右值),就会用到std::forward;
 
 
-# 9.右值引用在STL中的使用举例
-std::move实现原理<br>
-std::forward实现原理<br>
-string和String性能对比<br>
-在stl中的使用<br>
-万能的函数包装器<br>
+> std::forward 可能的实现,大致如下面所示
 
-todo...
+```cpp
+template<typename T>
+T&& forward(typename std::remove_reference<T>::type& param)
+{
+    return static_cast<T&&>(param);
+}
+```
+
+### 示例1:forward
+为了容易理解 std::forward 的工作原理,我们再山寨一个 forward 模板函数
+
+```cpp
+template<typename T>
+T&& my_forward(typename std::remove_reference<T>::type& param)
+{
+    MK_PRINT_MSG("T is %s, T&& is %s, type of param is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<T&&>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param)>().pretty_name().c_str());
+    
+    return static_cast<T&&>(param);
+}
+
+template<typename T>
+void funcAAA(T&& param)
+{
+    MK_PRINT_MSG("T is %s, type of param is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param)>().pretty_name().c_str());
+        
+    funcBBB(my_forward<T>(param));
+}
+
+template<typename T>
+void funcBBB(T&& param)
+{
+    MK_PRINT_MSG("T is %s, type of param is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param)>().pretty_name().c_str());
+}
 
 
+TEST(ut_forward, my_forward)
+{
+    //传给funcAAA的实参为左值;
+    int s1 = 100;
+    funcAAA(s1);
+    
+    cout<<endl;
+    
+    //传给funcAAA的实参为右值
+    funcAAA(100);
+}
+```
 
+执行结果:<br>
+![这里写图片描述](https://img-blog.csdn.net/20180528172021745?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+总结:
+
+> 完美转发:
+>> 转发函数的实参到目标函数, 使目标函数接受到与转发函数完全相同的实参;<br>
+
+> 特性:
+>> std::forward并不进行任何转发;<br>
+>> std::forward仅在某个特定条件满足时,才会执行强制转换将实参转为右值:<br>
+>> 当传入的实参被绑定到左值时,std::forward未做任何事情;<br>
+>> 当传入的实参被绑定到右值时,std::forward执行强制转换将实参转为右值;<br>
+
+*****
+...全文完...
+*****
