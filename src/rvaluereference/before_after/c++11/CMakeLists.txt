@@ -13,9 +13,8 @@ SET(TARGET_NAME ut_11)
 SET(AUTO_RUN OFF)
 
 #gtest
-ADD_DEFINITIONS(-D__USING_GTEST__)
-INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/gtest/googletest/googletest/include)
-SET(LINK_GTEST_LIBS gtest)
+#gtest
+SET(NEED_GTEST TRUE)
 
 # ±àÒëÄ¿Â¼
 ADD_SOURCE_DIRS(../;)

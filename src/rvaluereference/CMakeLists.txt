@@ -23,7 +23,7 @@ ADD_SOURCE_DIRS(./valueType;
 IF(WIN32)
 ELSE()
     #禁用返回值优化RVO
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors -Wno-unused-variable")
 ENDIF()
 
 INCLUDE($ENV{MONK_MAKE}/end.cmake)

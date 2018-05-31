@@ -43,6 +43,15 @@ T&& my_forward(typename std::remove_reference<T>::type& param)
     return static_cast<T&&>(param);
 }
 
+
+template<typename T>
+void funcBBB(T&& param)
+{
+    MK_PRINT_MSG("T is %s, type of param is %s", 
+        type_id_with_cvr<T>().pretty_name().c_str(),
+        type_id_with_cvr<decltype(param)>().pretty_name().c_str());
+}
+
 template<typename T>
 void funcAAA(T&& param)
 {
@@ -53,13 +62,7 @@ void funcAAA(T&& param)
     funcBBB(my_forward<T>(param));
 }
 
-template<typename T>
-void funcBBB(T&& param)
-{
-    MK_PRINT_MSG("T is %s, type of param is %s", 
-        type_id_with_cvr<T>().pretty_name().c_str(),
-        type_id_with_cvr<decltype(param)>().pretty_name().c_str());
-}
+
 
 
 TEST(ut_forward, my_forward)
