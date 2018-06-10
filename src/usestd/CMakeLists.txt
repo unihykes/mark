@@ -15,6 +15,8 @@ SET(NEED_GTEST TRUE)
 # ±àÒëÄ¿Â¼
 ADD_SOURCE_DIRS(./0-Language;
                 ./UtilitiesLibrary;
+                ./AlgorithmsLibrary/Non-modifying_sequence_operations;
+                ./AlgorithmsLibrary/Modifying_sequence_operations;
                 )
 
 INCLUDE($ENV{MONK_MAKE}/end.cmake)

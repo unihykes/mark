@@ -141,7 +141,7 @@ inline void formatlog(char* logbuf, const char* moduleName, const char* file, in
 		MK_OUTPUT_LOG("monk", WriterFunc, formatStr, __VA_ARGS__);									\
 	} while(0)
 	
-	//将消息打印到标志输出
+	//将消息打印到标准输出
 	#define MK_PRINT_MSG(formatStr, ...)															\
 	do {																							\
 		MK_OUTPUT_LOG("monk", PrintOutputLog, formatStr, __VA_ARGS__);								\
