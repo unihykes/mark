@@ -46,6 +46,8 @@ TEST(NMSQ, mismatch2)
     }
 }
 
+//todo:以下2个用例需要C++14的支持,目前linux测试机gcc版本不够
+#ifdef __WINDOWS__
 TEST(NMSQ, mismatch3)
 {
     auto func = [](vector<int>& v1, vector<int>& v2) {
@@ -75,10 +77,8 @@ TEST(NMSQ, mismatch3)
     }
 }
 
-
 TEST(NMSQ, mismatch4) 
 {
-
     auto func = [](vector<int>& v1, vector<int>& v2) {
         auto ret = std::mismatch(v1.begin(), v1.end(), v2.begin(), v2.end(), [](int n1, int n2){return (n1/2) == (n2/4);});
         
@@ -105,3 +105,4 @@ TEST(NMSQ, mismatch4)
         func(v1, v2);
     }
 }
+#endif
