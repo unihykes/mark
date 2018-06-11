@@ -96,9 +96,9 @@ enum class ut_Declaration_Color_4 : char
 
 enum class ut_Declaration_Color_5 : bool
 {
-    red2 = 'r', 
-    green2 = 'g', 
-    blue2 = 'b', // C++11 允许尾随逗号
+    red2 = 0, 
+    green2 = 1, 
+    blue2 = 0, // C++11 允许尾随逗号
 };
 
 //枚举声明

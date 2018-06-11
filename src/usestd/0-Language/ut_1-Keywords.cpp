@@ -110,8 +110,11 @@ TEST_F(ut_Keywords, auto)
                         //C++11 起编译错误:“auto”不能与任何其他类型说明符组合
     auto lambda = [](int x) { return x + 3; };
     
-    auto a = 1 + 2; 
-    decltype(auto) c1 = a; //C++14
+    //for decltype(auto) 
+    #ifdef __ENABLE_CXX14__
+        auto a = 1 + 2; 
+        decltype(auto) c1 = a; //C++14
+    #endif
 }
 
 
@@ -298,6 +301,8 @@ TEST_F(ut_Keywords, mutable)
     }
 }
 
+//for common_type_t
+#ifdef __ENABLE_CXX14__
 ///C++11中有修改 sizeof
 template<typename... Ts>
 constexpr auto make_array(Ts&&... ts)-> std::array<std::common_type_t<Ts...>, sizeof...(ts)>
@@ -314,6 +319,7 @@ TEST_F(ut_Keywords, sizeof)
         std::cout << i <<endl;
     }
 }
+#endif
 
 ///C++11中有修改 using
 template<class T> using Vec = vector<T, std::allocator<T>>;//模版特化
@@ -345,7 +351,7 @@ TEST_F(ut_Keywords, alignof)
     struct S1 {};
     MK_PRINT_MSG("alignof(S1) = %d", alignof(S1));
     
-    struct S2 alignas(8) {};
+    struct alignas(8) S2 {};
     MK_PRINT_MSG("alignof(S2) = %d", alignof(S2));
 }
 

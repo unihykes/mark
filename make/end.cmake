@@ -7,7 +7,7 @@ MESSAGE(STATUS "\n**deps--------------------------------------------------------
 IF(WIN32)
     SET(MSVC_2015 "_MSC_VER >= 1900")
     IF(MSVC_2015)
-        ADD_DEFINITIONS(-D__ENABLE_CXX11__  -D__ENABLE_CXX0X__)
+        ADD_DEFINITIONS(-D__ENABLE_CXX14__ -D__ENABLE_CXX11__  -D__ENABLE_CXX0X__)
 		MESSAGE(STATUS "c++11: -D__ENABLE_CXX11__ -D__ENABLE_CXX0X__")
     ENDIF()
 ELSE()

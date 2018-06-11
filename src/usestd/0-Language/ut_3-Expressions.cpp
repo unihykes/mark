@@ -261,9 +261,12 @@ TEST_F(ut_Expressions, character)
     MK_PRINT_MSG("v1 = %d = 0x%04x", v1, v1);
     MK_PRINT_MSG("v1 = %d = 0x%02x %02x %02x %02x", v1, ((char*)&v1)[0], ((char*)&v1)[1], ((char*)&v1)[2], ((char*)&v1)[3]);
     char s[33];
-    itoa(v1, s, 2);
-    MK_PRINT_MSG("s = %s", s);
     
+    //for itoa
+    #ifdef __WINDOWS__
+        itoa(v1, s, 2);
+        MK_PRINT_MSG("s = %s", s);
+    #endif
     /**2 UTF-8 字符字面量
     C++17起
     char ch2 = u8'M';

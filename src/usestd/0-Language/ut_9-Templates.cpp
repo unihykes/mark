@@ -113,8 +113,12 @@ TEST_F(ut_Templates, function)
 template<typename T1, typename... T2>
 double VariableSum(T1 p, T2... arg)
 {
+#ifdef __ENABLE_CXX14__
     double ret = p + VariableSum(arg...);
     return ret;
+#else
+    return 0;
+#endif
 }
 
 //递归边界
@@ -130,7 +134,9 @@ void mk_printf(const char* s, T value, Args... args)
     while (*s) {
         if (*s == '%' && *(++s) != '%') {
           std::cout << value;
+          #ifdef __ENABLE_CXX14__
           mk_printf(*s ? ++s : s, args...); // 即便当 *s == 0 也会产生调用，以检测更多的类型参数。
+          #endif
           return;
         }
         std::cout << *s++;

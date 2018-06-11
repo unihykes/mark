@@ -49,7 +49,7 @@ TEST_F(ut_Preprocessor, define)
     //cout<< "__STDC_ISO_10646__ = " << __STDC_ISO_10646__ <<endl; //(C++11) 
     //cout<< "__STDC_MB_MIGHT_NEQ_WC__ = " << __STDC_MB_MIGHT_NEQ_WC__ <<endl; //(C++11) 
     //cout<< "__STDCPP_STRICT_POINTER_SAFETY__ = " << __STDCPP_STRICT_POINTER_SAFETY__ <<endl; //(C++11) 
-    cout<< "__STDCPP_THREADS__ = " << __STDCPP_THREADS__ <<endl; //(C++11) 
+    //cout<< "__STDCPP_THREADS__ = " << __STDCPP_THREADS__ <<endl; //(C++11) 
     
     //每个函数作用域内部，有个特殊的函数局域预定义变量，名为 __func__(C++11 起) 
     cout<< "__func__ = " << __func__ <<endl; //(C++11)
