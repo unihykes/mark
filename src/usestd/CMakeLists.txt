@@ -19,6 +19,7 @@ ADD_SOURCE_DIRS(./0-Language;
                 ./AlgorithmsLibrary/Modifying_sequence_operations;
                 ./AlgorithmsLibrary/Partitioning_operations;
                 ./AlgorithmsLibrary/Sorting_operations;
+                ./AlgorithmsLibrary/Binary_search_operations;
                 )
 
 INCLUDE($ENV{MONK_MAKE}/end.cmake)
