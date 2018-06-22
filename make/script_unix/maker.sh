@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#¿ªÆô»ØÏÔ
+#å¼€å¯å›æ˜¾
 set -x
 
 #debug
@@ -25,5 +25,5 @@ esac
 compile
 exit $?
 
-#¹Ø±Õ»ØÏÔ
+#å…³é—­å›æ˜¾
 set +x

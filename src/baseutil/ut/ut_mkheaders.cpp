@@ -165,7 +165,7 @@ TEST_F(ut_mkheaders, eg_tchar_t)
 	const tchar_t* ch1 = _T("abcecdrgg");
 	MK_PRINT_MSG(_T("ch1 = %s"), ch1);
 	
-	const utchar_t* ch2 = _T("3gwtgw4624234242");
+	const utchar_t ch2[] = _T("3gwtgw4624234242");
 	MK_PRINT_MSG(_T("ch2 = %s"), ch2);
 	
 	const tchar_t ch3[] = _T("123456789");
