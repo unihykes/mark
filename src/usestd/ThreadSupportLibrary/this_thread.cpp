@@ -78,6 +78,17 @@ TEST(this_thread, sleep_for)
 //暂停当前线程的执行直到特定的时间点 
 TEST(this_thread, sleep_until)
 {
-    //todo
+    /*
+    using std::chrono::system_clock;
+    std::time_t tt = system_clock::to_time_t(system_clock::now());
+    struct std::tm *ptm = std::localtime(&tt);
+    ptm->tm_min++; 
+    ptm->tm_sec = 0;
+    std::this_thread::sleep_until(system_clock::from_time_t(mktime(ptm)));
+    MK_PRINT_MSG("");
+    */
     
+    auto now = std::chrono::steady_clock::now();
+    std::this_thread::sleep_until(now + std::chrono::seconds(3));
+    MK_PRINT_MSG("");
 }

@@ -1877,6 +1877,7 @@ TEST(ut_ReferenceCollapsing, template3)
 
 
 > std::move 可能的实现,大致如下面所示:
+
 ```cpp
 template< class T > 
 struct remove_reference
