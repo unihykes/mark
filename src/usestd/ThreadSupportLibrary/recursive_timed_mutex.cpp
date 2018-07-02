@@ -19,7 +19,7 @@ info:
 #include <mutex>
 
 
-TEST(recursive__timed_mutex, lock_unlock)
+TEST(recursive_timed_mutex, lock_unlock)
 {
     class ncSomeProc
     {
@@ -51,7 +51,7 @@ TEST(recursive__timed_mutex, lock_unlock)
     t2.join();
 }
 
-TEST(recursive__timed_mutex, try_lock)
+TEST(recursive_timed_mutex, try_lock)
 {
     class ncSomeProc
     {
@@ -103,7 +103,7 @@ TEST(recursive__timed_mutex, try_lock)
     t2.join();
 }
 
-TEST(recursive__timed_mutex, try_lock_for)
+TEST(recursive_timed_mutex, try_lock_for)
 {
     class ncSomeProc
     {
@@ -153,7 +153,7 @@ TEST(recursive__timed_mutex, try_lock_for)
     t2.join();
 }
 
-TEST(recursive__timed_mutex, try_lock_until)
+TEST(recursive_timed_mutex, try_lock_until)
 {
     class ncSomeProc
     {
