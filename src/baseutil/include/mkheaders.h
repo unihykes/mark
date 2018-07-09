@@ -121,21 +121,6 @@ typedef uint64_t			uint64;
 	#define MK_ASSERT(f)	((void)(f))
 #endif
 
-
-
-//for兼容性:定义可变参数列表之va_copy 
-//va_copy(dest, src)：dest，src的类型都是va_list，va_copy()用于复制参数列表指针，将dest初始化为src。
-//http://blog.chinaunix.net/uid-677314-id-3476440.html
-#ifndef va_copy
-	#ifdef __va_copy
-		#define va_copy			__va_copy
-	#else
-		#define va_copy(dest, src)	memcpy(&(dest), &(src), sizeof(va_list))
-	#endif
-#endif
-
-
-
 //定义dll导出符号宏
 #ifdef __WINDOWS__
 	#define DLL_EXPORT			__declspec(dllexport)
