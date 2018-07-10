@@ -31,7 +31,6 @@ TEST(call_once, simple_do_once)
     st4.join();
 }
 
-,
 void may_throw_function(bool do_throw)
 {
   if (do_throw) {
