@@ -1,0 +1,6 @@
+﻿
+namespace std {
+  using jmp_buf = /* see description */ ;
+  [[noreturn]] void longjmp(jmp_buf env, int val);
+}
+#define setjmp(env) /* see description */

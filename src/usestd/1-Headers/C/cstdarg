@@ -1,9 +1,0 @@
-﻿
-namespace std {
-  using va_list = /*see description*/ ;
-}
-#define va_arg(V, P) /*see description*/
-#define va_copy(VDST, VSRC) /*see description*/
-#define va_end(V) /*see description*/
-#define va_start(V, P) /*see description*/
-

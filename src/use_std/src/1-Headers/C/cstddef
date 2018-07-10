@@ -1,0 +1,29 @@
+﻿
+namespace std {
+    using ptrdiff_t = /*see definition*/ ;
+    using size_t = /*see definition*/ ;
+    using max_align_t = /*see definition*/ ;
+    using nullptr_t = decltype(nullptr);
+ 
+    enum class byte : unsigned char {} ;
+    template <class IntegerType>
+    constexpr byte& operator<<=(byte& b, IntegerType shift) noexcept;
+    template <class IntegerType>
+    constexpr byte operator<<(byte b, IntegerType shift) noexcept;
+    template <class IntegerType>
+    constexpr byte& operator>>=(byte& b, IntegerType shift) noexcept;
+    template <class IntegerType>
+    constexpr byte operator>>(byte b, IntegerType shift) noexcept;
+ 
+    constexpr byte& operator|=(byte& l, byte r) noexcept;
+    constexpr byte operator|(byte l, byte r) noexcept;
+    constexpr byte& operator&=(byte& l, byte r) noexcept;
+    constexpr byte operator&(byte l, byte r) noexcept;
+    constexpr byte& operator^=(byte& l, byte r) noexcept;
+    constexpr byte operator^(byte l, byte r) noexcept;
+    constexpr byte operator~(byte b) noexcept;
+    template <class IntegerType>
+    constexpr IntegerType to_integer(byte b) noexcept; 
+}
+#define NULL /*see definition*/
+#define offsetof(P, D) /*see definition*/

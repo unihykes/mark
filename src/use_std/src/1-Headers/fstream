@@ -1,0 +1,185 @@
+///概要
+namespace std {
+ 
+template <class charT, class traits = char_traits<charT> >
+    class basic_filebuf;
+typedef basic_filebuf<char> filebuf;
+typedef basic_filebuf<wchar_t> wfilebuf;
+template <class charT, class traits>
+    void swap(basic_filebuf<charT, traits>& x,
+              basic_filebuf<charT, traits>& y);
+ 
+template <class charT, class traits = char_traits<charT> >
+    class basic_ifstream;
+typedef basic_ifstream<char> ifstream;
+typedef basic_ifstream<wchar_t> wifstream;
+template <class charT, class traits>
+    void swap(basic_ifstream<charT, traits>& x,
+              basic_ifstream<charT, traits>& y);
+ 
+template <class charT, class traits = char_traits<charT> >
+    class basic_ofstream;
+typedef basic_ofstream<char> ofstream;
+typedef basic_ofstream<wchar_t> wofstream;
+template <class charT, class traits>
+    void swap(basic_ofstream<charT, traits>& x,
+              basic_ofstream<charT, traits>& y);
+ 
+template <class charT, class traits = char_traits<charT> >
+    class basic_fstream;
+typedef basic_fstream<char> fstream;
+typedef basic_fstream<wchar_t> wfstream;
+template <class charT, class traits>
+    void swap(basic_fstream<charT, traits>& x,
+              basic_fstream<charT, traits>& y);
+}
+
+
+///类 std::basic_filebuf
+template <class charT, class traits = char_traits<charT> >
+class basic_filebuf : public basic_streambuf<charT,traits> {
+ public:
+    typedef charT char_type;
+    typedef typename traits::int_type int_type;
+    typedef typename traits::pos_type pos_type;
+    typedef typename traits::off_type off_type;
+    typedef traits traits_type;
+ 
+    // 构造函数/析构函数：
+    basic_filebuf();
+    basic_filebuf(const basic_filebuf& rhs) = delete;
+    basic_filebuf(basic_filebuf&& rhs);
+    virtual ~basic_filebuf();
+ 
+    // 赋值/交换：
+    basic_filebuf& operator=(const basic_filebuf& rhs) = delete;
+    basic_filebuf& operator=(basic_filebuf&& rhs);
+    void swap(basic_filebuf& rhs);
+ 
+    // 成员：
+    bool is_open() const;
+    basic_filebuf<charT,traits>* open(const char* s, ios_base::openmode mode);
+    basic_filebuf<charT,traits>* open(const string& s, ios_base::openmode mode);
+    basic_filebuf<charT,traits>* close();
+ 
+ protected:
+    // 覆写的虚函数：
+    virtual streamsize showmanyc();
+    virtual int_type underflow();
+    virtual int_type uflow();
+    virtual int_type pbackfail(int_type c = traits::eof());
+    virtual int_type overflow (int_type c = traits::eof());
+    virtual basic_streambuf<charT,traits>* setbuf(char_type* s, streamsize n);
+    virtual pos_type seekoff(off_type off, ios_base::seekdir way,
+                             ios_base::openmode which = ios_base::in|ios_base::out);
+    virtual pos_type seekpos(pos_type sp,
+                             ios_base::openmode which = ios_base::in|ios_base::out);
+    virtual int sync();
+    virtual void imbue(const locale& loc);
+};
+
+
+///类 std::basic_ifstream
+template <class charT, class traits = char_traits<charT> >
+class basic_ifstream : public basic_istream<charT,traits> {
+ public:
+    typedef charT char_type;
+    typedef typename traits::int_type int_type;
+    typedef typename traits::pos_type pos_type;
+    typedef typename traits::off_type off_type;
+    typedef traits traits_type;
+ 
+    // 构造函数：
+    basic_ifstream();
+    explicit basic_ifstream(const char* s, ios_base::openmode mode = ios_base::in);
+    explicit basic_ifstream(const string& s, ios_base::openmode mode = ios_base::in);
+    basic_ifstream(const basic_ifstream& rhs) = delete;
+    basic_ifstream(basic_ifstream&& rhs);
+ 
+    // 赋值/交换：
+    basic_ifstream& operator=(const basic_ifstream& rhs) = delete;
+    basic_ifstream& operator=(basic_ifstream&& rhs);
+    void swap(basic_ifstream& rhs);
+ 
+    // 成员：
+    basic_filebuf<charT,traits>* rdbuf() const;
+    bool is_open() const;
+    void open(const char* s, ios_base::openmode mode = ios_base::in);
+    void open(const string& s, ios_base::openmode mode = ios_base::in);
+    void close();
+ 
+ private:
+    basic_filebuf<charT,traits> sb; // 仅为说明
+};
+
+
+///类 std::basic_ofstream
+template <class charT, class traits = char_traits<charT> >
+class basic_ofstream : public basic_ostream<charT,traits> {
+ public:
+    typedef charT char_type;
+    typedef typename traits::int_type int_type;
+    typedef typename traits::pos_type pos_type;
+    typedef typename traits::off_type off_type;
+    typedef traits traits_type;
+ 
+    // 构造函数：
+    basic_ofstream();
+    explicit basic_ofstream(const char* s, ios_base::openmode mode = ios_base::out);
+    explicit basic_ofstream(const string& s, ios_base::openmode mode = ios_base::out);
+    basic_ofstream(const basic_ofstream& rhs) = delete;
+    basic_ofstream(basic_ofstream&& rhs);
+ 
+    // 赋值/交换：
+    basic_ofstream& operator=(const basic_ofstream& rhs) = delete;
+    basic_ofstream& operator=(basic_ofstream&& rhs);
+    void swap(basic_ofstream& rhs);
+ 
+    // 成员：
+    basic_filebuf<charT,traits>* rdbuf() const;
+    bool is_open() const;
+    void open(const char* s, ios_base::openmode mode = ios_base::out);
+    void open(const string& s, ios_base::openmode mode = ios_base::out);
+    void close();
+ 
+ private:
+    basic_filebuf<charT,traits> sb; // 仅为说明
+};
+
+
+///类 std::basic_fstream
+template <class charT, class traits=char_traits<charT> >
+class basic_fstream : public basic_iostream<charT,traits> {
+ public:
+    typedef charT char_type;
+    typedef typename traits::int_type int_type;
+    typedef typename traits::pos_type pos_type;
+    typedef typename traits::off_type off_type;
+    typedef traits traits_type;
+ 
+    // 构造函数/析构函数
+    basic_fstream();
+    explicit basic_fstream(const char* s,
+                           ios_base::openmode mode = ios_base::in|ios_base::out);
+    explicit basic_fstream(const string& s,
+                           ios_base::openmode mode = ios_base::in|ios_base::out);
+    basic_fstream(const basic_fstream& rhs) = delete;
+    basic_fstream(basic_fstream&& rhs);
+ 
+    // 赋值/交换：
+    basic_fstream& operator=(const basic_fstream& rhs) = delete;
+    basic_fstream& operator=(basic_fstream&& rhs);
+    void swap(basic_fstream& rhs);
+ 
+    // 成员：
+    basic_filebuf<charT,traits>* rdbuf() const;
+    bool is_open() const;
+    void open(const char* s,
+              ios_base::openmode mode = ios_base::in|ios_base::out);
+    void open(const string& s,
+              ios_base::openmode mode = ios_base::in|ios_base::out);
+    void close();
+ 
+ private:
+    basic_filebuf<charT,traits> sb; // 仅为说明
+};

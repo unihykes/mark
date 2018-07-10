@@ -1,0 +1,69 @@
+///概要
+namespace std {
+    class thread;
+ 
+    void swap(thread& x, thread& y) noexcept;
+ 
+    bool operator==(thread::id x, thread::id y) noexcept;
+    bool operator!=(thread::id x, thread::id y) noexcept;
+ 
+    bool operator<(thread::id x, thread::id y) noexcept;
+    bool operator<=(thread::id x, thread::id y) noexcept;
+    bool operator>(thread::id x, thread::id y) noexcept;
+    bool operator>=(thread::id x, thread::id y) noexcept;
+ 
+    template<class CharT, class Traits>
+    basic_ostream<CharT, Traits>& operator<<(basic_ostream<CharT, Traits>& out,
+                                            thread::id id);
+ 
+    template <class T> struct hash;
+    template <> struct hash<thread::id>;
+ 
+    namespace this_thread {
+ 
+        thread::id get_id() noexcept;
+        void yield() noexcept;
+        template <class Clock, class Duration>
+            void sleep_until(const chrono::time_point<Clock, Duration>& abs_time);
+        template <class Rep, class Period>
+            void sleep_for(const chrono::duration<Rep, Period>& rel_time);
+ 
+    }
+}
+
+
+
+///类 std::thread
+class thread {
+ public:
+    // 类型：
+    class id;
+    typedef /*implementation-defined*/ native_handle_type;
+ 
+    // 构造/复制/销毁：
+    thread() noexcept;
+    template <class F, class ...Args> explicit thread(F&& f, Args&&... args);
+    ~thread();
+    thread(const thread&) = delete;
+    thread(thread&&) noexcept;
+    thread& operator=(const thread&) = delete;
+    thread& operator=(thread&&) noexcept;
+ 
+    // 成员：
+    void swap(thread&) noexcept;
+    bool joinable() const noexcept;
+    void join();
+    void detach();
+    id get_id() const noexcept;
+    native_handle_type native_handle();
+ 
+    // 静态成员：
+    static unsigned hardware_concurrency() noexcept;
+};
+
+
+///类 std::thread::id
+class thread::id {
+ public:
+    id() noexcept;
+};

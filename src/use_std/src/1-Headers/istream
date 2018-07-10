@@ -1,0 +1,155 @@
+///概要
+namespace std {
+    template <class charT, class traits = char_traits<charT> >
+        class basic_istream;
+    typedef basic_istream<char>    istream;
+    typedef basic_istream<wchar_t> wistream;
+ 
+    template <class charT, class traits = char_traits<charT> >
+        class basic_iostream;
+    typedef basic_istream<char>    iostream;
+    typedef basic_istream<wchar_t> wiostream;
+ 
+    template <class charT, class traits>
+        basic_istream<charT,traits>& ws(basic_istream<charT,traits>& is);
+ 
+    template <class charT, class traits, class T>
+        basic_istream<charT, traits>&
+        operator>>(basic_istream<charT, traits>&& is, T& x);
+ 
+    // 字符释出模板：
+    template<class charT, class traits>
+        basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>&, 
+                                                charT&);
+    template<class traits>
+        basic_istream<char,traits>& operator>>(basic_istream<char,traits>&,
+                                            unsigned char&);
+    template<class traits>
+        basic_istream<char,traits>& operator>>(basic_istream<char,traits>&,
+                                            signed char&);
+    template<class charT, class traits>
+        basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>&,
+                                                charT*);
+    template<class traits>
+        basic_istream<char,traits>& operator>>(basic_istream<char,traits>&,
+                                            unsigned char*);
+    template<class traits>
+        basic_istream<char,traits>& operator>>(basic_istream<char,traits>&,
+                                            signed char*);
+ 
+}
+
+
+///类 std::basic_istream
+template <class charT, class traits = char_traits<charT> >
+class basic_istream : virtual public basic_ios<charT,traits> {
+public:
+    // 类型（继承自 basic_ios ）：
+    typedef charT                     char_type;
+    typedef typename traits::int_type int_type;
+    typedef typename traits::pos_type pos_type;
+    typedef typename traits::off_type off_type;
+    typedef traits                    traits_type;
+ 
+    // 构造函数/析构函数：
+    explicit basic_istream(basic_streambuf<char_type,traits>* sb);
+    virtual ~basic_istream();
+ 
+    // 前缀/后缀：
+    class sentry;
+ 
+    // 有格式输入：
+    basic_istream<charT,traits>& operator>>(
+        basic_istream<charT,traits>& (*pf)(basic_istream<charT,traits>&));
+    basic_istream<charT,traits>& operator>>(
+        basic_ios<charT,traits>& (*pf)(basic_ios<charT,traits>&));
+    basic_istream<charT,traits>& operator>>(
+        ios_base& (*pf)(ios_base&));
+ 
+    basic_istream<charT,traits>& operator>>(bool& n);
+    basic_istream<charT,traits>& operator>>(short& n);
+    basic_istream<charT,traits>& operator>>(unsigned short& n);
+    basic_istream<charT,traits>& operator>>(int& n);
+    basic_istream<charT,traits>& operator>>(unsigned int& n);
+    basic_istream<charT,traits>& operator>>(long& n);
+    basic_istream<charT,traits>& operator>>(unsigned long& n);
+    basic_istream<charT,traits>& operator>>(long long& n);
+    basic_istream<charT,traits>& operator>>(unsigned long long& n);
+ 
+    basic_istream<charT,traits>& operator>>(float& f);
+    basic_istream<charT,traits>& operator>>(double& f);
+    basic_istream<charT,traits>& operator>>(long double& f);
+ 
+    basic_istream<charT,traits>& operator>>(void*& p);
+    basic_istream<charT,traits>& operator>>(
+        basic_streambuf<char_type,traits>* sb);
+ 
+    // 无格式输入：
+    streamsize gcount() const;
+    int_type get();
+    basic_istream<charT,traits>& get(char_type& c);
+    basic_istream<charT,traits>& get(char_type* s, streamsize n);
+    basic_istream<charT,traits>& get(char_type* s, streamsize n,
+                                     char_type delim);
+    basic_istream<charT,traits>& get(basic_streambuf<char_type,traits>& sb);
+    basic_istream<charT,traits>& get(basic_streambuf<char_type,traits>& sb,
+                                     char_type delim);
+ 
+    basic_istream<charT,traits>& getline(char_type* s, streamsize n);
+    basic_istream<charT,traits>& getline(char_type* s, streamsize n,
+                                         char_type delim);
+ 
+ 
+    basic_istream<charT,traits>& ignore(
+        streamsize n = 1, int_type delim = traits::eof());
+    int_type                     peek();
+    basic_istream<charT,traits>& read    (char_type* s, streamsize n);
+    streamsize                   readsome(char_type* s, streamsize n);
+ 
+    basic_istream<charT,traits>& putback(char_type c);
+    basic_istream<charT,traits>& unget();
+    int sync();
+ 
+    pos_type tellg();
+    basic_istream<charT,traits>& seekg(pos_type);
+    basic_istream<charT,traits>& seekg(off_type, ios_base::seekdir);
+ 
+protected:
+    basic_istream(const basic_istream& rhs) = delete;
+    basic_istream(basic_istream&& rhs);
+ 
+    // 赋值/交换：
+    basic_istream& operator=(const basic_istream& rhs) = delete;
+    basic_istream& operator=(basic_istream&& rhs);
+    void swap(basic_istream& rhs);
+ 
+};
+
+
+///类 std::basic_iostream
+template <class charT, class traits = char_traits<charT> >
+class basic_iostream :
+    public basic_istream<charT,traits>,
+    public basic_ostream<charT,traits> {
+ 
+public:
+    // 类型
+    typedef charT                     char_type;
+    typedef typename traits::int_type int_type;
+    typedef typename traits::pos_type pos_type;
+    typedef typename traits::off_type off_type;
+    typedef traits                    traits_type;
+ 
+    // 构造函数/析构函数
+    explicit basic_iostream(basic_streambuf<charT,traits>* sb);
+    virtual ~basic_iostream();
+ 
+protected:
+    basic_iostream(const basic_iostream& rhs) = delete;
+    basic_iostream(basic_iostream&& rhs);
+ 
+    // 赋值/交换
+    basic_iostream& operator=(const basic_iostream& rhs) = delete;
+    basic_iostream& operator=(basic_iostream&& rhs);
+    void swap(basic_iostream& rhs);
+};

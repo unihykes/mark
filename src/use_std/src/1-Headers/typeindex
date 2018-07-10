@@ -1,0 +1,23 @@
+﻿
+namespace std {
+    class type_index;
+    template <class T> struct hash;
+    template<> struct hash<type_index>;
+}
+类 std::type_index
+class type_index {
+public:
+    type_index(const type_info& rhs) noexcept;
+    bool operator==(const type_index& rhs) const noexcept;
+    bool operator!=(const type_index& rhs) const noexcept;
+    bool operator< (const type_index& rhs) const noexcept;
+    bool operator<= (const type_index& rhs) const noexcept;
+    bool operator> (const type_index& rhs) const noexcept;
+    bool operator>= (const type_index& rhs) const noexcept;
+    size_t hash_code() const;
+    const char* name() const;
+private:
+    const type_info* target; // 仅为说明
+    // 注意此处使用指针而非引用，表示会提供默认的复制/移动构造函数及赋值运算符
+    // 且它们按期待工作。
+};
