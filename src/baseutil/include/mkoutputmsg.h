@@ -26,10 +26,11 @@ info:
 
 #define MK_LOG(fmt, ...)		    													\
     mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_LOG, "monk", __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__);
-    
-#define mkPrint         MK_PRINT_MSG;
-#define mkTrace         MK_TRACE;
-#define mkLog           MK_LOG;
+
+#define MK_PRINT        MK_PRINT_MSG
+#define mkPrint         MK_PRINT
+#define mkTrace         MK_TRACE
+#define mkLog           MK_LOG
 
 class mkOutputMsg
 {
