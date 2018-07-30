@@ -32,34 +32,68 @@ protected:
             MK_PRINT("");
             while(true) {
                 MK_PRINT("");
-                if(thread->NeedStop()) {
+                if(thread->NeedAbrot()) {
                     MK_PRINT("");
                     break;
                 }
             }
             
             MK_PRINT("");
-            throw string("something is wrong!");
+            if(0) {
+                thread->SetFinished();
+            }
+            else {
+                throw string("something is wrong!");
+            }
         }
     private:
     };
 };
 
-
+TEST_F(ut_mkUniqueThread, lambda)
+{
+    MK_PRINT("");
+    
+    auto lam = [](mkUniqueThread* thread, int& a) ->void{
+        MK_PRINT("a=%d",a);
+        while(true) {
+            if(thread->NeedAbrot()) {
+                break;
+            }
+        }
+        a = 222;
+        thread->SetFinished();
+    };
+    
+    {
+        MK_PRINT("");
+        int a = 11;
+        mkUniqueThread thread(lam, std::ref(a));
+        thread.SetAbort();
+        thread.Get();
+        MK_PRINT("a=%d",a);
+    }
+    
+    MK_PRINT("");
+    cout<<endl;
+}
 
 TEST_F(ut_mkUniqueThread, normal)
 {
     MK_PRINT("");
+    
     ncABC abc;
+    
     {
         MK_PRINT("");
-        mkUniqueThread thread;
-        thread.RunWithCallback(&ncABC::run, &abc);
+        mkUniqueThread thread(&ncABC::run, &abc);
         MK_PRINT("");
     }
+    
     MK_PRINT("");
     cout<<endl;
 }
+
 
 TEST_F(ut_mkUniqueThread, Get)
 {
@@ -67,11 +101,10 @@ TEST_F(ut_mkUniqueThread, Get)
     ncABC abc;
     {
         MK_PRINT("");
-        mkUniqueThread thread;
-        thread.RunWithCallback(&ncABC::run, &abc);
+        mkUniqueThread thread(&ncABC::run, &abc);
         MK_PRINT("");
         
-        thread.SetStop();
+        thread.SetAbort();
         thread.Get();
     }
     MK_PRINT("");
@@ -84,12 +117,11 @@ TEST_F(ut_mkUniqueThread, exception)
     ncABC abc;
     {
         MK_PRINT("");
-        mkUniqueThread thread;
-        thread.RunWithCallback(&ncABC::run, &abc);
+        mkUniqueThread thread(&ncABC::run, &abc);
         MK_PRINT("");
         try {
             MK_PRINT("");
-            thread.SetStop();
+            thread.SetAbort();
             thread.Get();
             MK_PRINT("");
         }

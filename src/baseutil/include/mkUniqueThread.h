@@ -4,7 +4,11 @@ Author:liu.hao
 Time:2018-2
 
 info:
-
+    一个轻量线程代理,具有如下特点:
+    1.可将全局函数作为线程执行体,支持变长参数
+    2.可将类的成员函数作为线程执行体,支持变长参数
+    3.出了ncAutoThread对象所在作用域后自动结束线程;
+    4.线程结束后调用Get()接口, 可以获取线程执行结果和异常,线程未结束时,调用Get()会阻塞直到线程结束;
 ***************************************************************************************************/
 
 #ifndef __mkUniqueThread
@@ -13,71 +17,80 @@ info:
 #include <thread>
 #include <future>
 
-
 class mkUniqueThread
 {
 public:
-    mkUniqueThread()
-        : _needStop(false)
+    //绑定全局函数
+    //到该函数的参数只能move或者按值复制,若需要传递引用参数,在上层调用时必须包装之(可用std::ref或者std::cref等)
+    template<typename Func, typename... Args>
+    mkUniqueThread(Func&& procRunFunc, Args&&... args)
+        : _needAbort(false)
+        , _hasFinished(false)
     {
-        MK_PRINT("");
+        std::packaged_task<void(mkUniqueThread*, Args...)> task(std::forward<Func>(procRunFunc));
+        _future = task.get_future();
+        std::thread temp(std::move(task), this, std::forward<Args>(args)...);
+        _thread = std::move(temp);
     }
+    
+    //绑定类的成员函数
+    //到该函数的参数只能move或者按值复制,若需要传递引用参数,在上层调用时必须包装之(可用std::ref或者std::cref等)
+    template<typename T, typename Func, typename... Args>
+    mkUniqueThread(Func&& procRunFunc, T* procInstance, Args&&... args)
+        : _needAbort(false)
+        , _hasFinished(false)
+    {
+        std::packaged_task<void(T*, mkUniqueThread*, Args...)> task(std::forward<Func>(procRunFunc));
+        _future = task.get_future();
+        std::thread temp(std::move(task), procInstance, this, std::forward<Args>(args)...);
+        _thread = std::move(temp);
+    }
+    
     
     ~mkUniqueThread()
     {
-        MK_PRINT("");
-        _needStop = true;
-        if(_checkThread.joinable()) {
-            MK_PRINT("");
-            _checkThread.join();
-            MK_PRINT("");
+        _needAbort = true;
+        if(_thread.joinable()) {
+            _thread.join();
         }
-        MK_PRINT("");
     }
     
-    template<typename T, typename Func = void(T::*)(mkUniqueThread*)>
-    void RunWithCallback(Func procRunFunc, T* procInstance)
-    {
-        MK_PRINT("");
-        std::packaged_task<void(T*, mkUniqueThread*)> task(procRunFunc);
-        _future = task.get_future();
-        std::thread temp(std::move(task), procInstance, this);
-        _checkThread = std::move(temp);
-        MK_PRINT("");
-        /*
-        std::thread temp(procRunFunc, procInstance, this);
-        _checkThread = std::move(temp);
-        */
-    }
-    
-    void SetStop()
-    {
-        MK_PRINT("");
-        _needStop = true;
-    }
-    
-    bool NeedStop()
-    {
-        MK_PRINT("_needStop = %d", int(_needStop));
-        return _needStop;
-    }
-    
+    //外界获取线程的执行结果或异常
     void Get()
     {
-        try {
-            MK_PRINT("");
-            return _future.get();
-        }
-        catch(...) {
-            MK_PRINT("");
-            throw;
-        }
+        return _future.get();
     }
     
+    //外界决定停止该线程,设置标志
+    void SetAbort()
+    {
+        _needAbort = true;
+    }
+    
+    //外界查询线程是否已经执行完成
+    bool HasFinished()
+    {
+        return _hasFinished;
+    }
+    
+    //线程执行体中,用来判断线程是否需要停止
+    bool NeedAbrot()
+    {
+        return _needAbort;
+    }
+    
+    //线程执行体中,当任务执行完成后,设置此标志
+    void SetFinished()
+    {
+        _hasFinished = true;
+    }
+    
+    
 private:
-    bool                        _needStop;
-    std::thread                 _checkThread;
+    std::thread                 _thread;
     std::future<void>           _future;
+    bool                        _needAbort;
+    bool                        _hasFinished;
 };
 
 #endif //__mkUniqueThread
