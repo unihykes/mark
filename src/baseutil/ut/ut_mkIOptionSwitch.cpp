@@ -18,9 +18,21 @@ info:
 class mkMultiChannel final : public mkIOption
 {
 public:
-    mkMultiChannel() :mkIOption(false){}
-    virtual bool SetAttribute (const string& key, const string& value) override{return false;}
-    virtual void Apply(){}
+    mkMultiChannel() 
+        :mkIOption(false)
+    {
+        RegisterKeyList("aaa");
+        RegisterKeyList("bbb");
+        RegisterKeyList("ccc");
+    }
+    
+    virtual void SetVaule (const string& key, const string& value) override
+    {
+    }
+    
+    virtual void Apply() override
+    {
+    }
     
     const int GetDataChannelCount() const 
     {
@@ -41,8 +53,14 @@ class mkOptionA final : public mkIOption
 {
 public:
     mkOptionA() :mkIOption(false){}
-    virtual bool SetAttribute (const string& key, const string& value) override{return false;}
-    virtual void Apply(){}
+    
+    virtual void SetVaule (const string& key, const string& value) override
+    {
+    }
+    
+    virtual void Apply() override
+    {
+    }
     
     int GetfuncA() const
     {
@@ -57,8 +75,14 @@ class mkOptionB final : public mkIOption
 {
 public:
     mkOptionB() :mkIOption(false){}
-    virtual bool SetAttribute (const string& key, const string& value) override{return false;}
-    virtual void Apply(){}
+    
+    virtual void SetVaule (const string& key, const string& value) override
+    {
+    }
+    
+    virtual void Apply() override
+    {
+    }
     
     string GetFuncB() const
     {
@@ -81,12 +105,11 @@ public:
 
     ~mkBackupSwitch()
     {
-        UnregisterOption<mkMultiChannel>();
         UnregisterOptionAll();
     }
     
 private:
-    virtual void imp_ApplyOptionAll() override
+    virtual void BeforeApplyAttrBatch() override
     {
     }
 };
@@ -108,11 +131,11 @@ TEST_F(ut_mkIOptionSwitch, lambda)
     mkBackupSwitch switchs;
     
     //设置选项
-    switchs.SetOptionAttribute("test_key1", "test_value1");
-    switchs.SetOptionAttribute("test_key2", "test_value2");
-    switchs.SetOptionAttribute("test_key3", "test_value3");
-    switchs.SetOptionAttribute("test_key4", "test_value4");
-    switchs.ApplyOptionAll();
+    switchs.SetOptionAttrBatch("test_key1", "test_value1");
+    switchs.SetOptionAttrBatch("test_key2", "test_value2");
+    switchs.SetOptionAttrBatch("test_key3", "test_value3");
+    switchs.SetOptionAttrBatch("test_key4", "test_value4");
+    switchs.ApplyOptionAttrBatch();
     
     //使用选项
     {
@@ -132,9 +155,10 @@ TEST_F(ut_mkIOptionSwitch, lambda)
     
     //修改选项
     {
-        auto pOption = switchs.ModifyOption<mkMultiChannel>();
-        pOption->SetAttribute("test_keyxxx", "test_valuexxxx");
-        pOption->Apply();
+        switchs.SetOptionAttr<mkMultiChannel>("test_keyxxx", "test_valuexxx");
+        switchs.SetOptionAttr<mkMultiChannel>("test_keyyyy", "test_valueyyy");
+        switchs.SetOptionAttr<mkMultiChannel>("test_keyzzz", "test_valuezzz");
+        switchs.ApplyOptionAttr<mkMultiChannel>();
     }
     
     //禁用选项
