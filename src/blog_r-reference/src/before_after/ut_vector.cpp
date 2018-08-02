@@ -10,7 +10,7 @@ info:
 using namespace std;
 
 #include <gtest/gtest.h>
-#include "ncAutoProfilePoint.h"
+#include "mkUniqueProfilePoint.h"
 #include "ncLargeStruct.h"
 
 static int loopCount = 200;//用来定义循环次数
@@ -38,7 +38,7 @@ vector<ncLargeStruct> fun_vector2()
 TEST(ut_vector, vector)
 {
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         
         vector<ncLargeStruct> vStr;
         fun_vector1(vStr);
@@ -46,7 +46,7 @@ TEST(ut_vector, vector)
     printf("fun_vector1() usedSecond = %.2fs\n", usedSecond);
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         
         vector<ncLargeStruct> vStr2;
         vStr2 = fun_vector2();

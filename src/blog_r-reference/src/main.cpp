@@ -8,7 +8,7 @@ info:
 ***************************************************************************************************/
 #include <mkheaders.h>
 #include <gtest/gtest.h>
-#include "ncAutoProfilePoint.h"
+#include "mkUniqueProfilePoint.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // main
@@ -22,10 +22,10 @@ int main(int argc, char** argv)
         return 0;
     }
     
-    //初始化 ncAutoProfilePoint
+    //初始化 mkUniqueProfilePoint
     double usedSecond = 0;
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
     }
     
     //testing::AddGlobalTestEnvironment(new ncEnvironment());

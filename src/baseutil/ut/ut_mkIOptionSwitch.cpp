@@ -19,11 +19,15 @@ class mkMultiChannel final : public mkIOption
 {
 public:
     mkMultiChannel() 
-        :mkIOption(false)
+        : mkIOption(false)
+        , _dataChannelCount(12)
+        , _metaChannelCount(33)
     {
-        RegisterKeyList("aaa");
-        RegisterKeyList("bbb");
-        RegisterKeyList("ccc");
+        RegisterKeyList({
+            "aaa",
+            "bbb",
+            "ccc"
+        });
     }
     
     virtual void SetVaule (const string& key, const string& value) override
@@ -52,7 +56,15 @@ private:
 class mkOptionA final : public mkIOption
 {
 public:
-    mkOptionA() :mkIOption(false){}
+    mkOptionA() 
+        :mkIOption(false)
+    {
+        RegisterKeyList({
+            "ddd",
+            "eee",
+            "fff"
+        });
+    }
     
     virtual void SetVaule (const string& key, const string& value) override
     {
@@ -68,13 +80,21 @@ public:
     }
     
 private:
-    int value;
+    int _value;
 };
 
 class mkOptionB final : public mkIOption
 {
 public:
-    mkOptionB() :mkIOption(false){}
+    mkOptionB() 
+        :mkIOption(false)
+    {
+        RegisterKeyList({
+            "ggg",
+            "hhh",
+            "iii"
+        });
+    }
     
     virtual void SetVaule (const string& key, const string& value) override
     {
@@ -89,7 +109,7 @@ public:
         return "abc";
     }
 private:
-    int value;
+    string _value;
 };
 
 //备份选项
@@ -130,39 +150,47 @@ TEST_F(ut_mkIOptionSwitch, lambda)
 {
     mkBackupSwitch switchs;
     
-    //设置选项
-    switchs.SetOptionAttrBatch("test_key1", "test_value1");
-    switchs.SetOptionAttrBatch("test_key2", "test_value2");
-    switchs.SetOptionAttrBatch("test_key3", "test_value3");
-    switchs.SetOptionAttrBatch("test_key4", "test_value4");
-    switchs.ApplyOptionAttrBatch();
-    
-    //使用选项
-    {
-        auto pOption = switchs.GetOption<mkMultiChannel>();
-        pOption->GetDataChannelCount();
-        pOption->GetMetaChannelCount();
+    try {
+        //设置选项
+        switchs.SetOptionAttrBatch("aaa", "test_value1");
+        switchs.SetOptionAttrBatch("ddd", "test_value2");
+        switchs.SetOptionAttrBatch("fff", "test_value3");
+        switchs.SetOptionAttrBatch("hhh", "test_value4");
+        switchs.ApplyOptionAttrBatch();
+        MK_PRINT();
+        
+        //使用选项
+        {
+            auto pOption = switchs.GetOption<mkMultiChannel>();
+            MK_PRINT("cout = %d", pOption->GetDataChannelCount());
+            MK_PRINT("cout = %d", pOption->GetMetaChannelCount());
+        }
+        {
+            auto pOption = switchs.GetOption<mkOptionA>();
+            int id = pOption->GetfuncA();
+            MK_PRINT("id = %d", id);
+        }
+        {
+            auto pOption = switchs.GetOption<mkOptionB>();
+            string name = pOption->GetFuncB();
+            MK_PRINT("name = %s", name);
+        }
+        
+        //修改选项
+        {
+            switchs.SetOptionAttr<mkMultiChannel>("aaa", "test_valuexxx");
+            switchs.SetOptionAttr<mkMultiChannel>("bbb", "test_valueyyy");
+            switchs.SetOptionAttr<mkMultiChannel>("ccc", "test_valuezzz");
+            switchs.ApplyOptionAttr<mkMultiChannel>();
+        }
+        
+        //禁用选项
+        {
+            switchs.DisableOption<mkMultiChannel>();
+        }
     }
-    {
-        auto pOption = switchs.GetOption<mkOptionA>();
-        int id = pOption->GetfuncA();
+    catch(string& e) {
+        MK_PRINT("e = %s", e.c_str());
     }
-    {
-        auto pOption = switchs.GetOption<mkOptionB>();
-        string name = pOption->GetFuncB();
-    }
-    
-    
-    //修改选项
-    {
-        switchs.SetOptionAttr<mkMultiChannel>("test_keyxxx", "test_valuexxx");
-        switchs.SetOptionAttr<mkMultiChannel>("test_keyyyy", "test_valueyyy");
-        switchs.SetOptionAttr<mkMultiChannel>("test_keyzzz", "test_valuezzz");
-        switchs.ApplyOptionAttr<mkMultiChannel>();
-    }
-    
-    //禁用选项
-    {
-        switchs.DisableOption<mkMultiChannel>();
-    }
+
 }

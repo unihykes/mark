@@ -9,7 +9,7 @@ info:
 
 #include <mkheaders.h>
 #include <gtest/gtest.h>
-#include "ncAutoProfilePoint.h"
+#include "mkUniqueProfilePoint.h"
 #include "ncMetadataObj.h"
 
 static double usedSecond = 0;  //用来保存指定作用域所消耗时间
@@ -22,21 +22,21 @@ TEST(ut_metadataObj, push_back)
     ncMetadataObj obj;
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         ncNewCustomString str("some string...");
         obj.push_back(str);
     }
     MK_PRINT_MSG("push_back--1 usedSecond = %.2f\n", usedSecond);
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         ncNewCustomString str("some string...");
         obj.push_back(std::move(str));
     }
     MK_PRINT_MSG("push_back--2 usedSecond = %.2f\n", usedSecond);
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         obj.push_back(ncNewCustomString("some string..."));
     }
     MK_PRINT_MSG("push_back--3 usedSecond = %.2f\n", usedSecond);
@@ -58,13 +58,13 @@ ncNewCustomString GetNewString()
 TEST(ut_metadataObj, return_Value)
 {
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         GetOldString();
     }
     MK_PRINT_MSG("usedSecond = %.2f\n", usedSecond);
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         GetNewString();
     }
     MK_PRINT_MSG("usedSecond = %.2f\n", usedSecond);
@@ -76,14 +76,14 @@ TEST(ut_metadataObj, return_Value)
 TEST(ut_metadataObj, constructor)
 {
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         ncMetadataObj obj1(ncOldCustomString("some string..."));
         obj1.fun();
     }
     MK_PRINT_MSG("obj1 usedSecond = %.2f\n", usedSecond);
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         ncMetadataObj obj2(ncNewCustomString("some string..."));
         obj2.fun();
     }

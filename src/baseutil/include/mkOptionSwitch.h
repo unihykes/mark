@@ -30,7 +30,7 @@ public:
     
 protected:
     //注册可用的key-list(派生类构造函数中调用)
-    virtual void RegisterKeyList(const TypeKey& key) final;
+    virtual void RegisterKeyList(std::initializer_list<TypeKey> keyList) final;
     
     //启用/禁用该选项(派生类的Apply函数中调用)
     virtual void SetEnable(const bool& val) final;
@@ -145,9 +145,9 @@ public:
         return _enable;
     }
     
-    void RegisterKeyList(const TypeKey& key)
+    void RegisterKeyList(std::initializer_list<TypeKey> keyList)
     {
-        _keySet.insert(key);
+        _keySet = keyList;
     }
     
 private:
@@ -185,9 +185,9 @@ void mkIOption_base<TypeKey, TypeValue>::SetEnable(const bool& val)
 }
 
 template<class TypeKey, class TypeValue>
-void mkIOption_base<TypeKey, TypeValue>::RegisterKeyList(const TypeKey& key)
+void mkIOption_base<TypeKey, TypeValue>::RegisterKeyList(std::initializer_list<TypeKey> keyList)
 {
-    _imp->RegisterKeyList(key);
+    _imp->RegisterKeyList(keyList);
 }
 
 //

@@ -18,14 +18,14 @@ info:
     #include <io.h>//for access()
 #endif
 
-#define MK_PRINT_MSG(fmt, ...)															\
-    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_PRINT, "monk", __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__);
+#define MK_PRINT_MSG(...)															\
+    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_PRINT, "monk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
     
-#define MK_TRACE(fmt, ...)		    													\
-    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_TRACE, "monk", __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__);
+#define MK_TRACE(...)		    													\
+    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_TRACE, "monk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
 
-#define MK_LOG(fmt, ...)		    													\
-    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_LOG, "monk", __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__);
+#define MK_LOG(...)		    													\
+    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_LOG, "monk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
 
 #define MK_PRINT        MK_PRINT_MSG
 #define mkPrint         MK_PRINT
@@ -42,6 +42,12 @@ public:
         MK_TRACE,
         MK_LOG,
     };
+    
+    //空msg
+    inline void OutputMsg(mkOutputMsgType type, const char* moduleName, const char* file, int line, const char* funcName)
+    {
+        OutputMsg(type, moduleName, file, line, funcName, "");
+    }
     
     //T可以为char或者wchar_t
     template<typename T>

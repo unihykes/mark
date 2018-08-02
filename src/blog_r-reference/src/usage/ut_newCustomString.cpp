@@ -9,7 +9,7 @@ info:
 
 #include <mkheaders.h>
 #include <gtest/gtest.h>
-#include "ncAutoProfilePoint.h"
+#include "mkUniqueProfilePoint.h"
 #include "ncNewCustomString.h"
 
 #define SOME_STRING                                                                                  \
@@ -54,13 +54,13 @@ void fun_newCustomString2()
 TEST(ut_newCustomString, newCustomString1)
 {
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         fun_newCustomString1();
     }
     MK_PRINT_MSG("fun_newCustomString1() usedSecond = %.2f", usedSecond);
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         fun_newCustomString2();
     }
     MK_PRINT_MSG("fun_newCustomString2() usedSecond = %.2f", usedSecond);
@@ -82,7 +82,7 @@ ncNewCustomString fun_newCustomString4()
 TEST(ut_newCustomString, newCustomString2)
 {
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         
         for(int i = 0; i != loopCount; ++i) {
             ncNewCustomString str;
@@ -93,7 +93,7 @@ TEST(ut_newCustomString, newCustomString2)
     
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         
         for(int i = 0; i != loopCount; ++i) {
             ncNewCustomString str;

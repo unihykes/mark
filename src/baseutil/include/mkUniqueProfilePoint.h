@@ -1,13 +1,13 @@
 ﻿/***************************************************************************************************
-Author:liu.hao
+Author:liu.hao(33852613@163.com)
 
 Time:2018-3
 
 info:
 
 ***************************************************************************************************/
-#ifndef __ncAutoProfilePoint
-#define __ncAutoProfilePoint
+#ifndef __mkUniqueProfilePoint
+#define __mkUniqueProfilePoint
 
 #ifdef __LINUX__
     #include <sys/time.h>
@@ -16,10 +16,10 @@ info:
 #endif
 
 //性能工具
-class ncAutoProfilePoint
+class mkUniqueProfilePoint
 {
 public:
-    ncAutoProfilePoint(double& usedSecond)
+    mkUniqueProfilePoint(double& usedSecond)
         : _usedSecond(usedSecond)
     {
         #ifdef __WINDOWS__
@@ -32,7 +32,7 @@ public:
         #endif
     }
     
-    ~ncAutoProfilePoint()
+    ~mkUniqueProfilePoint()
     {
         
         #ifdef __WINDOWS__

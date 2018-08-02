@@ -10,7 +10,7 @@ info:
 using namespace std;
 
 #include <gtest/gtest.h>
-#include "ncAutoProfilePoint.h"
+#include "mkUniqueProfilePoint.h"
 #include "ncLargeStruct.h"
 
 static int loopCount = 500;//用来定义循环次数
@@ -49,7 +49,7 @@ private:
 TEST(ut_normalObj, Construction1)
 {
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         for(int i = 0; i != loopCount; ++i) {
             ncLargeStruct str;
             normalObj1 obj(str);
@@ -60,7 +60,7 @@ TEST(ut_normalObj, Construction1)
     
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         for(int i = 0; i != loopCount; ++i) {
             ncLargeStruct str;
             normalObj2 obj(str);
@@ -74,7 +74,7 @@ TEST(ut_normalObj, Construction1)
 TEST(ut_normalObj, Construction2)
 {
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         for(int i = 0; i != loopCount; ++i) {
             ncLargeStruct str;
             normalObj1 obj(move(str));
@@ -84,7 +84,7 @@ TEST(ut_normalObj, Construction2)
     printf("normalObj1() usedSecond = %.2fs\n", usedSecond);
     
     {
-        ncAutoProfilePoint point(usedSecond);
+        mkUniqueProfilePoint point(usedSecond);
         for(int i = 0; i != loopCount; ++i) {
             ncLargeStruct str;
             normalObj2 obj(move(str));
