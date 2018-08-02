@@ -127,12 +127,20 @@ public:
     //设置某属性,如果key对当前选项无效,则返回false
     bool SetAttribute (const TypeKey& key, const TypeValue& value)
     {
-        if(_keySet.count(key) == 0) {
+        //未注册,逐个遍历
+        if(_keySet.empty()) {
+            _pOption->SetVaule(key, value);
             return false;
         }
+        //已注册,则在注册列表里查找key是否存在,不存在则不用遍历(减少无效调用)
         else {
-            _pOption->SetVaule(key, value);
-            return true;
+            if(_keySet.count(key) == 0) {
+                return false;
+            }
+            else {
+                _pOption->SetVaule(key, value);
+                return true;
+            }
         }
     }
     

@@ -444,5 +444,84 @@ TEST_F(ut_mkIOptionSwitch, mkBackupConfig)
     catch(string& e) {
         MK_PRINT("e = %s", e.c_str());
     }
+}
 
+class mkOption : public mkIOption
+{
+public:
+    mkOption():mkIOption(false){}
+    mkOption(const bool& ebable):mkIOption(ebable){}
+    virtual void SetVaule (const string& key, const string& value) = 0;//设置自己的属性
+    virtual void Apply() = 0;//让自身属性生效
+};
+
+
+class mkOptionSwitch : public mkIOptionSwitch
+{
+private:
+    virtual void BeforeApplyAttrBatch() = 0;
+};
+
+
+class mkOption1 : public mkOption
+{
+private:
+    virtual void SetVaule (const string& key, const string& value)
+    {
+        if(key == "xxx") {
+            
+        }
+        else {
+            
+        }
+    }
+    virtual void Apply()
+    {
+        SetEnable(true);
+    }
+};
+
+
+class mkOptionSwitch1 :public mkOptionSwitch
+{
+public:
+    mkOptionSwitch1()
+    {
+        RegisterOption<mkOption1>();
+    }
+private:
+    virtual void BeforeApplyAttrBatch()
+    {
+        //nothong todo
+    }
+};
+
+TEST_F(ut_mkIOptionSwitch, mkOptionSwitch1)
+{
+    mkOptionSwitch1 config;
+    try {
+        //设置选项
+        config.SetOptionAttrBatch("AAA", "test_value1");
+        config.SetOptionAttrBatch("BBB", "test_value2");
+        config.ApplyOptionAttrBatch();
+        MK_PRINT();
+        
+        //使用选项
+        {
+            auto subConfig = config.GetOption<mkOption1>();
+        }
+        
+        //修改选项
+        {
+            config.SetOptionAttr<mkOption1>("AAA", "test_valuexxx");
+        }
+        
+        //禁用选项
+        {
+            config.DisableOption<mkOption1>();
+        }
+    }
+    catch(string& e) {
+        MK_PRINT("e = %s", e.c_str());
+    }
 }
