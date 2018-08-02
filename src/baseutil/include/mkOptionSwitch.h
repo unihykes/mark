@@ -5,6 +5,8 @@ Time:2018-8
 
 info:
     实现一个集成开关,每个开关(switch)有多个选项(option),每个选项有多个属性(key-value)
+    可用同时继承mkIOption_base和mkIOptionSwitch_base, 从而实现optionswitch嵌套optionswitch的场景;
+    但这种接口看起来不友好,因此暂不支持
 ***************************************************************************************************/
 
 #ifndef __mkOptionSwitch
@@ -54,7 +56,7 @@ template<class TypeKey, class TypeValue>
 class mkIOptionSwitch_base
 {
 public:
-    virtual ~mkIOptionSwitch_base(){}
+    virtual ~mkIOptionSwitch_base(){UnregisterOptionAll();}
     
     //批量设置某个选项的某个属性,这里用了契约,假定所有选项的任一属性都有唯一的key标志
     //全部属性设置完成后,需要与 ApplyOptionAll() 配对使用,使所有选项的设置生效
@@ -75,11 +77,9 @@ public:
 protected:
     //注册:指定选项
     //解注册:指定选项
-    //解注册:所有选项
     template<class T> void RegisterOption();
     template<class T> void UnregisterOption();
-    virtual void UnregisterOptionAll() final;
-    
+
 private:
     //派生类实现,在函数 ApplyOptionAttrBatch() 内部调用;
     //处理一些额外逻辑:
@@ -89,6 +89,8 @@ private:
     //4.等等
     virtual void BeforeApplyAttrBatch() = 0;
     
+    //解注册:所有选项
+    virtual void UnregisterOptionAll() final;
 protected:
     std::map<std::type_index, mkIOption_base<TypeKey, TypeValue>*> _options;
 };
@@ -207,6 +209,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::SetOptionAttrBatch (const TypeKey
     if(!validKey) {
         //todo
         //无效的key
+        MK_PRINT("todo...");
         throw string("todo");
     }
 }
@@ -235,12 +238,14 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::SetOptionAttr(const TypeKey& attr
         else {
             //key无效
             //todo
+            MK_PRINT("todo...");
             throw string("todo");
         }
     }
     else {
         //todo
         //选项不存在
+        MK_PRINT("todo...");
         throw string("todo");
     }
     
@@ -258,6 +263,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::ApplyOptionAttr()
     }
     else {
         //todo
+        MK_PRINT("todo...");
         throw string("todo");
     }
 }
@@ -276,6 +282,7 @@ const T* mkIOptionSwitch_base<TypeKey, TypeValue>::GetOption() const
     }
     else {
         //todo
+        MK_PRINT("todo...");
          throw string("todo");
     }
 }
@@ -292,6 +299,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::DisableOption() const
     }
     else {
         //todo
+        MK_PRINT("todo...");
         throw string("todo");
     }
 }
@@ -318,6 +326,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::UnregisterOption()
     }
     else {
         //todo
+        MK_PRINT("todo...");
         throw string("todo");
     }
     _options.erase(iter);
