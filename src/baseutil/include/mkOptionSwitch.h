@@ -217,8 +217,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::SetOptionAttrBatch (const TypeKey
     if(!validKey) {
         //todo
         //无效的key
-        MK_PRINT("todo...");
-        throw string("todo");
+        MK_PRINT("key is invalid.");
     }
 }
 
@@ -246,15 +245,13 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::SetOptionAttr(const TypeKey& attr
         else {
             //key无效
             //todo
-            MK_PRINT("todo...");
-            throw string("todo");
+            MK_PRINT("key is invalid.");
         }
     }
     else {
         //todo
         //选项不存在
-        MK_PRINT("todo...");
-        throw string("todo");
+        MK_PRINT("T is invalid.");
     }
     
 }
@@ -271,8 +268,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::ApplyOptionAttr()
     }
     else {
         //todo
-        MK_PRINT("todo...");
-        throw string("todo");
+        MK_PRINT("T is invalid.");
     }
 }
 
@@ -289,9 +285,9 @@ const T* mkIOptionSwitch_base<TypeKey, TypeValue>::GetOption() const
         return result;
     }
     else {
-        //todo
-        MK_PRINT("todo...");
-         throw string("todo");
+        //todo 
+        MK_PRINT("T is invalid.");
+        throw string("T is invalid.");
     }
 }
 
@@ -307,8 +303,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::DisableOption() const
     }
     else {
         //todo
-        MK_PRINT("todo...");
-        throw string("todo");
+        MK_PRINT("T is invalid.");
     }
 }
 
@@ -334,8 +329,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::UnregisterOption()
     }
     else {
         //todo
-        MK_PRINT("todo...");
-        throw string("todo");
+        MK_PRINT("T is invalid.");
     }
     _options.erase(iter);
 }
