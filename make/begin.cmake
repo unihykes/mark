@@ -68,15 +68,17 @@ ELSE()
 ENDIF()
 
 #编译选项
+#pragma warnind( disable: 4251 )
 IF(WIN32)
 	#编译器错误:https://docs.microsoft.com/zh-cn/previous-versions/visualstudio/visual-studio-2008/8x5x43k7(v%3dvs.90)
     #编译器警告:4181:应用到引用类型的限定符；已将其忽略将限定符（如 const）应用于由 typedef 定义的引用类型。
 	#编译器警告:4099:将声明为结构的对象定义为类，或将声明为类的对象定义为结构。编译器使用在定义中给定的类型。
 	#编译器警告:4819:该文件包含不能在当前代码页(936)中表示的字符。 请将该文件保存为 Unicode 格式以防止数据丢失
+	#编译器警告:4251: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“xxx”的客户端使用
 	#windows编译选项:https://msdn.microsoft.com/en-us/library/thxezb7y.aspx
 	#/wd n : Disables the specified compiler warning where nis the compiler warning number.
 	#/wo n : Reports the error only once where n is a compiler warning.
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi /vmm /vmg /MP /wo4067 /wo4244 /wo4267 /wo4181 /wd4099 /wd4819")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi /vmm /vmg /MP /wo4067 /wo4244 /wo4267 /wo4181 /wd4099 /wd4819 /wd4251")
 	STRING(REPLACE "/EHsc" "/EHa /GS" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /INCREMENTAL:NO")
     SET(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")
