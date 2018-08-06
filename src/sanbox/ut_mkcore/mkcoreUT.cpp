@@ -43,7 +43,7 @@ TEST_F(mkcoreUT, NC_NEW)
 	NC_DELETE(mkIAllocator::GetGlobleAllocator(), string, pStr);
 	
 	
-	tchar_t* tstr = _T("刘浩");
+	auto_char* tstr = _T("刘浩");
 	wprintf(L"%s\n", tstr);
 	wprintf(L"%S\n", tstr);
 	

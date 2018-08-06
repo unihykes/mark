@@ -91,18 +91,10 @@ using namespace std;
 
 //定义unicode字符串
 #ifdef __WINDOWS__
-	typedef wchar_t			tchar_t;
-	typedef wchar_t			utchar_t;
-
+	typedef wchar_t			auto_char;
 #else
-	typedef char			tchar_t;
-	typedef unsigned char	utchar_t;
+	typedef char			auto_char;
 #endif
-
-
-//tchar_t长度
-#define CONSTANT_STRING_LEN(str)			((sizeof(str)/sizeof(tchar_t)) - 1)
-
 
 //定义int64
 typedef int64_t				int64;
@@ -154,220 +146,17 @@ typedef uint64_t			uint64;
 //定义strlen和printf
 #ifdef __WINDOWS__
 	#define t_strlen			wcslen
-	#define t_snwprintf			_snwprintf
 #else
 	#define t_strlen			strlen
-	#define t_snwprintf			printfToStr
-	
-	inline int printfToStr (tchar_t* buf, size_t bufSize, const tchar_t* fmt, ...)
-	{
-		va_list ap;
-		va_start (ap, fmt);
-		
-        int len;
-        //todo
-        //len = nc_vsnprintf (buf, bufSize, fmt, ap);
-		va_end (ap);
-		return len;
-	}
 #endif
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// function
-//
-
-inline int getLastError (void)
-{
-	#ifdef __WINDOWS__
-		return ::GetLastError();
-	#else
-		return errno;
-	#endif
-}
-
-inline void setLastError (int err)
-{
-	#ifdef __WINDOWS__
-		::SetLastError(err);
-	#else
-		errno = err;
-	#endif
-}
-
-//http://blog.csdn.net/sunnyfans/article/details/8286906
-//OUT size must >= 2 bytes
-inline void shortToBytes (short v, unsigned char* buf)
-{
-	*buf++ = ((int)(v >> 8) & 0xFF);
-	*buf++ = ((int)(v >> 0) & 0xFF);
-}
-
-//OUT size must >= 2 bytes
-inline void ushortToBytes (unsigned short v, unsigned char* buf)
-{
-	*buf++ = ((int)(v >> 8) & 0xFF);
-	*buf++ = ((int)(v >> 0) & 0xFF);
-}
-
-//IN size must >= 2 bytes
-inline unsigned short bytesToUShort (const unsigned char* buf)
-{
-	int v1 = buf[0];
-	int v2 = buf[1];
-	
-	return ((unsigned short) ((v1 << 8) + (v2 << 0)));
-}
-
-//OUT size must >= 4 bytes
-inline void intToBytes (int i, unsigned char* b)
-{
-	b[0] = ((unsigned char)(i >> 24) & 0xFF);
-	b[1] = ((unsigned char)(i >> 16) & 0xFF);
-	b[2] = ((unsigned char)(i >> 8) & 0xFF);
-	b[3] = ((unsigned char)(i >> 0) & 0xFF);
-}
-
-//OUT size must >= 4 bytes
-inline void uintToBytes (unsigned int u, unsigned char* b)
-{
-	b[0] = ((int)(u >> 24) & 0xFF);
-	b[1] = ((int)(u >> 16) & 0xFF);
-	b[2] = ((int)(u >> 8) & 0xFF);
-	b[3] = ((int)(u >> 0) & 0xFF);
-}
-
-//IN size must >= 4 bytes
-inline unsigned int bytesToUInt (const unsigned char* buf)
-{
-	int v1 = buf[0];
-	int v2 = buf[1];
-	int v3 = buf[2];
-	int v4 = buf[3];
-	
-	return ((unsigned int) ((v1 << 24) + (v2 << 16) + (v3 << 8) + (v4 << 0)));
-}
-
-//IN size must >= 4 bytes
-inline int bytesToInt (const unsigned char* buf)
-{
-	return (int) (bytesToUInt (buf));
-}
-
-//OUT size must >= 8 bytes
-inline void int64ToBytes (int64 u, unsigned char* b)
-{
-	b[0] = ((int)(u >> 56) & 0xFF);
-	b[1] = ((int)(u >> 48) & 0xFF);
-	b[2] = ((int)(u >> 40) & 0xFF);
-	b[3] = ((int)(u >> 32) & 0xFF);
-	b[4] = ((int)(u >> 24) & 0xFF);
-	b[5] = ((int)(u >> 16) & 0xFF);
-	b[6] = ((int)(u >> 8) & 0xFF);
-	b[7] = ((int)(u >> 0) & 0xFF);
-}
-
-//OUT size must >= 8 bytes
-inline void uint64ToBytes (uint64 u, unsigned char* b)
-{
-	b[0] = ((int)(u >> 56) & 0xFF);
-	b[1] = ((int)(u >> 48) & 0xFF);
-	b[2] = ((int)(u >> 40) & 0xFF);
-	b[3] = ((int)(u >> 32) & 0xFF);
-	b[4] = ((int)(u >> 24) & 0xFF);
-	b[5] = ((int)(u >> 16) & 0xFF);
-	b[6] = ((int)(u >> 8) & 0xFF);
-	b[7] = ((int)(u >> 0) & 0xFF);
-}
-
-//IN size must >= 8 bytes
-inline uint64 bytesToUInt64 (const unsigned char* buf)
-{
-	uint64 v,t;
-	v = t = buf[0];
-	v <<= 56;
-
-	t = buf[1];
-	v |= (t << 48);
-
-	t = buf[2];
-	v |= (t << 40);
-
-	t = buf[3];
-	v |= (t << 32);
-
-	t = buf[4];
-	v |= (t << 24);
-
-	t = buf[5];
-	v |= (t << 16);
-
-	t = buf[6];
-	v |= (t << 8);
-
-	t = buf[7];
-	v |= t;
-
-	return v;
-}
-
-//IN size must >= 8 bytes
-inline int64 bytesToInt64 (const unsigned char* buf)
-{
-	return (int64)bytesToUInt64 (buf);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// functor 
-//
-namespace std {
-struct tchar_less : public binary_function<const tchar_t*, const tchar_t*, bool>
-{
-	bool operator()(const tchar_t* const _Left, const tchar_t* const _Right) const
-	{
-#ifdef __WINDOWS__
-		return (::wcscmp (_Left, _Right) < 0);
-#else
-		return (strcmp (_Left, _Right) < 0);
-#endif
-	}
-};
-
-struct tchar_less_nocase : public binary_function<const tchar_t*, const tchar_t*, bool>
-{
-	bool operator()(const tchar_t* const _Left, const tchar_t* const _Right) const
-	{
-#ifdef __WINDOWS__
-	return (::_wcsicmp (_Left, _Right) < 0);
-#else
-	return (::strcasecmp (_Left, _Right) < 0);
-#endif
-
-	}
-};
-
-class tchars_equal : public std::binary_function<const tchar_t*, const tchar_t*, bool>
-{
-public:
-	bool operator() (const tchar_t* left, const tchar_t* right) const
-	{
-#ifdef __WINDOWS__
-		if (::wcscmp (left, right) == 0)
-#else
-		if (::strcmp (left, right) == 0)
-#endif
-			return true;
-		else
-			return false;
-	}
-};
-}// namespace std
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 自定义公共头文件
 //
+#include "mkMiscellaneous.h"
 #include "mkOutputMsg.h"
-
+#include "mkException.h"
 
 #endif // __mkheaders

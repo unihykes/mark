@@ -10,7 +10,7 @@ info:
 #ifndef __mkException
 #define __mkException
 
-class mkException
+class mkException : public std::exception
 {
 public:
 	mkException ()noexcept

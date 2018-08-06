@@ -160,15 +160,14 @@ TEST_F(ut_mkheaders, PrintMacro)
 	#endif
 }
 
-TEST_F(ut_mkheaders, eg_tchar_t)
+TEST_F(ut_mkheaders, auto_char)
 {
-	const tchar_t* ch1 = _T("abcecdrgg");
+	const auto_char* ch1 = _T("abcecdrgg");
 	MK_PRINT_MSG(_T("ch1 = %s"), ch1);
 	
-	const utchar_t ch2[] = _T("3gwtgw4624234242");
-	MK_PRINT_MSG(_T("ch2 = %s"), ch2);
-	
-	const tchar_t ch3[] = _T("123456789");
+	const auto_char ch3[] = _T("123456789");
+    //auto_char长度
+    #define CONSTANT_STRING_LEN(str)			((sizeof(str)/sizeof(auto_char)) - 1)
 	int size3 = CONSTANT_STRING_LEN(ch3);
 	MK_PRINT_MSG(_T("ch3 = %s, size = %d"), ch3, size3);
 }
