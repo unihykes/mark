@@ -217,7 +217,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::SetOptionAttrBatch (const TypeKey
     if(!validKey) {
         //todo
         //无效的key
-        MK_PRINT("key is invalid.");
+        //MK_PRINT("key is invalid.");
     }
 }
 
@@ -245,7 +245,7 @@ void mkIOptionSwitch_base<TypeKey, TypeValue>::SetOptionAttr(const TypeKey& attr
         else {
             //key无效
             //todo
-            MK_PRINT("key is invalid.");
+            //MK_PRINT("key is invalid.");
         }
     }
     else {
