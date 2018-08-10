@@ -48,6 +48,7 @@ int main()
 
 
 * 模板形参类型:T&
+
 ```cpp
 
 /** 1.形参类型ParamType具有指针或引用类型,但不是universal引用;
@@ -84,6 +85,7 @@ TEST(ut_deduction, func1)
 
 
 * 模板形参类型:const T&
+
 ```cpp
 template<typename T>
 void func2(const T& param)
@@ -187,7 +189,6 @@ TEST(ut_deduction, func4)
     1.变量类型是指针或者引用,但不是universal引用;
     2.变量类型是universal引用;
     3.变量类型既非指针也非引用;
-    
     但是有一个特例,当用于auto声明变量的表达式是用大括号{}时,推导的类型是std::initializer_list<>;
 
 
@@ -207,6 +208,7 @@ TEST(ut_deduction, func5)
 }
 
 ```
+
 执行结果:<br>
 ![这里写图片描述](https://img-blog.csdn.net/20180528010349315?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dPVzU0MjYyMTEyNg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
