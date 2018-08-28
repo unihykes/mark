@@ -16,3 +16,6 @@
 [submodule "3rd_Party/cpprestsdk"]
 	path = 3rd_Party/cpprestsdk
 	url = https://github.com/Microsoft/cpprestsdk
+[submodule "3rd_Party/wxwidgets/wxWidgets"]
+	path = 3rd_Party/wxwidgets/wxWidgets
+	url = https://github.com/wxWidgets/wxWidgets.git
