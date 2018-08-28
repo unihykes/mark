@@ -8,11 +8,12 @@ IF("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     #begin.cmake中debuging设置为0,导致无法正确链接wx的.lib库文件
     ADD_DEFINITIONS(-D__WXMSW__ -D__WXDEBUG__ -D_HAS_ITERATOR_DEBUGGING=1)
 ENDIF()
-
+SET(WX_PATH ${MONK_PATH}/3rd_Party/wxwidgets)
 
 IF("${WX_DYNAMIC_LINK}" STREQUAL "ON")
     #动态链接使用dll
-    SET(WXLIBS_PATH ./build_target)
+    MESSAGE(STATUS "using .dll...")
+    SET(WXLIBS_PATH ${WX_PATH}/build_target)
     ADD_DEFINITIONS(-DWXUSINGDLL -DwxMONOLITHIC=1 -DwxNO_GL_LIB)
     INCLUDE_DIRECTORIES(${WXLIBS_PATH}/include; ${WXLIBS_PATH}/include/msvc)
     link_directories(${WXLIBS_PATH}/lib/vc_x64_dll)
@@ -22,8 +23,10 @@ IF("${WX_DYNAMIC_LINK}" STREQUAL "ON")
     ENDIF ()
 ELSE()
     #静态链接使用lib
-    INCLUDE_DIRECTORIES(./wxWidgets/include;./wxWidgets/include/msvc)
-    link_directories(./wxWidgets/lib/vc_x64_lib)
+    MESSAGE(STATUS "using .lib...")
+    SET(WXLIBS_PATH ${WX_PATH}/wxWidgets)
+    INCLUDE_DIRECTORIES(${WXLIBS_PATH}/include;${WXLIBS_PATH}/include/msvc)
+    link_directories(${WXLIBS_PATH}/lib/vc_x64_lib)
     link_libraries(
         wxbase31ud.lib
         wxbase31ud_net.lib

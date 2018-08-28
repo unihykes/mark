@@ -33,3 +33,5 @@
 
 win_all*
 linux_all*
+build_target*
+build_temp*

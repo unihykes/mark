@@ -2,7 +2,7 @@
 set CMAKE_BUILD_TYPE=Debug
 
 ::64 | 32
-set CMAKE_BUILD_VERSION=64
+set CMAKE_BUILD_VERSION=x64
 
 ::build|target
 set CUR_CMAKELISTS_PATH=%cd%\wxWidgets
