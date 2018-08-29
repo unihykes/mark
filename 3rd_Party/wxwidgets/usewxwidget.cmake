@@ -1,7 +1,11 @@
 MESSAGE(STATUS "find wxWidgets libs...")
 
 set(SUBSYSTEM WINDOWS)
-set(WX_DYNAMIC_LINK ON)
+
+#默认使用动态库,上层可以提前设置以便使用静态库
+IF("${WX_DYNAMIC_LINK}" STREQUAL "")
+    set(WX_DYNAMIC_LINK ON)
+ENDIF()
 
 #debug相关的宏
 IF("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")

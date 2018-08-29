@@ -33,8 +33,8 @@ export MONK_PLATFORM=${CMAKE_PLATFORM_NAME}_${CMAKE_PLATFORM_VERSION}_${CMAKE_BU
 export MONK_MAKE=$MONK_PATH/make
 export MONK_DEPS=$MONK_PATH/deps
 export MONK_SRC=$MONK_PATH/src
-export MONK_TARGET=$MONK_PATH/make/$MONK_PLATFORM/target
-export MONK_BUILD=$MONK_PATH/make/$MONK_PLATFORM/build
+export MONK_TARGET=$MONK_PATH/$MONK_PLATFORM/target
+export MONK_BUILD=$MONK_PATH/$MONK_PLATFORM/build
 
 export PATH=$PATH:$MONK_MAKE/script_unix:$MONK_MAKE/script_unix/bin
 chmod -R +x $MONK_MAKE/script_unix/*.sh
