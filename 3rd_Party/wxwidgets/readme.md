@@ -2,6 +2,7 @@
 1.git clone代码线,更新wxwidgets的子模块;
 2.复制文件"wxWidgets/include/wx/msw/setup0.h"到 "wxWidgets/include/wx/msw/setup.h"
 3.STL兼容,修改 wxWidgets/include/wx/msw/setup.h中, wxUSE_STL = 1
+4.将prec.cmake中的-D_HAS_ITERATOR_DEBUGGING=1,重新编译整条代码线(否则运行时会发生各种莫名其妙的地址错误)
 4.运行脚本:make_wxWidgets.bat
 
 使用步骤:
