@@ -12,7 +12,7 @@ SET(WX_PATH ${MONK_PATH}/3rd_Party/wxwidgets)
 #debug相关的宏
 IF("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     #begin.cmake中debuging设置为0,导致无法正确链接wx的.lib库文件
-    ADD_DEFINITIONS(-D__WXMSW__ -D__WXDEBUG__ -D_HAS_ITERATOR_DEBUGGING=1)
+    ADD_DEFINITIONS(-D__WXMSW__ -D__WXDEBUG__ -D_HAS_ITERATOR_DEBUGGING=0)
     
     IF("${WX_DYNAMIC_LINK}" STREQUAL "ON")
         #动态链接使用dll
