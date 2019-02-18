@@ -1,5 +1,18 @@
 /***************************************************************************************************
-Author:liu.hao
+LICENSE:
+    Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   
+Author:liu.hao(33852613@163.com)
 
 Time:2018-4
 
@@ -16,24 +29,24 @@ info:
 
 #ifdef __WINDOWS__
     #define usleep   Sleep
-    //copy¶ÔÏóÊ±¼äËğºÄ:µ¥Î»ºÁÃë
+    //copyå¯¹è±¡æ—¶é—´æŸè€—:å•ä½æ¯«ç§’
     #define LOSS_TIME  10
 #else
-    //copy¶ÔÏóÊ±¼äËğºÄ:µ¥Î»Î¢Ãë
+    //copyå¯¹è±¡æ—¶é—´æŸè€—:å•ä½å¾®ç§’
     #define LOSS_TIME  10000
 #endif
 
-//Ä£ÄâÒ»¸öcopyĞÔÄÜ²»Ì«ºÃµÄstruct
+//æ¨¡æ‹Ÿä¸€ä¸ªcopyæ€§èƒ½ä¸å¤ªå¥½çš„struct
 class ncLargeStruct
 {
 public:
     ncLargeStruct()
         :_str(nullptr)
     {
-        //Ä¬ÈÏ1k×Ö½Ú
+        //é»˜è®¤1kå­—èŠ‚
         _str = new char[1024];
         memset(_str, 'a', 1024);
-        usleep (1000);//Ä£ÄâÆäËûÊı¾İ³ÉÔ±µÄ³õÊ¼»¯²Ù×÷
+        usleep (1000);//æ¨¡æ‹Ÿå…¶ä»–æ•°æ®æˆå‘˜çš„åˆå§‹åŒ–æ“ä½œ
     }
     
     ncLargeStruct(const char* source)
@@ -41,14 +54,14 @@ public:
     {
         _str = new char[strlen(source)+1];
         strcpy(_str, source);
-        usleep (LOSS_TIME);//Ä£ÄâÆäËûÊı¾İ³ÉÔ±µÄcopy²Ù×÷
+        usleep (LOSS_TIME);//æ¨¡æ‹Ÿå…¶ä»–æ•°æ®æˆå‘˜çš„copyæ“ä½œ
     }
     
     ncLargeStruct(const ncLargeStruct& source)
     {
         _str = new char[strlen(source._str) + 1];
         strcpy(_str, source._str);
-        usleep (LOSS_TIME);//Ä£ÄâÆäËûÊı¾İ³ÉÔ±µÄcopy²Ù×÷
+        usleep (LOSS_TIME);//æ¨¡æ‹Ÿå…¶ä»–æ•°æ®æˆå‘˜çš„copyæ“ä½œ
     }
     
     ncLargeStruct& operator = (const ncLargeStruct& source)
@@ -56,7 +69,7 @@ public:
         if (this != &source){
             char *tmp = new char[strlen(source._str) + 1];
             strcpy(tmp, source._str);
-            usleep (LOSS_TIME);//Ä£ÄâÆäËûÊı¾İ³ÉÔ±µÄcopy²Ù×÷
+            usleep (LOSS_TIME);//æ¨¡æ‹Ÿå…¶ä»–æ•°æ®æˆå‘˜çš„copyæ“ä½œ
             delete []_str;
             _str = tmp;
         }
@@ -78,7 +91,7 @@ public:
     }
     #endif
     
-   //Îö¹¹º¯Êı
+   //ææ„å‡½æ•°
     ~ncLargeStruct()
     {
         if (_str) {

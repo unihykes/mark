@@ -1,5 +1,18 @@
 /***************************************************************************************************
-Author:liu.hao
+LICENSE:
+    Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   
+Author:liu.hao(33852613@163.com)
 
 Time:2018-4
 
@@ -11,10 +24,10 @@ info:
 
 #ifdef __WINDOWS__
     #define usleep   Sleep
-    //copy¶ÔÏóÊ±¼äËğºÄ:µ¥Î»ºÁÃë
+    //copyå¯¹è±¡æ—¶é—´æŸè€—:å•ä½æ¯«ç§’
     #define LOSS_TIME  100
 #else
-    //copy¶ÔÏóÊ±¼äËğºÄ:µ¥Î»Î¢Ãë
+    //copyå¯¹è±¡æ—¶é—´æŸè€—:å•ä½å¾®ç§’
     #define LOSS_TIME  100000
 #endif
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +47,7 @@ public:
         
         _str = new char[strlen(source)+1];
         strcpy(_str, source);
-        usleep (LOSS_TIME * (int)strlen(source) );//Ä£ÄâÆäËûÊı¾İ³ÉÔ±µÄmemcopy
+        usleep (LOSS_TIME * (int)strlen(source) );//æ¨¡æ‹Ÿå…¶ä»–æ•°æ®æˆå‘˜çš„memcopy
     }
     
     ncOldCustomString(const ncOldCustomString& source)
@@ -43,7 +56,7 @@ public:
         
         _str = new char[strlen(source._str) + 1];
         strcpy(_str, source._str);
-        usleep (LOSS_TIME * (int)strlen(source._str) );//Ä£ÄâÆäËûÊı¾İ³ÉÔ±µÄmemcopy
+        usleep (LOSS_TIME * (int)strlen(source._str) );//æ¨¡æ‹Ÿå…¶ä»–æ•°æ®æˆå‘˜çš„memcopy
     }
     
     ncOldCustomString& operator = (const ncOldCustomString& source)
@@ -53,14 +66,14 @@ public:
         if (this != &source){
             char *tmp = new char[strlen(source._str) + 1];
             strcpy(tmp, source._str);
-            usleep (LOSS_TIME * (int)strlen(source._str) );//Ä£ÄâÆäËûÊı¾İ³ÉÔ±µÄmemcopy
+            usleep (LOSS_TIME * (int)strlen(source._str) );//æ¨¡æ‹Ÿå…¶ä»–æ•°æ®æˆå‘˜çš„memcopy
             delete []_str;
             _str = tmp;
         }
         return *this;
     }
     
-   //Îö¹¹º¯Êı
+   //ææ„å‡½æ•°
     ~ncOldCustomString()
     {
         if (_str) {
