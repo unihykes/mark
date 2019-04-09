@@ -23,7 +23,7 @@ info:
 #include <mkheaders.h>
 #include <gtest/gtest.h>
 #include "mkString.h"
-
+#include "mkFormat.h"
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 //
@@ -43,4 +43,16 @@ TEST_F(ut_mkString, null)
 {
     mkString str;
     wstring xx = str;
+}
+
+
+TEST_F(ut_mkString, format)
+{
+    string str = Format1024{}("aaaaaa%d%s",333,"bbbbb");
+    cout<<str<<endl;
+    MK_PRINT_MSG(str.c_str());
+    
+    wstring strW = Format1024W{}(L"ccccc%d%s",333,L"ddddd");
+    wcout<<strW<<endl;
+    MK_PRINT_MSG(strW.c_str());
 }
