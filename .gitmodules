@@ -7,9 +7,6 @@
 [submodule "3rd_Party/thrift"]
 	path = 3rd_Party/thrift
 	url = https://github.com/apache/thrift.git
-[submodule "3rd_Party/private/yunpan"]
-	path = 3rd_Party/private/yunpan
-	url = git@gitee.com:3385/yunpan.git
 [submodule "3rd_Party/jsoncpp"]
 	path = 3rd_Party/jsoncpp
 	url = https://github.com/open-source-parsers/jsoncpp.git
