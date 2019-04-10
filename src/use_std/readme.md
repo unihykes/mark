@@ -6,6 +6,9 @@
 
 ## C++ 语言
 [C++语言参考手册](https://zh.cppreference.com/w/cpp/language)
+###### 备注:
+C++关键字:
+![todo](./image/C++关键字.png)
 
 ## C++ 标准库头文件
 [C++标准库头文件](https://zh.cppreference.com/w/cpp/header)
@@ -339,7 +342,8 @@ package 基本类型{
 定宽整数/格式化宏常量:
 ![todo](./image/fprintf.png)
 ![todo](./image/fscanf.png)
-
+整型位宽
+![todo](./image/整型位宽.png)
 ***
 ### /工具库/语言支持库/类型支持/数值极限
 
@@ -460,7 +464,8 @@ package 数值极限{
 ###### 备注:
 numeric_limits与C库宏常量的关系
 ![todo](./image/numeric_limits.png)
-
+数值取值范围
+![todo](./image/数值取值范围.png)
 
 ***
 ### /工具库/语言支持库/类型支持/运行时类型识别
@@ -1017,6 +1022,9 @@ package 容器库 {
 
 @enduml
 ```
+###### 备注:
+容器:
+![容器](./image/容器.png)
 
 ###### 备注:
 迭代器失效:
