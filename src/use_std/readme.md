@@ -1,4 +1,4 @@
-﻿# cppreference搬运
+# cppreference搬运
 
 ## C++编译器支持
 [C++ 编译器支持情况表](https://zh.cppreference.com/w/cpp/compiler_support)
