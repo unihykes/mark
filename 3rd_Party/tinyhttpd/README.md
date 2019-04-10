@@ -1,3 +1,3 @@
-tinyhttpdÊÇÒ»¸ö³¬ÇáÁ¿ĞÍHttp Server£¬Ê¹ÓÃCÓïÑÔ¿ª·¢£¬È«²¿´úÂëÖ»ÓĞ502ĞĞ(°üÀ¨×¢ÊÍ)£¬¸½´øÒ»¸ö¼òµ¥µÄClient£¬¿ÉÒÔÍ¨¹ıÔÄ¶ÁÕâ¶Î´úÂëÀí½âÒ»¸ö Http Server µÄ±¾ÖÊ¡£
+ï»¿tinyhttpdæ˜¯ä¸€ä¸ªè¶…è½»é‡å‹Http Serverï¼Œä½¿ç”¨Cè¯­è¨€å¼€å‘ï¼Œå…¨éƒ¨ä»£ç åªæœ‰502è¡Œ(åŒ…æ‹¬æ³¨é‡Š)ï¼Œé™„å¸¦ä¸€ä¸ªç®€å•çš„Clientï¼Œå¯ä»¥é€šè¿‡é˜…è¯»è¿™æ®µä»£ç ç†è§£ä¸€ä¸ª Http Server çš„æœ¬è´¨ã€‚
 
-ÏÂÔØÁ´½Ó£ºhttp://sourceforge.net/projects/tinyhttpd/
+ä¸‹è½½é“¾æ¥ï¼šhttp://sourceforge.net/projects/tinyhttpd/

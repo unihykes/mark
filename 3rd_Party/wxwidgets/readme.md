@@ -1,16 +1,16 @@
-±àÒë²½Öè:
-1.git clone´úÂëÏß,¸üĞÂwxwidgetsµÄ×ÓÄ£¿é;
-2.¸´ÖÆÎÄ¼ş"wxWidgets/include/wx/msw/setup0.h"µ½ "wxWidgets/include/wx/msw/setup.h"
-3.STL¼æÈİ,ĞŞ¸Ä wxWidgets/include/wx/msw/setup.hÖĞ, wxUSE_STL = 1
-4.½«prec.cmakeÖĞµÄ-D_HAS_ITERATOR_DEBUGGING=1,ÖØĞÂ±àÒëÕûÌõ´úÂëÏß(·ñÔòÔËĞĞÊ±»á·¢Éú¸÷ÖÖÄªÃûÆäÃîµÄµØÖ·´íÎó)
-4.ÔËĞĞ½Å±¾:make_wxWidgets.bat
+ï»¿ç¼–è¯‘æ­¥éª¤:
+1.git cloneä»£ç çº¿,æ›´æ–°wxwidgetsçš„å­æ¨¡å—;
+2.å¤åˆ¶æ–‡ä»¶"wxWidgets/include/wx/msw/setup0.h"åˆ° "wxWidgets/include/wx/msw/setup.h"
+3.STLå…¼å®¹,ä¿®æ”¹ wxWidgets/include/wx/msw/setup.hä¸­, wxUSE_STL = 1
+4.å°†prec.cmakeä¸­çš„-D_HAS_ITERATOR_DEBUGGING=1,é‡æ–°ç¼–è¯‘æ•´æ¡ä»£ç çº¿(å¦åˆ™è¿è¡Œæ—¶ä¼šå‘ç”Ÿå„ç§è«åå…¶å¦™çš„åœ°å€é”™è¯¯)
+4.è¿è¡Œè„šæœ¬:make_wxWidgets.bat
 
-Ê¹ÓÃ²½Öè:
-1.ĞŞ¸ÄÎÄ¼ş:build_target/lib/vc_x64_dll/mswud/wx/setup.h
-    Ìí¼Ó:
+ä½¿ç”¨æ­¥éª¤:
+1.ä¿®æ”¹æ–‡ä»¶:build_target/lib/vc_x64_dll/mswud/wx/setup.h
+    æ·»åŠ :
     #define wxMONOLITHIC 1
     #define  wxNO_GL_LIB
-    »òÕßÔÚCmakeListsÖĞ¶¨Òå
+    æˆ–è€…åœ¨CmakeListsä¸­å®šä¹‰
     
-2.²Î¿¼ usewxwidget.cmake ´´½¨×Ô¼ºÄ£¿éµÄCmakeLists
+2.å‚è€ƒ usewxwidget.cmake åˆ›å»ºè‡ªå·±æ¨¡å—çš„CmakeLists
 
