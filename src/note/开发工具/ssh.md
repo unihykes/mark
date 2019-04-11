@@ -2,6 +2,7 @@
 
 
 ## ssh带端口登录
+```
 ssh命令用于远程登录上Linux主机。
 常用格式：ssh [-l login_name] [-p port] [user@]hostname
 更详细的可以用ssh -h查看。
@@ -26,3 +27,4 @@ PermitRootLogin no
 重启sshd服务：
 
 service sshd restart
+```

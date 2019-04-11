@@ -4,9 +4,12 @@
 https://m.fontke.com/tool/rgb/abb3bf/
 
 ## 用户设置
-config.cson 备份至:2019-4-8
+config.cson 备份至:2019-4-11
 ```cson
+
 "*":
+  "autocomplete-plus":
+    autoActivationDelay: 3
   "bracket-matcher":
     autocompleteBrackets: false
     highlightMatchingLineNumber: true
@@ -45,30 +48,31 @@ config.cson 备份至:2019-4-8
       "autocomplete-html"
       "autocomplete-atom-api"
       "markdown-preview"
+      "autocomplete-plus"
     ]
     packagesWithKeymapsDisabled: [
       "bracket-matcher"
     ]
     telemetryConsent: "no"
     themes: [
-      "atom-dark-ui"
+      "one-light-ui"
       "one-dark-syntax"
     ]
     uriHandlerRegistration: "always"
   editor:
-    atomicSoftTabs: false
     autoIndentOnPaste: false
+    fontSize: 12
     invisibles:
       cr: " "
       eol: " "
-      tab: "→"
+      tab: "â†’"
     lineHeight: 1.1
     preferredLineLength: 100
     scrollPastEnd: true
     showIndentGuide: true
     showInvisibles: true
     tabLength: 4
-    tabType: "soft"
+    tabType: "hard"
   "exception-reporting":
     userId: "fb7193ae-67e0-479a-ae72-e9dad3b0861b"
   "find-and-replace":
@@ -81,14 +85,23 @@ config.cson 备份至:2019-4-8
   "markdown-preview":
     breakOnSingleNewline: true
     useGitHubStyle: true
+  "markdown-preview-enhanced": {}
   "one-dark-ui":
     stickyHeaders: true
     tabSizing: "Minimum"
   "plantuml-viewer":
     charset: "utf-8"
     graphvizDotExecutable: "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe"
+  "platformio-ide-terminal":
+    core:
+      mapTerminalsToAutoOpen: true
+      shell: "C:\\Windows\\System32\\cmd.exe"
+    style:
+      theme: "one-dark"
   welcome:
     showOnStartup: false
+
+
 
 ```
 
@@ -147,12 +160,30 @@ atom-text-editor .syntax--comment {
     Graphviz Dot Excutable路径:C:\Program Files (x86)\Graphviz2.38\bin\dot.exe
     
 #### simlified-chinese-menu
-#### language-thrift
-#### language-batch
-#### markdown-preview-enhanced
-//应该是ATOM最好、功能最强的Markdown插件
-#### language-gfm-enhanced
-//Markdown语法高亮
-#### scroll-marker
-//滚动条显示改动
 
+#### language-thrift
+
+#### language-batch
+
+#### markdown-preview-enhanced
+应该是ATOM最好、功能最强的Markdown插件
+
+#### language-gfm-enhanced
+Markdown语法高亮
+
+#### scroll-marker
+滚动条显示改动
+
+#### platformio-ide-terminal
+控制台命令行插件
+shell override设置为:C:\Windows\System32\cmd.exe
+cmd窗口打开,勾选切换到旧版控制台,不然会有乱行问题;
+alt+shift+t:打开新控制台
+alt+shift+j:切换到左边控制台
+alt+shift+k:切换到右边控制台
+alt+shift+x:关闭当前控制台
+设置快捷键:alt+shift+h用于和隐藏控制台
+'atom-text-editor': 
+	'alt-shift-h': 'platformio-ide-terminal:toggle'
+
+	

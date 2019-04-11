@@ -38,11 +38,7 @@ public:
     {
     }
     
-    virtual void SetVaule (const string& key, const string& value) override
-    {
-    }
-    
-    virtual void Apply() override
+    virtual void OnSetVaule (const string& key, const string& value) override
     {
     }
     
@@ -69,11 +65,7 @@ public:
     {
     }
     
-    virtual void SetVaule (const string& key, const string& value) override
-    {
-    }
-    
-    virtual void Apply() override
+    virtual void OnSetVaule (const string& key, const string& value) override
     {
     }
     
@@ -94,11 +86,7 @@ public:
     {
     }
     
-    virtual void SetVaule (const string& key, const string& value) override
-    {
-    }
-    
-    virtual void Apply() override
+    virtual void OnSetVaule (const string& key, const string& value) override
     {
     }
     
@@ -116,18 +104,9 @@ class mkBackupSwitch  final : public mkIOptionSwitch
 public:
     mkBackupSwitch()
     {
-        RegisterOption<mkMultiChannel>();
-        RegisterOption<mkOptionA>();
-        RegisterOption<mkOptionB>();
-    }
-
-    ~mkBackupSwitch()
-    {
-    }
-    
-private:
-    virtual void BeforeApplyAttrBatch() override
-    {
+        Register<mkMultiChannel>();
+        Register<mkOptionA>();
+        Register<mkOptionB>();
     }
 };
 
@@ -138,11 +117,11 @@ TEST(ut_mkIOptionSwitch, mkBackupSwitch)
     
     try {
         //设置选项
-        switchs.SetOptionAttrBatch("aaa", "test_value1");
-        switchs.SetOptionAttrBatch("ddd", "test_value2");
-        switchs.SetOptionAttrBatch("fff", "test_value3");
-        switchs.SetOptionAttrBatch("hhh", "test_value4");
-        switchs.ApplyOptionAttrBatch();
+        switchs.SetOptions("aaa", "test_value1");
+        switchs.SetOptions("ddd", "test_value2");
+        switchs.SetOptions("fff", "test_value3");
+        switchs.SetOptions("hhh", "test_value4");
+        switchs.Applys();
         MK_PRINT();
         
         //使用选项
@@ -164,15 +143,10 @@ TEST(ut_mkIOptionSwitch, mkBackupSwitch)
         
         //修改选项
         {
-            switchs.SetOptionAttr<mkMultiChannel>("aaa", "test_valuexxx");
-            switchs.SetOptionAttr<mkMultiChannel>("bbb", "test_valueyyy");
-            switchs.SetOptionAttr<mkMultiChannel>("ccc", "test_valuezzz");
-            switchs.ApplyOptionAttr<mkMultiChannel>();
-        }
-        
-        //禁用选项
-        {
-            switchs.DisableOption<mkMultiChannel>();
+            switchs.SetOption<mkMultiChannel>("aaa", "test_valuexxx");
+            switchs.SetOption<mkMultiChannel>("bbb", "test_valueyyy");
+            switchs.SetOption<mkMultiChannel>("ccc", "test_valuezzz");
+            switchs.Apply<mkMultiChannel>();
         }
     }
     catch(string& e) {

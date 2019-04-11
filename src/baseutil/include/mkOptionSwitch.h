@@ -47,32 +47,34 @@ public:
     
 private:
     //设置key-value(需要派生类实现)
-    virtual void SetVaule(const TypeKey& key, const TypeValue& value) = 0;
+    virtual void OnSetVaule(const TypeKey& key, const TypeValue& value) = 0;
     
-    //应用全部属性((需要派生类实现))
-    virtual void Apply() = 0;
+    //应用全部属性,在应用时有特殊逻辑的话,请重载之;
+    virtual void OnApply()
+    {
+    }
     
+private:
     //设置某属性,如果key对当前选项无效,则返回false(供 mkIOptionSwitch_base调用)
+    friend class mkIOptionSwitch_base<TypeKey, TypeValue>;
     bool SetAttribute (const TypeKey& key, const TypeValue& value)
     {
         //未注册,逐个遍历
         if(_keySet.empty()) {
-            SetVaule(key, value);
+            OnSetVaule(key, value);
             return false;
         }
         //已注册,则在注册列表里查找key是否存在,不存在则不用遍历(减少无效调用)
+        if(_keySet.count(key) == 0) {
+            return false;
+        }
         else {
-            if(_keySet.count(key) == 0) {
-                return false;
-            }
-            else {
-                SetVaule(key, value);
-                return true;
-            }
+            OnSetVaule(key, value);
+            return true;
         }
     }
+    
 private:
-    friend class mkIOptionSwitch_base<TypeKey, TypeValue>;
     std::set<TypeKey>                       _keySet;//该选项支持的key-list
 };
 
@@ -88,70 +90,73 @@ public:
     
     virtual ~mkIOptionSwitch_base()
     {
-        UnregisterOptionAll();
+        // Unregister Option
+        for(auto& elem : _options) {
+            delete elem.second;
+            elem.second = nullptr;
+        }
+        _options.clear();
     }
     
-    //批量设置某个选项的某个属性,这里用了契约,假定所有选项的任一属性都有唯一的key标志
-    //全部属性设置完成后,需要与 ApplyOptionAll() 配对使用,使所有选项的设置生效
-    virtual void SetOptionAttrBatch (const TypeKey& attributeKey, const TypeValue& value) final
+    //批量设置选项的某个属性
+    virtual void SetOptions(const TypeKey& key, const TypeValue& value) final
     {
         bool validKey = false;
         for(auto& elem : _options) {
-            if(elem.second->SetAttribute(attributeKey, value)) {
+            if(elem.second->SetAttribute(key, value)) {
                 validKey = true;
                 break;
             }
         }
-        
         if(!validKey) {
-            //todo
-            //无效的key
-            //MK_PRINT("key is invalid.");
+            MK_PRINT("key is invalid.");
         }
     }
     
-    virtual void ApplyOptionAttrBatch() final
+    //应用所有选项:
+    //如果需要处理一些额外逻辑,则需要派生类重载该函数自行解决
+    //1.禁用一些相互冲突的开关,例如:A开关和B开关不能同时打开
+    //2.检测到某些开关未打开则抛异常,例如C开关在任何情况下都必须打开,否则逻辑错误
+    //3.取消注册某些开关, 例如D开关在流程1中需要,但是流程2中不需要,则流程2时可以取消掉该选项;
+    //4.等等
+    virtual void Applys() final
     {
-        BeforeApplyAttrBatch();
-        
         for(auto& elem : _options) {
-            elem.second->Apply();
+            elem.second->OnApply();
         }
     }
     
     //单独重新设置某个选项的某些属性
-    //全部属性修改完成后,需要与ApplyOption()配对使用,使修改生效
-    template<class T> void SetOptionAttr(const TypeKey& attributeKey, const TypeValue& value)
+    template<class T> 
+    void SetOption(const TypeKey& key, const TypeValue& value)
     {
         const static std::type_index index(typeid(T));
         
         auto iter = _options.find(index);
         if(iter != _options.end()) {
-            if(iter->second->SetAttribute(attributeKey, value)) {
+            if(iter->second->SetAttribute(key, value)) {
                 return;
             }
             else {
                 //key无效
-                //todo
-                //MK_PRINT("key is invalid.");
+                MK_PRINT("key is invalid.");
             }
         }
         else {
-            //todo
             //选项不存在
             MK_PRINT(_T("T is invalid."));
         }
-        
     }
     
-    
-    template<class T> void ApplyOptionAttr()
+    //应用该选项
+    template<class T> 
+    void Apply()
     {
         const static std::type_index index(typeid(T));
         
         auto iter = _options.find(index);
         if(iter != _options.end()) {
-            iter->second->Apply();
+            iter->second->OnApply();
         }
         else {
             //todo
@@ -161,7 +166,8 @@ public:
 
     
     //获取指定选项[只读]
-    template<class T> const T* GetOption() const
+    template<class T> 
+    const T* GetOption() const
     {
         const static std::type_index index(typeid(T));
         
@@ -176,32 +182,9 @@ public:
             throw string("T is invalid.");
         }
     }
-
+    
     //禁用某选项
-    template<class T> void DisableOption() const
-    {
-        const static std::type_index index(typeid(T));
-        auto iter = _options.find(index);
-        if(iter != _options.end()) {
-            iter->second->Apply();
-        }
-        else {
-            //todo
-            MK_PRINT(_T("T is invalid."));
-        }
-    }
-
-protected:
-    //注册:指定选项
-    //解注册:指定选项
-    template<class T> void RegisterOption()
-    {
-        const static std::type_index index(typeid(T));
-        
-        _options.insert(make_pair(index, new T) );
-    }
-
-    template<class T> void UnregisterOption()
+    template<class T> void RemoveOption()
     {
         const static std::type_index index(typeid(T));
         
@@ -216,26 +199,16 @@ protected:
         }
         _options.erase(iter);
     }
-
-private:
-    //派生类实现,在函数 ApplyOptionAttrBatch() 内部调用;
-    //处理一些额外逻辑:
-    //1.禁用一些相互冲突的开关,例如:A开关和B开关不能同时打开
-    //2.检测到某些开关未打开则抛异常,例如C开关在任何情况下都必须打开,否则逻辑错误
-    //3.取消注册某些开关, 例如D开关在流程1中需要,但是流程2中不需要,则流程2时可以取消掉该选项;
-    //4.等等
-    virtual void BeforeApplyAttrBatch() = 0;
     
-    //解注册:所有选项
-    virtual void UnregisterOptionAll() final
+protected:
+    //注册指定选项,供派生类构造函数中调用
+    template<class T> void Register()
     {
-        for(auto& elem : _options) {
-            delete elem.second;
-            elem.second = nullptr;
-        }
-        _options.clear();
+        const static std::type_index index(typeid(T));
+        
+        _options.insert(make_pair(index, new T) );
     }
-
+    
 protected:
     std::map<std::type_index, mkIOption_base<TypeKey, TypeValue>*> _options;
 };
