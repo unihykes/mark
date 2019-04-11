@@ -1,0 +1,4 @@
+set CRUDIRNAME=%cd: =:%
+set CRUDIRNAME=%CRUDIRNAME:\= %
+for %%j in (%CRUDIRNAME%) do (set CRUDIRNAME=%%j)
+set CRUDIRNAME=%CRUDIRNAME::= %
