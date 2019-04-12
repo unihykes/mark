@@ -1,0 +1,1 @@
+<windows.h> 文件声明了 OutputDebugString() 函数的两个版本 - 一个用于 ASCII，一个用于 Unicode - 不像绝大多数 Win32 API 一样，原始版本是 ASCII。而大多数的 Win32 API 的原始版本是 Unicode。使用一个 NULL 结尾的字符串缓冲区简单调用 OutputDebugString() 将导致信息出现在调试器中，如果有调试器的话。
