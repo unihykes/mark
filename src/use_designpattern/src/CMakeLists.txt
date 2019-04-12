@@ -14,30 +14,6 @@ SET(AUTO_RUN OFF)
 #“¿¿µø‚
 SET(NEED_GTEST TRUE)
 
-# ±‡“Îƒø¬º
-ADD_SOURCE_DIRS(./AbstractFactoryPattern;
-				./AdapterPattern;
-				./BridgePattern;
-				./BuilderPattern;
-				./ChainOfResponsibilityPattern;
-				./CommandPattern;
-				./CompositePattern;
-				./DecoratorPattern;
-				./FacadePattern;
-				./FactoryPattern;
-				./FlyweightPattern;
-				./InterpreterPattern;
-				./IteratorPattern;
-				./MediatorPattern;
-				./MementoPattern;
-				./ObserverPattern;
-				./PrototypePattern;
-				./ProxyPattern;
-				./SingletonPattern;
-				./StatePattern;
-				./StrategyPattern;
-				./TemplatePattern;
-				./VisitorPattern;)
 
 INCLUDE($ENV{MONK_MAKE}/end.cmake)
 
