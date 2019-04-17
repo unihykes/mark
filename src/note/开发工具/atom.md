@@ -94,7 +94,7 @@ config.cson 备份至:2019-4-11
     graphvizDotExecutable: "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe"
   "platformio-ide-terminal":
     core:
-      mapTerminalsToAutoOpen: true
+      autoRunCommand: "cd U:\\unihykes\\Apollo_Unique\\apollo\\cmake\\tools"
       shell: "C:\\Windows\\System32\\cmd.exe"
     style:
       theme: "one-dark"
