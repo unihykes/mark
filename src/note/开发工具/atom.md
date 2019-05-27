@@ -5,6 +5,7 @@ https://m.fontke.com/tool/rgb/abb3bf/
 
 ## 用户设置
 config.cson 备份至:2019-4-11
+
 ```cson
 
 "*":
@@ -23,7 +24,6 @@ config.cson 备份至:2019-4-11
       "timecop"
       "language-yaml"
       "language-typescript"
-      "language-toml"
       "language-sass"
       "language-ruby-on-rails"
       "language-ruby"
@@ -49,6 +49,10 @@ config.cson 备份至:2019-4-11
       "autocomplete-atom-api"
       "markdown-preview"
       "autocomplete-plus"
+      "package-generator"
+      "language-rust-bundled"
+      "language-go"
+      "language-gfm"
     ]
     packagesWithKeymapsDisabled: [
       "bracket-matcher"
@@ -61,7 +65,7 @@ config.cson 备份至:2019-4-11
     uriHandlerRegistration: "always"
   editor:
     autoIndentOnPaste: false
-    fontSize: 12
+    fontSize: 13
     invisibles:
       cr: " "
       eol: " "
@@ -72,7 +76,6 @@ config.cson 备份至:2019-4-11
     showIndentGuide: true
     showInvisibles: true
     tabLength: 4
-    tabType: "hard"
   "exception-reporting":
     userId: "fb7193ae-67e0-479a-ae72-e9dad3b0861b"
   "find-and-replace":
@@ -80,12 +83,17 @@ config.cson 备份至:2019-4-11
     closeFindPanelAfterSearch: true
     projectSearchResultsPaneSplitDirection: "down"
     scrollToResultOnLiveSearch: true
+  "fuzzy-finder":
+    scoringSystem: "fast"
+    useRipGrep: true
   "highlight-selected":
     highlightBackground: true
   "markdown-preview":
     breakOnSingleNewline: true
     useGitHubStyle: true
-  "markdown-preview-enhanced": {}
+  "markdown-preview-enhanced":
+    enableExtendedTableSyntax: true
+    scrollSync: false
   "one-dark-ui":
     stickyHeaders: true
     tabSizing: "Minimum"
@@ -98,8 +106,15 @@ config.cson 备份至:2019-4-11
       shell: "C:\\Windows\\System32\\cmd.exe"
     style:
       theme: "one-dark"
+  tabs:
+    addNewTabsAtEnd: true
+    enableVcsColoring: true
+  "tree-view":
+    hideIgnoredNames: true
+    hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
+  "wrap-guide": {}
 
 
 
@@ -107,42 +122,64 @@ config.cson 备份至:2019-4-11
 
 ## 用户样式设置:
 styles.less
+
 ```less
+
 // style the background color of the tree view
 .tree-view {
-    // background-color: whitesmoke;
-    background-color: RGB(208, 255, 255);//目录树背景色
+    //background-color: whitesmoke;
+    //background-color: RGB(208, 255, 255);//目录树背景色
 }
 
 // style the background and foreground colors on the atom-text-editor-element itself
 atom-text-editor {
     // color: white;//前景色(普通字体颜色)
-    background-color: RGB(208, 255, 255);//编辑框背景色
+    // background-color: RGB(208, 255, 255);//编辑框背景色
 }
 
 // style UI elements inside atom-text-editor
 atom-text-editor .cursor {
-     border-color: blue;//光标颜色
+     //border-color: blue;//光标颜色
 }
 
 //注释风格
 atom-text-editor .syntax--comment {
-    font-style:normal; //将注释的斜体修改为正常体
-    font-size: 12px; //注释字号
-    color:  #2C713C; //注释颜色
+    font-style: normal; //将注释的斜体修改为正常体
+    //font-size: 12px; //注释字号
+    //color:  #2C713C; //注释颜色
 }
+
 ```
 
 
 ## atom常用插件
 #### auto-encoding
+    自动转换文件编码
+    
 #### highlight-selected
+    选中高亮
+    
+#### language-batch
+    语言支持-batch
+    
 #### language-cmake
+    语言支持-cmake
+    
+#### language-gfm-enhanced
+    语言支持-Markdown语法高亮
 
 #### language-plantuml
+    语言支持-plantuml
+    
+#### language-thrift
+    语言支持-thrift
+    
+#### markdown-preview-enhanced
+    应该是ATOM最好、功能最强的Markdown插件
+    内置支持plantuml
+    
 #### plantuml-viewer
     快捷键ctrl+alt+P(可能会和网易云音乐冲突)
-    
     语法教程:http://plantuml.com/class-diagram
     安装教程:https://blog.csdn.net/github_36409600/article/details/73522019
     使用教程:https://www.cnblogs.com/Jeson2016/p/6837186.html
@@ -159,31 +196,18 @@ atom-text-editor .syntax--comment {
     charset设置为utf8
     Graphviz Dot Excutable路径:C:\Program Files (x86)\Graphviz2.38\bin\dot.exe
     
-#### simlified-chinese-menu
-
-#### language-thrift
-
-#### language-batch
-
-#### markdown-preview-enhanced
-应该是ATOM最好、功能最强的Markdown插件
-
-#### language-gfm-enhanced
-Markdown语法高亮
-
-#### scroll-marker
-滚动条显示改动
-
 #### platformio-ide-terminal
-控制台命令行插件
-shell override设置为:C:\Windows\System32\cmd.exe
-cmd窗口打开,勾选切换到旧版控制台,不然会有乱行问题;
-alt+shift+t:打开新控制台
-alt+shift+j:切换到左边控制台
-alt+shift+k:切换到右边控制台
-alt+shift+x:关闭当前控制台
-设置快捷键:alt+shift+h用于和隐藏控制台
-'atom-text-editor': 
-	'alt-shift-h': 'platformio-ide-terminal:toggle'
-
-	
+    控制台命令行插件
+    shell override设置为:C:\Windows\System32\cmd.exe
+    cmd窗口打开,勾选切换到旧版控制台,不然会有乱行问题;
+    alt+shift+t:打开新控制台
+    alt+shift+j:切换到左边控制台
+    alt+shift+k:切换到右边控制台
+    alt+shift+x:关闭当前控制台
+    设置快捷键:alt+shift+h用于和隐藏控制台
+    'atom-text-editor': 
+    	'alt-shift-h': 'platformio-ide-terminal:toggle'
+        
+#### simlified-chinese-menu
+    中文汉化插件
+    
