@@ -211,3 +211,5 @@ atom-text-editor .syntax--comment {
 #### simlified-chinese-menu
     中文汉化插件
     
+#### multiline-tab
+    多行标签栏
