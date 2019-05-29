@@ -151,7 +151,6 @@ atom-text-editor .syntax--comment {
 
 ```
 
-
 ## atom常用插件
 #### auto-encoding
     自动转换文件编码
@@ -213,3 +212,6 @@ atom-text-editor .syntax--comment {
     
 #### multiline-tab
     多行标签栏
+    
+#### line-ending-selector
+    Default line ending 可以设置为CRLF
