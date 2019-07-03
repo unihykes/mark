@@ -4,11 +4,12 @@
 https://m.fontke.com/tool/rgb/abb3bf/
 
 ## 用户设置
-config.cson 备份至:2019-4-11
+config.cson 备份至:2019-7-1
 
 ```cson
-
 "*":
+  "auto-encoding":
+    disallowEncTypes: "windows1252"
   "autocomplete-plus":
     autoActivationDelay: 3
   "bracket-matcher":
@@ -31,7 +32,6 @@ config.cson 备份至:2019-4-11
       "language-perl"
       "language-objective-c"
       "language-mustache"
-      "language-less"
       "language-javascript"
       "language-java"
       "language-hyperlink"
@@ -65,11 +65,8 @@ config.cson 备份至:2019-4-11
     uriHandlerRegistration: "always"
   editor:
     autoIndentOnPaste: false
-    fontSize: 13
-    invisibles:
-      cr: " "
-      eol: " "
-      tab: "â†’"
+    fontSize: 12
+    invisibles: {}
     lineHeight: 1.1
     preferredLineLength: 100
     scrollPastEnd: true
@@ -88,6 +85,8 @@ config.cson 备份至:2019-4-11
     useRipGrep: true
   "highlight-selected":
     highlightBackground: true
+  "line-ending-selector":
+    defaultLineEnding: "LF"
   "markdown-preview":
     breakOnSingleNewline: true
     useGitHubStyle: true

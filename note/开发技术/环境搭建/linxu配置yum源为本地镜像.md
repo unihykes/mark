@@ -25,12 +25,13 @@ rpm -ivh createrepo-0.9.9-22.el6.noarch.rpm   //版本号需要用cdrom中存在
 vi /etc/yum.repos.d/cdrom.repo
 (实际上，不新建/etc/yum.repos.d/cdrom.repo也是可以的。直接编辑系统自带的/etc/yum.repos.d/ rhel-source.repo.repo文件也可以。将内容添加到文件后面)
 待添加内容如下:
-[CDROM]
-name=RHEL6.6 cdrom
-baseurl=file:///media/cdrom/
-enable=1
-gpgcheck=0
-gpgkey=file:///media/cdrom/RPM-GPG-KEY-redhat-release
+
+    [CDROM]
+    name=RHEL6.6 cdrom
+    baseurl=file:///media/cdrom/
+    enable=1
+    gpgcheck=0
+    gpgkey=file:///media/cdrom/RPM-GPG-KEY-redhat-release
 
 
 5.1、补充：redhat6.6有些安装包是在光盘的HighAvailability和ResilientStorage目录下的，需要额外配置：
