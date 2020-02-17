@@ -212,5 +212,3 @@ atom-text-editor .syntax--comment {
 #### multiline-tab
     多行标签栏
     
-#### line-ending-selector
-    Default line ending 可以设置为CRLF

@@ -37,3 +37,5 @@ http://blog.csdn.net/zhang_shuai_2011/article/details/38585725
 
 
 
+漫画：什么是拜占庭将军问题？
+https://blog.csdn.net/bjweimengshu/article/details/80222416
