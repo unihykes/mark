@@ -5,9 +5,6 @@ CMAKE_POLICY(VERSION 2.8)
 
 
 ADD_SUBDIRECTORY(baseutil)
-ADD_SUBDIRECTORY(blog_deduction)
-ADD_SUBDIRECTORY(blog_explicitCall)
-ADD_SUBDIRECTORY(blog_r-reference)
 #ADD_SUBDIRECTORY(use_boost)
 ADD_SUBDIRECTORY(use_designpattern)
 ADD_SUBDIRECTORY(use_std)
