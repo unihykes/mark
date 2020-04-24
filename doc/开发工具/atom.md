@@ -174,7 +174,12 @@ atom-text-editor .syntax--comment {
     
 #### markdown-preview-enhanced
     应该是ATOM最好、功能最强的Markdown插件
-    内置支持plantuml
+    如果需要使用plantuml,需要额外安装:graphviz:
+    http://www.graphviz.org/download/
+    
+    如果需要使用plantuml,需要额外安装java:
+    https://www.java.com/zh_CN/
+    https://sourceforge.net/projects/plantuml/files/plantuml.jar/download
     
 #### plantuml-viewer
     快捷键ctrl+alt+P(可能会和网易云音乐冲突)
