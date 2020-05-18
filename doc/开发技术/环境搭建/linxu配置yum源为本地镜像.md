@@ -4,7 +4,8 @@
 mkdir /media/cdrom
 挂载光盘:     mount /dev/cdrom  /media/cdrom
 挂载iso文件: mount /home/software/rhel-server-6.6-x86_64-dvd.iso  -o loop /media/cdrom
-
+写入配置文件
+	xx.iso /media iso9660 defaults,ro,loop 0 0 
 
 2、确认是否安装以下软件包：
 rpm -qa |grep yum
