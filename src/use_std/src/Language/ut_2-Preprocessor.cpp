@@ -52,7 +52,7 @@ TEST_F(ut_Preprocessor, define)
     
     //预定义宏
     cout<< "__cplusplus = " << __cplusplus <<endl;
-    cout<< "__STDC_HOSTED__ = " << __STDC_HOSTED__ <<endl; //(C++11) 
+    //cout<< "__STDC_HOSTED__ = " << __STDC_HOSTED__ <<endl; //(C++11) 
     cout<< "__FILE__ = " << __FILE__ <<endl;
     cout<< "__LINE__ = " << __LINE__ <<endl;
     cout<< "__DATE__ = " << __DATE__ <<endl;
