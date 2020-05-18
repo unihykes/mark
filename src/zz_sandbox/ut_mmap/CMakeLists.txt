@@ -5,7 +5,7 @@ CMAKE_POLICY(VERSION 2.8)
 
 
 
-INCLUDE($ENV{MONK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_MAKE}/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
 SET(TARGET_NAME ut_mmap)
@@ -24,7 +24,7 @@ ENDIF()
 
 
 
-INCLUDE($ENV{MONK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_MAKE}/end.cmake)
 
 
 

@@ -12,8 +12,8 @@ IF(WIN32)
     ENDIF()
 ELSE()
     #未指定std版本,cmake自动查询
-    MESSAGE(STATUS "Get MONK_STD_VERSION = ${MONK_STD_VERSION}")
-    IF("${MONK_STD_VERSION}" STREQUAL "")
+    MESSAGE(STATUS "Get MK_STD_VERSION = ${MK_STD_VERSION}")
+    IF("${MK_STD_VERSION}" STREQUAL "")
         #C:\Program Files\CMake\share\cmake-3.7\Modules\CheckCXXCompilerFlag.cmake
         INCLUDE(CheckCXXCompilerFlag)
         CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
@@ -38,17 +38,17 @@ ELSE()
     ELSE()
         #支持自定义g++下std版本, 默认关闭, 由cmake自动选择
         #如果在CmakeLists.txt中设置了如下参数,则cmake不再自动处理
-        #SET(MONK_STD_VERSION c++14)
-        #SET(MONK_STD_VERSION c++11)
-        #SET(MONK_STD_VERSION c++0x)
-        #SET(MONK_STD_VERSION c++98)
-        MESSAGE(STATUS "enable ${MONK_STD_VERSION} ......")
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=${MONK_STD_VERSION}")
-        IF("${MONK_STD_VERSION}" STREQUAL "c++14")
+        #SET(MK_STD_VERSION c++14)
+        #SET(MK_STD_VERSION c++11)
+        #SET(MK_STD_VERSION c++0x)
+        #SET(MK_STD_VERSION c++98)
+        MESSAGE(STATUS "enable ${MK_STD_VERSION} ......")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=${MK_STD_VERSION}")
+        IF("${MK_STD_VERSION}" STREQUAL "c++14")
             ADD_DEFINITIONS(-D__ENABLE_CXX14__  -D__ENABLE_CXX11__  -D__ENABLE_CXX0X__)
-        ELSEIF("${MONK_STD_VERSION}" STREQUAL "c++11")
+        ELSEIF("${MK_STD_VERSION}" STREQUAL "c++11")
             ADD_DEFINITIONS(-D__ENABLE_CXX11__  -D__ENABLE_CXX0X__)
-        ELSEIF("${MONK_STD_VERSION}" STREQUAL "c++0x")
+        ELSEIF("${MK_STD_VERSION}" STREQUAL "c++0x")
             ADD_DEFINITIONS(-D__ENABLE_CXX0X__)
         ELSE()
             ADD_DEFINITIONS(-D__ENABLE_CXX98__)
@@ -57,27 +57,11 @@ ELSE()
 ENDIF()
 
 #默认包含引用目录
-INCLUDE_DIRECTORIES(${MONK_SRC}/baseutil/include;)
-
-# 配置msvc库相关依赖
-IF(${NEED_MSVC})
-	IF(WIN32)
-		IF("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-			SET(MSVC_LIB msvcp140d.dll)
-		ELSE()
-			SET(MSVC_LIB msvcp140.dll)
-		ENDIF()
-		SET(LIB_MSVC_PATH ${MONK_DEPS}/msvc/crt/${MONK_PLATFORM}/${CMAKE_BUILD_TYPE})
-		seek_deps_file(${LIBS_PATH} ${LIB_MSVC_PATH} ${MSVC_LIB})
-		IF(ENABLE_PACKAGE)
-			install_dir (${LIB_MSVC_PATH}/ .)
-		ENDIF()
-	ENDIF()
-ENDIF()
+INCLUDE_DIRECTORIES(${MK_SRC}/baseutil/include;)
 
 # 配置 boost 相关依赖
 IF(${NEED_BOOSTBCP})
-	INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/boostbcp)
+	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boostbcp)
 	ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB -DBOOST_LIB_DIAGNOSTIC)
     SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} boostbcp)
 	IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
@@ -86,16 +70,16 @@ IF(${NEED_BOOSTBCP})
 ENDIF()
 
 IF(${NEED_BOOST_HPP})
-    INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/boost;)
+    INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost;)
 ENDIF()
 
 IF(${NEED_BOOST_DYNAMIC})
-    INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/boost;)
+    INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost;)
     #todo
 ENDIF()
 
 IF(${NEED_BOOST_STATIC})
-    INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/boost;)
+    INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost;)
     #todo
 ENDIF()
     
@@ -104,12 +88,12 @@ ENDIF()
 IF(${NEED_GTEST})
 	#gtest
 	ADD_DEFINITIONS(-D__USING_GTEST__)
-	INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/gtest/googletest/googletest/include)
+	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/gtest/googletest/googletest/include)
     SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} gtest)
     
 	# gmock
 	ADD_DEFINITIONS(-D__USING_GMOCK__)
-	INCLUDE_DIRECTORIES(${MONK_PATH}/3rd_Party/gtest/googletest/googlemock/include)
+	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/gtest/googletest/googlemock/include)
     SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} gmock)
 	IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		LINK_LIBRARIES(pthread)
@@ -119,8 +103,8 @@ ENDIF()
 # 依赖 NEED_BASEUTIL
 IF(${NEED_BASEUTIL})
 	ADD_DEFINITIONS(-D__USING_BASEUTIL__)
-	INCLUDE_DIRECTORIES(${MONK_SRC}/baseutil/include;
-						${MONK_SRC}/baseutil/src;)
+	INCLUDE_DIRECTORIES(${MK_SRC}/baseutil/include;
+						${MK_SRC}/baseutil/src;)
 	SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} baseutil)
 ENDIF()
 

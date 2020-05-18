@@ -24,7 +24,7 @@ set BUILD_RELATIVE_PATH=%PNAME%
 goto filter_PNAME
 
 :filter_PNAME
-if "%PNAME%" == "monk" goto endgetname
+if "%PNAME%" == "mark" goto endgetname
 cd ..
 goto getcurrentname
 
@@ -34,7 +34,7 @@ echo [BUILD_RELATIVE_PATH]= %BUILD_RELATIVE_PATH%
 
 
 :: ½øÈëbuildÄ¿Â¼
-set BUILD_ABSOLUTE_PATH=%MONK_BUILD:/=\%
+set BUILD_ABSOLUTE_PATH=%MK_BUILD:/=\%
 set BUILD_ABSOLUTE_PATH=%BUILD_ABSOLUTE_PATH%\%CMAKE_BUILD_TYPE%\%BUILD_RELATIVE_PATH%
 echo [cd]= %BUILD_ABSOLUTE_PATH%
 

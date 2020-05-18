@@ -212,7 +212,7 @@ MESSAGE(STATUS "function(seek_deps_file path1 path2)")
 ## copy资源文件
 macro(add_res_files_target sour dest CLEAN_FILES dest_name)
     IF(WIN32)
-        SET(MSGFMT ${MONK_MAKE}/script_win/bin/msgfmt.exe)
+        SET(MSGFMT ${MK_MAKE}/script_win/bin/msgfmt.exe)
     ELSE()
         SET(MSGFMT msgfmt)
     ENDIF()

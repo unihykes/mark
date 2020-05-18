@@ -7,7 +7,7 @@ IF("${WX_DYNAMIC_LINK}" STREQUAL "")
     set(WX_DYNAMIC_LINK ON)
 ENDIF()
 
-SET(WX_PATH ${MONK_PATH}/3rd_Party/wxwidgets)
+SET(WX_PATH ${MK_PATH}/3rd_Party/wxwidgets)
 
 #debugÏà¹ØµÄºê
 IF("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")

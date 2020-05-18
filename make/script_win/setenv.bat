@@ -19,20 +19,18 @@ call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" x86
 
 ::进入项目根目录,转换反斜杠为斜杠, E:\AA\BB\CC -->> E:/AA/BB/CC
 cd ..\..\
-set MONK_PATH=%cd:\=/%
+set MK_PATH=%cd:\=/%
 
 
 ::设置环境变量
 set CMAKE_PLATFORM_NAME=win
 set CMAKE_PLATFORM_VERSION=all
 
-set MONK_PLATFORM=%CMAKE_PLATFORM_NAME%_%CMAKE_PLATFORM_VERSION%_%CMAKE_BUILD_VERSION%
-set MONK_MAKE=%MONK_PATH%/make
-set MONK_DEPS=%MONK_PATH%/deps
-set MONK_SRC=%MONK_PATH%/src
-set MONK_TARGET=%MONK_PATH%/%MONK_PLATFORM%/target
-set MONK_BUILD=%MONK_PATH%/%MONK_PLATFORM%/build
+set MK_PLATFORM=%CMAKE_PLATFORM_NAME%_%CMAKE_PLATFORM_VERSION%_%CMAKE_BUILD_VERSION%
+set MK_MAKE=%MK_PATH%/make
+set MK_TARGET=%MK_PATH%/%MK_PLATFORM%/target
+set MK_BUILD=%MK_PATH%/%MK_PLATFORM%/build
 
 @echo off
-set PATH=%MONK_MAKE%/script_win;%PATH%
+set PATH=%MK_MAKE%/script_win;%PATH%
 @echo on

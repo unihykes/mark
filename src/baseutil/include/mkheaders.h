@@ -134,7 +134,7 @@ typedef uint64_t			uint64;
 	#define DLL_EXPORT
 	#define DLL_IMPORT
 #endif
-#ifdef __MAKE_MONK_DLL__
+#ifdef __MAKE_MK_DLL__
 	//导出c动态库
 	#define MK_CDLL_EXPORT		extern "C" DLL_EXPORT
 	//导出c++动态库

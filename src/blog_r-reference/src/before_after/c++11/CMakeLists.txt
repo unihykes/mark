@@ -6,7 +6,7 @@ PROJECT(ut_11)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
 
-INCLUDE($ENV{MONK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_MAKE}/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
 SET(TARGET_NAME ut_11)
@@ -23,13 +23,13 @@ IF(WIN32)
     MESSAGE(FATAL_ERROR "do not support windows.")
 ELSE()
     #指定使用c++11
-    SET(MONK_STD_VERSION c++11)
+    SET(MK_STD_VERSION c++11)
 
     #禁用返回值优化RVO
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors")
 ENDIF()
 
-INCLUDE($ENV{MONK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_MAKE}/end.cmake)
 
 
 

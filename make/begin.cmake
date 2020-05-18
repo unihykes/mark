@@ -6,22 +6,21 @@ SET(CMAKE_BUILD_VERSION $ENV{CMAKE_BUILD_VERSION} CACHE String "")
 SET(CMAKE_PLATFORM_NAME "$ENV{CMAKE_PLATFORM_NAME}" CACHE type String)
 SET(CMAKE_PLATFORM_VERSION $ENV{CMAKE_PLATFORM_VERSION} CACHE String "")
 
-SET(MONK_PATH $ENV{MONK_PATH} CACHE String "")
-SET(MONK_PLATFORM $ENV{MONK_PLATFORM} CACHE String "")
-SET(MONK_TARGET $ENV{MONK_TARGET} CACHE String "")
-SET(MONK_MAKE $ENV{MONK_MAKE} CACHE String "")
-SET(MONK_DEPS $ENV{MONK_DEPS} CACHE String "")
-SET(MONK_SRC $ENV{MONK_SRC} CACHE String "")
+SET(MK_PATH $ENV{MK_PATH} CACHE String "")
+SET(MK_PLATFORM $ENV{MK_PLATFORM} CACHE String "")
+SET(MK_TARGET $ENV{MK_TARGET} CACHE String "")
+SET(MK_MAKE $ENV{MK_PATH}/make CACHE String "")
+SET(MK_SRC $ENV{MK_PATH}/src CACHE String "")
 
 # 设置 make package target 的默认存放路径
 SET(INSTALL_PATH .)
 
 #设置 LIBS_PATH
-SET(LIBS_PATH ${MONK_TARGET}/${CMAKE_BUILD_TYPE})
+SET(LIBS_PATH ${MK_TARGET}/${CMAKE_BUILD_TYPE})
 
 ####################################################################################################
 MESSAGE(STATUS "\n**set cmake--------------------------------------------------------------------------")
-SET(CMAKE_MODULE_PATH ${MONK_MAKE})
+SET(CMAKE_MODULE_PATH ${MK_MAKE})
 
 #设置if和else的控制开关选项
 SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
@@ -156,7 +155,7 @@ IF(EXISTS ${DEFAULT_CONFIG_PATH})
 ENDIF()
 
 
-INCLUDE($ENV{MONK_MAKE}/define.cmake)
+INCLUDE($ENV{MK_MAKE}/define.cmake)
 ####################################################################################################
 MESSAGE(STATUS "\n**begin.cmake end----------------------------------------------------------------")
 

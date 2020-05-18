@@ -3,7 +3,7 @@ PROJECT(blog_r-reference)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
 
-INCLUDE($ENV{MONK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_MAKE}/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
 SET(TARGET_NAME blog_r-reference)
@@ -26,7 +26,7 @@ ELSE()
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors -Wno-unused-variable")
 ENDIF()
 
-INCLUDE($ENV{MONK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_MAKE}/end.cmake)
 
 
 

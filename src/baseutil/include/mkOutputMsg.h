@@ -32,13 +32,13 @@ info:
 #endif
 
 #define MK_PRINT_MSG(...)															\
-    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_PRINT, "monk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
+    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_PRINT, "mk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
     
 #define MK_TRACE(...)		    													\
-    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_TRACE, "monk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
+    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_TRACE, "mk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
 
 #define MK_LOG(...)		    													\
-    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_LOG, "monk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
+    mkOutputMsg().OutputMsg(mkOutputMsg::mkOutputMsgType::MK_LOG, "mk", __FILE__, __LINE__, __func__, ##__VA_ARGS__);
 
 #define MK_PRINT        MK_PRINT_MSG
 #define mkPrint         MK_PRINT
@@ -67,11 +67,11 @@ public:
     inline void OutputMsg(mkOutputMsgType type, const char* moduleName, const char* file, int line, const char* funcName, const T* fmt, ...)
     {
         #ifdef __WINDOWS__
-            #define TRACE_FILE_PATH         "C:\\monk\\monk.trace"
-            #define LOG_FILE_PATH           "/monk/monk.log"
+            #define TRACE_FILE_PATH         "C:\\mk\\mk.trace"
+            #define LOG_FILE_PATH           "/mk/mk.log"
         #else
-            #define TRACE_FILE_PATH           "C:\\monk\\monk.trace"
-            #define LOG_FILE_PATH           "/monk/monk.log"
+            #define TRACE_FILE_PATH           "C:\\mk\\mk.trace"
+            #define LOG_FILE_PATH           "/mk/mk.log"
         #endif
         
         //检查trace是否打开,未打开直接返回

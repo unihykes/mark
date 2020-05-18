@@ -3,7 +3,7 @@ PROJECT(use_std)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
 
-INCLUDE($ENV{MONK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_MAKE}/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
 SET(TARGET_NAME use_std)
@@ -32,7 +32,7 @@ ADD_SOURCE_DIRS(
                 ./ThreadSupportLibrary;
                 )
                 
-INCLUDE($ENV{MONK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_MAKE}/end.cmake)
 
 
 

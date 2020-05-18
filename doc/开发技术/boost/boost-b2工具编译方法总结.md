@@ -82,13 +82,13 @@ b2.exe ^
  address-model=64 ^
  install
 
-install选项在monk环境下编译64位 debug
+install选项在mk环境下编译64位 debug
 b2.exe ^
-     --build-dir=%MONK_PATH%\3rd_Party\deps_boost\build-dir\debug_x64 ^
-   --includedir=%MONK_PATH%\3rd_Party\deps_boost\include ^
-         --prefix=%MONK_PATH%\3rd_Party\deps_boost\prefix\debug_x64 ^
- --exec-prefix=%MONK_PATH%\3rd_Party\deps_boost\exec-prefix\debug_x64 ^
-           --libdir=%MONK_PATH%\3rd_Party\deps_boost\libdir\debug_x64 ^
+     --build-dir=%MK_PATH%\3rd_Party\deps_boost\build-dir\debug_x64 ^
+   --includedir=%MK_PATH%\3rd_Party\deps_boost\include ^
+         --prefix=%MK_PATH%\3rd_Party\deps_boost\prefix\debug_x64 ^
+ --exec-prefix=%MK_PATH%\3rd_Party\deps_boost\exec-prefix\debug_x64 ^
+           --libdir=%MK_PATH%\3rd_Party\deps_boost\libdir\debug_x64 ^
  --without-python ^
  variant=debug ^
  link=shared ^

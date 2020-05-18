@@ -8,7 +8,7 @@ CMAKE_BUILD_CURDIR=`pwd`
 CMAKE_BUILD_VERBOSE=0
 CMAKE_BUILD_CPU_COUNT=
 CMAKE_CUSTOM_DEFINES=
-CMAKE_BUILD_DIR=${MONK_BUILD}/${CMAKE_BUILD_TYPE}/${CMAKE_BUILD_CURDIR#*monk/}/Build
+CMAKE_BUILD_DIR=${MK_BUILD}/${CMAKE_BUILD_TYPE}/${CMAKE_BUILD_CURDIR#*mk/}/Build
 
 function compile ()
 {
@@ -33,7 +33,6 @@ function compile ()
               -DCMAKE_C_COMPILER=${MY_C_COMPILER}                   \
               -DCMAKE_BUILD_VERSION=${CMAKE_BUILD_VERSION}          \
               -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}                \
-              -DMONK_MAKE=${MONK_MAKE}                              \
               -DAUTO_RUN=0                                          \
               $CMAKE_CUSTOM_DEFINES                                 \
               $CMAKE_BUILD_CURDIR 
