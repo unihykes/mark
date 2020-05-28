@@ -10,6 +10,12 @@ SET(TARGET_NAME baseutil)
 
 #引用路径
 INCLUDE_DIRECTORIES(../include;)
+INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/TablePrinter)
+IF(WIN32)
+	INCLUDE_DIRECTORIES(./win)
+ELSE()
+	INCLUDE_DIRECTORIES(./unix)
+ENDIF()
 
 # 编译目录
 #ADD_SOURCE_DIRS(./todo;)

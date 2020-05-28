@@ -43,7 +43,8 @@ string thirdPartyApi(const string& param)
         while(true) {
             static int n = 0;
             MK_PRINT("n = %d", n++);
-            Sleep(2000);
+            //::Sleep(2000);
+			std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
      

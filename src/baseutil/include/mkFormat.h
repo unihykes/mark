@@ -23,8 +23,70 @@ info:
 #ifndef __mkFormat
 #define __mkFormat
 
+#include <memory>
+
+template<typename ... TArgs>
+inline shared_ptr<char> Format(const char* format, TArgs... args)
+{
+    //计算缓冲区size
+    int size = std::snprintf(nullptr, 0, format, args...);
+    shared_ptr<char> buf = shared_ptr<char>(new char[size+1], std::default_delete<char[]>());
+    std::snprintf(buf.get(), size+1, format, args...);
+    return buf;
+}
+
+template<typename ... TArgs>
+inline shared_ptr<wchar_t> Format(const wchar_t* format, TArgs... args)
+{
+    //计算缓冲区size
+    int size = std::swprintf(nullptr, 0, format, args...);
+    shared_ptr<wchar_t> buf = shared_ptr<wchar_t>(new wchar_t[size+1], std::default_delete<wchar_t[]>());
+    std::swprintf(buf.get(), size+1, format, args...);
+    return buf;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //初等模板
 template<typename T, int N> class mkFormat;
+
+//特化:char,0
+template<>
+class mkFormat<char, 0>
+{
+public:
+    template<typename ... TArgs>
+    const char* operator()(const char* format, TArgs... args)
+    {
+        //计算缓冲区size
+        int size = std::snprintf(nullptr, 0, format, args...);
+        _buf.reset(new char[size+1]);
+        std::snprintf(_buf.get(), size+1, format, args...);
+        return _buf.get();
+    }
+    
+private:
+    unique_ptr<char[]> _buf;
+};
+
+//特化:wchar_t,0
+template<>
+class mkFormat<wchar_t, 0>
+{
+public:
+    template<typename ... TArgs>
+    const wchar_t* operator()(const wchar_t* format, TArgs... args)
+    {
+        //计算缓冲区size
+        int size = std::swprintf(nullptr, 0, format, args...);
+        _buf.reset(new wchar_t[size+1]);
+        std::swprintf(_buf.get(), size+1, format, args...);
+        return _buf.get();
+    }
+    
+private:
+    unique_ptr<wchar_t[]> _buf;
+};
 
 //偏特化:char
 template<int N>
@@ -58,7 +120,7 @@ private:
     wchar_t _buf[N];
 };
 
-
+using Format0 =mkFormat<char,0>;
 using Format16 =mkFormat<char,16>;
 using Format32 =mkFormat<char,32>;
 using Format64 =mkFormat<char,64>;
@@ -68,6 +130,7 @@ using Format512 =mkFormat<char,512>;
 using Format1024 =mkFormat<char,1024>;
 using Format4096 =mkFormat<char,4096>;
 
+using Format0W =mkFormat<wchar_t,0>;
 using Format16W =mkFormat<wchar_t,16>;
 using Format32W =mkFormat<wchar_t,32>;
 using Format64W =mkFormat<wchar_t,64>;

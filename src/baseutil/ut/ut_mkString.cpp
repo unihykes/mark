@@ -24,6 +24,8 @@ info:
 #include <gtest/gtest.h>
 #include "mkString.h"
 #include "mkFormat.h"
+#include "mkUniqueProfilePoint.h"
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 //
@@ -42,17 +44,78 @@ protected:
 TEST_F(ut_mkString, null)
 {
     mkString str;
-    wstring xx = str;
+	#ifdef __WINDOWS__
+    	wstring xx = str;
+	#else
+		string xx = str;
+	#endif
 }
 
 
 TEST_F(ut_mkString, format)
 {
-    string str = Format1024{}("aaaaaa%d%s",333,"bbbbb");
-    cout<<str<<endl;
-    MK_PRINT_MSG(str.c_str());
+    double usedSecond = 0;
+    int loopCount = 1000000;
     
-    wstring strW = Format1024W{}(L"ccccc%d%s",333,L"ddddd");
-    wcout<<strW<<endl;
-    MK_PRINT_MSG(strW.c_str());
+    {
+        mkUniqueProfilePoint point(usedSecond);
+        for(int i = 0; i != loopCount; ++i) {
+            /*shared_ptr<char> str = */Format("Format__%d__%s",333,"ffffff");
+            //cout<<str.get()<<endl;
+            //MK_PRINT_MSG(str.get());
+        }
+    }
+    cout<<usedSecond<<endl;
+    
+    {
+        mkUniqueProfilePoint point(usedSecond);
+        for(int i = 0; i != loopCount; ++i) {
+            Format0{}("Format0__%d__%s",333,"ffffff");
+            //cout<<str<<endl;
+            //MK_PRINT_MSG(str.c_str());
+        }
+    }
+    cout<<usedSecond<<endl;
+    
+    {
+        mkUniqueProfilePoint point(usedSecond);
+        for(int i = 0; i != loopCount; ++i) {
+            Format1024{}("Format1024__%d__%s",333,"bbbbb");
+            //cout<<str<<endl;
+            //MK_PRINT_MSG(str.c_str());
+        }
+    }
+    cout<<usedSecond<<endl;
+    
+    
+    return;
+    {
+        mkUniqueProfilePoint point(usedSecond);
+        for(int i = 0; i != loopCount; ++i) {
+            /*shared_ptr<wchar_t> str = */Format(L"FormatW__%d__%s", 333, L"ffffff");
+            //wcout<<str.get()<<endl;
+            //MK_PRINT_MSG(str.get());
+        }
+    }
+    cout<<usedSecond<<endl;
+    
+    {
+        mkUniqueProfilePoint point(usedSecond);
+        for(int i = 0; i != loopCount; ++i) {
+            Format0W{}(L"Format0W__%d__%s",333,L"ffffff");
+            //wcout<<str<<endl;
+            //MK_PRINT_MSG(str.c_str());
+        }
+    }
+    cout<<usedSecond<<endl;
+    
+    {
+        mkUniqueProfilePoint point(usedSecond);
+        for(int i = 0; i != loopCount; ++i) {
+            Format1024W{}(L"Format1024W__%d__%s",333,L"ddddd");
+            //wcout<<str<<endl;
+            //MK_PRINT_MSG(str.c_str());
+        }
+    }
+    cout<<usedSecond<<endl;
 }

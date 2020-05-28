@@ -41,27 +41,29 @@ protected:
 
 TEST_F(ut_mkheaders, pragma)
 {
-	// 链接基础库
-	#pragma comment(lib, "shell32.lib")
-	#pragma comment(lib, "advapi32.lib")
-	#pragma comment(lib, "user32.lib")
-	#pragma comment(lib, "Ws2_32.lib")
-	#pragma comment(lib, "Mpr.lib")
-	#pragma comment(lib, "DbgHelp.lib")
-	
-	//关闭部分编译警告
-	// 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
-	#pragma warning(disable:4251)
-	// 'function': was declared deprecated
-	#pragma warning(disable:4996)
-	// 'this' : used in base member initializer list
-	#pragma warning(disable:4355)
-	// 'symbol name': attributes not present on previous declaration.
-	#pragma warning(disable: 4985)
-	// 'virtual function overrides' : previous versions of the compiler did not override when parameters only differed by const/volatile qualifiers
-	#pragma warning(disable: 4373)
-	// 'keyword' : ignored on left of 'type' when no variable is declared
-	#pragma warning(disable: 4091)
+	#ifdef __WINDOWS__
+		// 链接基础库
+		#pragma comment(lib, "shell32.lib")
+		#pragma comment(lib, "advapi32.lib")
+		#pragma comment(lib, "user32.lib")
+		#pragma comment(lib, "Ws2_32.lib")
+		#pragma comment(lib, "Mpr.lib")
+		#pragma comment(lib, "DbgHelp.lib")
+		
+		//关闭部分编译警告
+		// 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
+		#pragma warning(disable:4251)
+		// 'function': was declared deprecated
+		#pragma warning(disable:4996)
+		// 'this' : used in base member initializer list
+		#pragma warning(disable:4355)
+		// 'symbol name': attributes not present on previous declaration.
+		#pragma warning(disable: 4985)
+		// 'virtual function overrides' : previous versions of the compiler did not override when parameters only differed by const/volatile qualifiers
+		#pragma warning(disable: 4373)
+		// 'keyword' : ignored on left of 'type' when no variable is declared
+		#pragma warning(disable: 4091)
+	#endif
 }
 
 TEST_F(ut_mkheaders, PrintMacro)

@@ -25,6 +25,7 @@ info:
 #include <thread>
 #include <future>
 #include <exception>
+#include <sstream>//for stringstream
 
 //returntype = 当前函数返回值类型
 #define ADD_TIMEOUT_BEGIN(returntype)                                                              \

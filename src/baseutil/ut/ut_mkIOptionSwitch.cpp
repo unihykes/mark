@@ -122,7 +122,7 @@ TEST(ut_mkIOptionSwitch, mkBackupSwitch)
         switchs.SetOptions("fff", "test_value3");
         switchs.SetOptions("hhh", "test_value4");
         switchs.Applys();
-        MK_PRINT();
+        MK_PRINT("");
         
         //使用选项
         {
@@ -138,7 +138,7 @@ TEST(ut_mkIOptionSwitch, mkBackupSwitch)
         {
             auto pOption = switchs.GetOption<mkOptionB>();
             string name = pOption->GetFuncB();
-            MK_PRINT("name = %s", name);
+            MK_PRINT("name = %s", name.c_str());
         }
         
         //修改选项
