@@ -172,9 +172,9 @@ public:
             return result;
         }
         else {
-            //todo 
-            MK_PRINT(_T("T is invalid."));
-            throw string("T is invalid.");
+            stringstream err; err<<index.name()<<" is invalid.";
+            MK_PRINT(err.str().c_str());
+            throw std::logic_error(err.str());
         }
     }
     
