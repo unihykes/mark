@@ -38,7 +38,7 @@ public:
     {
     }
     
-    virtual void OnSetVaule (const string& key, const string& value) override
+    virtual void OnSetValue (const string& key, const string& value) override
     {
     }
     
@@ -65,7 +65,7 @@ public:
     {
     }
     
-    virtual void OnSetVaule (const string& key, const string& value) override
+    virtual void OnSetValue (const string& key, const string& value) override
     {
     }
     
@@ -86,7 +86,7 @@ public:
     {
     }
     
-    virtual void OnSetVaule (const string& key, const string& value) override
+    virtual void OnSetValue (const string& key, const string& value) override
     {
     }
     

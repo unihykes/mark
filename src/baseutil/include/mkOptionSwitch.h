@@ -47,7 +47,7 @@ public:
     
 private:
     //设置key-value(需要派生类实现)
-    virtual void OnSetVaule(const TypeKey& key, const TypeValue& value) = 0;
+    virtual void OnSetValue(const TypeKey& key, const TypeValue& value) = 0;
     
     //应用全部属性,在应用时有特殊逻辑的话,请重载之;
     virtual void OnApply()
@@ -61,7 +61,7 @@ private:
     {
         //未注册,逐个遍历
         if(_keySet.empty()) {
-            OnSetVaule(key, value);
+            OnSetValue(key, value);
             return false;
         }
         //已注册,则在注册列表里查找key是否存在,不存在则不用遍历(减少无效调用)
@@ -69,7 +69,7 @@ private:
             return false;
         }
         else {
-            OnSetVaule(key, value);
+            OnSetValue(key, value);
             return true;
         }
     }

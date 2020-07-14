@@ -1,0 +1,4 @@
+restore database 数据库名from disk='备份文件路径'with move '数据库文件名'to '数据库文件放置路径',move '日志文件名'to '日志文件存放置路径'go如：restore database EaseWefrom disk='H:\EaseWe.bak'with move 'EaseWe'to 'c:\Program Files\Microsoft SQL Server\MSSQL\data\EaseWe.mdf',move 'EaseWe_log'to 'c:\Program Files\Microsoft SQL Server\MSSQL\data\EaseWe_LOG.LDF'go附1:如何修改逻辑文件名:用 ALTER DATABASE 的 MODIFY FILE 语句更改数据文件或日志文件的逻辑名称。  alter database 数据库名modify file (name=逻辑名,newname=新逻辑名)事实上，上面的语句是更改了sysfiles和sysfiles1系统表中的name字段。附2:如何得到备份文件的逻辑文件名称:用如下语句可以得到备份文件的信息记录，其中LogicalName字段库逻辑文件名称；RESTORE FILELISTONLY from disk='H:\EaseWe.bak'
+
+
+http://www.xishuiw.com/info/2011-2/2011-2-27-29044.htm
