@@ -1,4 +1,5 @@
 ## notepad++:
+http://notepad-plus-plus.org/
 
 * Notepad++ 配置信息导出导入（快捷键配置导出导入等等:
 >
