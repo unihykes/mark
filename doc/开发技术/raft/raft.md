@@ -32,6 +32,8 @@ https://blog.csdn.net/colorant/article/details/73887706
 Raft 为什么是更易理解的分布式一致性算法
 http://www.cnblogs.com/mindwind/p/5231986.html
 
+日志快照（Log Snapshot）
+https://zhuanlan.zhihu.com/p/208393872
 
 #实现:
 Raft的一个简单c语言实现
