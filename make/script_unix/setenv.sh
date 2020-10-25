@@ -15,7 +15,8 @@ fi
 # 进入根目录
 cd ../../
 export MK_PATH=`pwd`
-
+cd ..
+export MK_PACKAGE=`pwd`
 
 #设置环境变量
 CMAKE_PLATFORM_NAME="linux"
@@ -31,8 +32,8 @@ export MY_C_COMPILER
 
 export MK_PLATFORM=${CMAKE_PLATFORM_NAME}_${CMAKE_PLATFORM_VERSION}_${CMAKE_BUILD_VERSION}
 export MK_MAKE=$MK_PATH/make
-export MK_TARGET=$MK_PATH/$MK_PLATFORM/target
-export MK_BUILD=$MK_PATH/$MK_PLATFORM/build
+export MK_TARGET=$MK_PACKAGE/mark_$MK_PLATFORM/target
+export MK_BUILD=$MK_PACKAGE/mark_$MK_PLATFORM/build
 
 export PATH=$PATH:$MK_MAKE/script_unix:$MK_MAKE/script_unix/bin
 chmod -R +x $MK_MAKE/script_unix/*.sh
