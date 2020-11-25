@@ -12,6 +12,12 @@ https://blog.csdn.net/kernel_learner/article/details/7335516
 gdb 命令列表
 https://blog.csdn.net/yangzhao0001/article/details/49178949
 
+GDB 常用命令
+https://www.jianshu.com/p/e6af28e2566f
+
+
+使用gdb调试程序完全教程
+https://blog.csdn.net/gatieme/article/details/51671430
 
 ## gdb查看进程堆栈
 

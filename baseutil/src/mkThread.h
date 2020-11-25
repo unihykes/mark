@@ -88,6 +88,7 @@ public:
     {
         //停止所有线程
         _threadAbortFlag = true;
+        OnStop();
         for(auto& threadEvent : _vThreadEvents) {
             threadEvent->wait();
         }
@@ -103,6 +104,7 @@ private:
     virtual void OnProc() = 0;
     virtual void OnError(Exception& e) = 0;
     virtual void OnEnd() = 0;
+    virtual void OnStop() = 0;//通知 OnProc 解除阻塞
 };
 
 #endif // __mkThread

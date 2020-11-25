@@ -50,3 +50,19 @@ Oct 12 16:20:17 localhost kernel: CIFS VFS: cifs_mount failed w/return code
 
 
 
+## 【linux】系统无法启动:fsck.ext4 unable to resolve 'UUID=e929833...
+天做了DRBD 用的分区/data ，是/dev/sda5
+今天重新启动报错：
+
+fsck.ext4 unable to resolve 'UUID=a4a7a0f7-b54f-4774-9fb1'
+解决办法：
+启动进入系统：
+cat /etc/fstab
+UUID=a4a7a0f7-b54f-4774-9fb1 对应的是/data
+
+系统现在是只读状态：
+mount -o remount rw /
+chmod a+rw /etc/fstab
+vi /etc/fstab
+删除UUID，reboot
+输入命令 ls -l /dev/disk/by-uuid  可以查看磁盘和uuid的关系
