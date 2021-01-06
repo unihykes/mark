@@ -8,7 +8,6 @@ INCLUDE($ENV{MK_MAKE}/begin.cmake)
 SET(TARGET_TYPE LIBRARY)
 SET(TARGET_NAME markcore)
 
-#引用路径
 IF(WIN32)
 	set(3rdparty_os 3rdparty/_win)
 ELSE()
@@ -20,16 +19,14 @@ INCLUDE_DIRECTORIES(../include;
                     ./${3rdparty_os};
 )
 
-# 编译目录
 ADD_SOURCE_DIRS(./module;
                 ./print;
                 ./thread;
-                ./types;
+                ./language;
                 ./utility;
 )
 
 
-#添加自定义的选项
 ADD_DEFINITIONS("-D__MAKE_MK_DLL__")
 
 INCLUDE($ENV{MK_MAKE}/end.cmake)

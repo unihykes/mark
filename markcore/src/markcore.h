@@ -26,9 +26,9 @@ info:
 //common
 #include "mkheaders.h"
 
-//types
-#include "types/mkFormat.h"
-#include "types/mkString.h"
+//language
+#include "language/mkFormat.h"
+#include "language/mkString.h"
 
 //module
 #include "module/mkModuleInstance.h"

@@ -26,6 +26,7 @@ info:
 #define __mkOptionSwitch
 
 #include <typeindex>
+#include "print/mkPrint.h"
 
 //前置声明
 template<class TypeKey, class TypeValue> class mkIOptionSwitch_base;
@@ -109,7 +110,7 @@ public:
             }
         }
         if(!validKey) {
-            MK_PRINT("key is invalid.");
+            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "key is invalid");
         }
     }
     
@@ -134,12 +135,12 @@ public:
             }
             else {
                 //key无效
-                MK_PRINT("key is invalid.");
+                mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "key is invalid");
             }
         }
         else {
             //选项不存在
-            MK_PRINT(_T("T is invalid."));
+            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "T is invalid");
         }
     }
     
@@ -155,7 +156,7 @@ public:
         }
         else {
             //todo
-            MK_PRINT(_T("T is invalid."));
+            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "T is invalid");
         }
     }
 
@@ -173,8 +174,8 @@ public:
         }
         else {
             stringstream err; err<<index.name()<<" is invalid.";
-            MK_PRINT(err.str().c_str());
-            throw std::logic_error(err.str());
+            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, err.str().c_str());
+            throw std::logic_error(err.str());//todo
         }
     }
     
@@ -190,7 +191,7 @@ public:
         }
         else {
             //todo
-            MK_PRINT(_T("T is invalid."));
+            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "T is invalid");
         }
         _options.erase(iter);
     }

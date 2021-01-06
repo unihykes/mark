@@ -23,7 +23,7 @@ info:
 #ifndef __mkLog
 #define __mkLog
 
-#include "types/mkFormat.h"
+#include "language/mkFormat.h"
 
 
 class MK_DLL_EXPORT mkLog

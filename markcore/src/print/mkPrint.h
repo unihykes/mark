@@ -23,7 +23,7 @@ info:
 #ifndef __mkPrint
 #define __mkPrint
 
-#include "types/mkFormat.h"
+#include "language/mkFormat.h"
 
 class MK_DLL_EXPORT mkPrint
 {

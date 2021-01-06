@@ -25,8 +25,8 @@ info:
 #include <fstream>
 
 #include<mkheaders.h>
-#include "types/mkTime.h"
-#include "module/mkSourceLocation.h"
+#include "language/mkTime.h"
+#include "language/mkSourceLocation.h"
 #include"mkTrace.h"
 
 mkTrace::mkTrace(const std::string& moduleName)
