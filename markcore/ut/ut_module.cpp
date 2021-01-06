@@ -19,24 +19,17 @@ Time:2018-2
 info:
 
 ***************************************************************************************************/
+
 #include <markcore.h>
 #include <gtest/gtest.h>
 
-MK_DEFINE_MODULE_INSTANCE(ut_markcore, ut_markcore);
-////////////////////////////////////////////////////////////////////////////////
-// main
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
 //
 
-int main(int argc, char** argv) 
+TEST(mkTrace, run)
 {
-	// 获取输入参数
-	if(argc == 1) {
-		printf("eg: ./test --gtest_filter=aaaUT.*    or: ./test --gtest_filter=aaaUT.*:bbbUT.*");
-		return 0;
-	}
-	
-	//testing::AddGlobalTestEnvironment(new ncEnvironment());
-	testing::InitGoogleTest(&argc, argv); 
-	int ret = RUN_ALL_TESTS ();
-	return ret;
+    mkTrace trace("test");
+    trace(__FILE__, __LINE__, __func__, "%s_%d", "abc", 123);
+    trace(__FILE__, __LINE__, __func__, L"%s_%d", L"def", 456);
 }

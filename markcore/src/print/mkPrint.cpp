@@ -14,29 +14,32 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2018-2
+Time:2021-1
 
 info:
 
 ***************************************************************************************************/
-#include <markcore.h>
-#include <gtest/gtest.h>
+#include <iostream>
+#include<mkheaders.h>
+#include "types/mkTime.h"
+#include "module/mkSourceLocation.h"
+#include"mkPrint.h"
 
-MK_DEFINE_MODULE_INSTANCE(ut_markcore, ut_markcore);
-////////////////////////////////////////////////////////////////////////////////
-// main
-//
-
-int main(int argc, char** argv) 
+mkPrint::mkPrint(const std::string& moduleName)
+    : _moduleName(moduleName)
 {
-	// 获取输入参数
-	if(argc == 1) {
-		printf("eg: ./test --gtest_filter=aaaUT.*    or: ./test --gtest_filter=aaaUT.*:bbbUT.*");
-		return 0;
-	}
-	
-	//testing::AddGlobalTestEnvironment(new ncEnvironment());
-	testing::InitGoogleTest(&argc, argv); 
-	int ret = RUN_ALL_TESTS ();
-	return ret;
+
+}
+
+mkPrint::~mkPrint()
+{
+}
+
+void 
+mkPrint::Output(const char* file, int line, const char* func, const char* msg)
+{
+    shared_ptr<char> buf = mkSharedFormat::fmt("[%s] [%s]: (%s:%d) %s() %s", 
+        _moduleName.c_str(), mkTime::GetCurrentTime().c_str(), mkSourceLocation::file_name(file), line, func, msg);
+    
+    std::cout<<buf.get()<<endl;//将消息打印到标准输出
 }

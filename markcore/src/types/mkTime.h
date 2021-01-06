@@ -1,4 +1,4 @@
-﻿/***************************************************************************************************
+/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,29 +14,29 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2018-2
+Time:2021-1
 
 info:
 
 ***************************************************************************************************/
-#include <markcore.h>
-#include <gtest/gtest.h>
 
-MK_DEFINE_MODULE_INSTANCE(ut_markcore, ut_markcore);
-////////////////////////////////////////////////////////////////////////////////
-// main
-//
+#ifndef __mkTime
+#define __mkTime
 
-int main(int argc, char** argv) 
+#include <ctime>
+
+class MK_DLL_EXPORT mkTime
 {
-	// 获取输入参数
-	if(argc == 1) {
-		printf("eg: ./test --gtest_filter=aaaUT.*    or: ./test --gtest_filter=aaaUT.*:bbbUT.*");
-		return 0;
-	}
-	
-	//testing::AddGlobalTestEnvironment(new ncEnvironment());
-	testing::InitGoogleTest(&argc, argv); 
-	int ret = RUN_ALL_TESTS ();
-	return ret;
-}
+public:
+    static string GetCurrentTime()
+    {
+        time_t rawtime;
+        time(&rawtime); 
+        string result = ctime(&rawtime);
+        result.erase(result.find('\n'), 1);//移除末尾\n
+        return result;
+    }
+    
+};
+
+#endif

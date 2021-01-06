@@ -26,11 +26,11 @@ info:
 //common
 #include "mkheaders.h"
 
+//types
+#include "types/mkFormat.h"
+#include "types/mkString.h"
 
 //module
-#include "module/mkException.h"
-#include "module/mkOutputMsg.h"
-#include "module/mkOptionSwitch.h"
 #include "module/mkModuleInstance.h"
 
 //print
@@ -39,12 +39,8 @@ info:
 //thread
 #include "thread/mkUniqueThread.h"
 
-//types
-#include "types/mkString.h"
-
 //utillty
 #include "utility/mkAddTimeoutForFunc.h"
-#include "utility/mkFormat.h"
 #include "utility/mkLinenoise.h"
 #include "utility/mkMiscellaneous.h"
 #include "utility/mkUniqueProfilePoint.h"

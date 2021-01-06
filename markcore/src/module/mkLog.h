@@ -1,4 +1,4 @@
-/***************************************************************************************************
+﻿/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -23,5 +23,37 @@ info:
 #ifndef __mkLog
 #define __mkLog
 
+#include "types/mkFormat.h"
+
+
+class MK_DLL_EXPORT mkLog
+{
+public:
+    mkLog(const std::string& moduleName);
+    ~mkLog();
+    
+    bool Enable();
+    
+    template<typename ... TArgs>
+    void operator()(const char* file, int line, const char* func, const char* format, TArgs... args)
+    {
+        shared_ptr<char> msg = mkSharedFormat::fmt(format, args...);
+        Output(file, line, func, msg.get());
+    }
+    
+    template<typename ... TArgs>
+    void operator()(const char* file, int line, const char* func, const wchar_t* format, TArgs... args)
+    {
+        string msg = mkSharedFormat::fmtW(format, args...);
+        Output(file, line, func, msg.c_str());
+    }
+    
+private:
+    void Output(const char* file, int line, const char* func, const char* msg);
+    
+private:
+    std::string     _moduleName;
+    std::string     _fileName;
+};
 
 #endif

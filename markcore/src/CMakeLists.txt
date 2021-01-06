@@ -9,13 +9,16 @@ SET(TARGET_TYPE LIBRARY)
 SET(TARGET_NAME markcore)
 
 #引用路径
-INCLUDE_DIRECTORIES(../include;)
-INCLUDE_DIRECTORIES(./3rdparty)
 IF(WIN32)
-	INCLUDE_DIRECTORIES(./3rdparty/_win)
+	set(3rdparty_os 3rdparty/_win)
 ELSE()
-	INCLUDE_DIRECTORIES(./3rdparty/_unix)
+	set(3rdparty_os 3rdparty/_unix)
 ENDIF()
+
+INCLUDE_DIRECTORIES(../include;
+                    ./3rdparty;
+                    ./${3rdparty_os};
+)
 
 # 编译目录
 ADD_SOURCE_DIRS(./module;

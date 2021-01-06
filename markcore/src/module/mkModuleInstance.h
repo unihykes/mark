@@ -23,15 +23,22 @@ info:
 #ifndef __mkModuleInstance
 #define __mkModuleInstance
 
-
+#include "module/mkTrace.h"
+#include "module/mkLog.h"
+#include "print/mkPrint.h"
+#include "module/mkException.h"
+//#include "module/mkOptionSwitch.h"
 
 class MK_DLL_EXPORT mkModuleInstance final
 {
 public:
     mkModuleInstance(const std::string& moduleName, const std::string& resName);
     ~mkModuleInstance();
+    
+    shared_ptr<mkTrace> _trace;
+    shared_ptr<mkLog> _loger;
+    shared_ptr<mkPrint> _print;
 };
-
 
 
 //声明全局变量
@@ -41,5 +48,9 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 #define MK_DEFINE_MODULE_INSTANCE(moduleName, resName)                                          \
     MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(make_shared<mkModuleInstance>(#moduleName, #resName));              \
 
+#define MK_PRINT_MSG(...)   (*g_moduleInstance->_print)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#define MK_TRACE(...)       (*g_moduleInstance->_trace)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#define MK_LOG(...)         (*g_moduleInstance->_loger)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+#define MK_PRINT            MK_PRINT_MSG
 
 #endif
