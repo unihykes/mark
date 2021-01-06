@@ -22,10 +22,22 @@ info:
 
 
 #include<mkheaders.h>
+#include"TablePrinter/TablePrinter.h"
+#include"mkTablePrinter.h"
 
-#ifdef __WINDOWS__
-	#include "./linenoise.h"
-#else
-	#include "./linenoise.c"
-#endif
-#include"mkLinenoise.h"
+mkTablePrinter::mkTablePrinter()
+{
+}
+
+
+void 
+mkTablePrinter::SetColHeader()
+{
+}
+
+void 
+mkTablePrinter::Print()
+{
+
+}
+

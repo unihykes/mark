@@ -1,4 +1,4 @@
-﻿/***************************************************************************************************
+/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2018-6
+Time:2018-8
 
 info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
-#include <gtest/gtest.h>
-#include <mkTablePrinter.h>
-////////////////////////////////////////////////////////////////////////////////////////////////////
+#ifndef __mkPrint
+#define __mkPrint
 
 
-TEST(TablePrinter, func)
+class MK_DLL_EXPORT mkPrint
 {
-	mkTablePrinter pr;
-	//std::shared_ptr<TablePrinter> printGrid(new TablePrinter("xx", 4, 3));
-}
+public:
+
+};
+
+#endif

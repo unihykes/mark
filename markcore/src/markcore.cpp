@@ -21,6 +21,9 @@ info:
 ***************************************************************************************************/
 
 #include<mkheaders.h>
+#include "markcore.h"
+
+MK_DEFINE_MODULE_INSTANCE(markcore, markcore);
 
 #ifdef __WINDOWS__
     void* hModule = 0;
@@ -32,7 +35,7 @@ info:
     }
     
     extern "C" 
-    int APIENTRY DllMain (HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
+    int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
     {
         if (dwReason == DLL_PROCESS_ATTACH) {
             hModule = hInstance;

@@ -1,4 +1,4 @@
-﻿/***************************************************************************************************
+/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,28 +14,20 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2018-2
+Time:2018-6
 
 info:
 
 ***************************************************************************************************/
 
+#include <markcore.h>
 #include <gtest/gtest.h>
 
-////////////////////////////////////////////////////////////////////////////////
-// main
-//
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char** argv) 
+
+TEST(TablePrinter, func)
 {
-	// 获取输入参数
-	if(argc == 1) {
-		printf("eg: ./test --gtest_filter=aaaUT.*    or: ./test --gtest_filter=aaaUT.*:bbbUT.*");
-		return 0;
-	}
-	
-	//testing::AddGlobalTestEnvironment(new ncEnvironment());
-	testing::InitGoogleTest(&argc, argv); 
-	int ret = RUN_ALL_TESTS ();
-	return ret;
+	mkTablePrinter pr;
+	//std::shared_ptr<TablePrinter> printGrid(new TablePrinter("xx", 4, 3));
 }

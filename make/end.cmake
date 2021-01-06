@@ -5,8 +5,7 @@ MESSAGE(STATUS "\n**deps--------------------------------------------------------
 
 
 #默认包含引用目录
-INCLUDE_DIRECTORIES(${MK_SRC}/baseutil/include;
-                    ${MK_SRC}/baseutil/src;)
+INCLUDE_DIRECTORIES(${MK_SRC}/markcore/include;)
 
 # 配置 boost 相关依赖
 IF(${NEED_BOOSTBCP})
@@ -49,12 +48,12 @@ IF(${NEED_GTEST})
 	ENDIF()
 ENDIF()
 
-# 依赖 NEED_BASEUTIL
-IF(${NEED_BASEUTIL})
-	ADD_DEFINITIONS(-D__USING_BASEUTIL__)
-	INCLUDE_DIRECTORIES(${MK_SRC}/baseutil/include;
-						${MK_SRC}/baseutil/src;)
-	SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} baseutil)
+# 依赖 makecore
+IF(${NEED_MARKCORE})
+	ADD_DEFINITIONS(-D__USING_MAKECORE__)
+	INCLUDE_DIRECTORIES(${MK_SRC}/markcore/include;
+						${MK_SRC}/markcore/src;)
+	SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} markcore)
 ENDIF()
 
 # 设置所有的链接库

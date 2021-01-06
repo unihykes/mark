@@ -14,30 +14,19 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2018-8
+Time:2021-1
 
 info:
-    对linenoise的封装
+
 ***************************************************************************************************/
 
-
 #include<mkheaders.h>
-#include"TablePrinter.h"
-#include"mkTablePrinter.h"
+#include"mkModuleInstance.h"
 
-mkTablePrinter::mkTablePrinter()
+mkModuleInstance::mkModuleInstance(const std::string& moduleName, const std::string& resName)
 {
 }
 
-
-void 
-mkTablePrinter::SetColHeader()
+mkModuleInstance::~mkModuleInstance()
 {
 }
-
-void 
-mkTablePrinter::Print()
-{
-
-}
-

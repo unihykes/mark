@@ -146,7 +146,14 @@ typedef uint64_t			uint64;
 	#define MK_DLL_EXPORT		DLL_IMPORT
 #endif
 
-
+//定义so中导出符号
+#if (__GNUC__ >= 4) && !defined(__AIX__)
+    #define MK_VISIBILITY_HIDDEN    __attribute__ ((visibility ("hidden")))
+    #define MK_VISIBILITY_DEFAULT   __attribute__ ((visibility ("default")))
+#else
+    #define MK_VISIBILITY_HIDDEN
+    #define MK_VISIBILITY_DEFAULT
+#endif
 
 //定义func
 #ifdef __WINDOWS__
@@ -164,12 +171,5 @@ typedef uint64_t			uint64;
 #endif
 
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// 自定义公共头文件
-//
-#include "mkMiscellaneous.h"
-#include "mkOutputMsg.h"
-#include "mkException.h"
 
 #endif // __mkheaders

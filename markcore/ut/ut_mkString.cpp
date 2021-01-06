@@ -20,11 +20,8 @@ info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
-#include "mkString.h"
-#include "mkFormat.h"
-#include "mkUniqueProfilePoint.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // 
