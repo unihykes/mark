@@ -1,4 +1,4 @@
-/***************************************************************************************************
+﻿/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,14 +14,29 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2018-8
+Time:2021-1
 
 info:
-    对linenoise的封装
+
 ***************************************************************************************************/
 
-#ifndef __mkLinenoise
-#define __mkLinenoise
+#ifndef __mkTime
+#define __mkTime
 
+#include <ctime>
+
+class MK_DLL_EXPORT mkTime
+{
+public:
+    static string GetCurrentTime()
+    {
+        time_t rawtime;
+        time(&rawtime); 
+        string result = ctime(&rawtime);
+        result.erase(result.find('\n'), 1);//移除末尾\n
+        return result;
+    }
+    
+};
 
 #endif

@@ -20,17 +20,18 @@ info:
 
 ***************************************************************************************************/
 
-#ifndef __mkLog
-#define __mkLog
+#ifndef __mkTrace
+#define __mkTrace
 
-#include "language/mkFormat.h"
+#include "utility/mkFormat.h"
 
 
-class MK_DLL_EXPORT mkLog
+class MK_DLL_EXPORT mkTrace
 {
 public:
-    mkLog(const std::string& moduleName);
-    ~mkLog();
+
+    mkTrace(const std::string& moduleName);
+    ~mkTrace();
     
     bool Enable();
     
@@ -44,7 +45,7 @@ public:
     template<typename ... TArgs>
     void operator()(const char* file, int line, const char* func, const wchar_t* format, TArgs... args)
     {
-        string msg = mkSharedFormat::fmtW(format, args...);
+        string msg = mkSharedFormat{}(format, args...);
         Output(file, line, func, msg.c_str());
     }
     

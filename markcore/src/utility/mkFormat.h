@@ -49,7 +49,14 @@ public:
     }
     
     template<typename ... TArgs>
-    static string fmtW(const wchar_t* format, TArgs... args)
+    string operator()(const char* format, TArgs... args)
+    {
+        shared_ptr<char> buf = fmt(format, args...);
+        return string (buf.get());
+    }
+    
+    template<typename ... TArgs>
+    string operator()(const wchar_t* format, TArgs... args)
     {
         //计算缓冲区size
         int size = std::swprintf(nullptr, 0, format, args...);
@@ -72,10 +79,8 @@ public:
             return str;
         };
         
-        string result = WcharToChar(bufW.get());
-        return result;
+        return WcharToChar(bufW.get());
     }
-    
 };
 
 class mkUniqueFormat

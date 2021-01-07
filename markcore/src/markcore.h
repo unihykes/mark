@@ -26,24 +26,30 @@ info:
 //common
 #include "mkheaders.h"
 
-//language
-#include "language/mkFormat.h"
-#include "language/mkString.h"
+//3rdparty
+#include "3rdparty/string_utils/string_utility.hpp"
+#include "3rdparty/string_utils/string_convert.hpp"
+#include "3rdparty/cpptoml/cpptoml.h"
 
-//module
-#include "module/mkModuleInstance.h"
+//utility
+#include "utility/mkFormat.h"
+#include "utility/mkString.h"
+#include "utility/mkException.h"
+#include "utility/mkTypeCast.h"
+#include "utility/mkTrace.h"
+#include "utility/mkLog.h"
+#include "utility/mkOptionSwitch.h"
+#include "utility/mkUniqueProfilePoint.h"
 
 //print
 #include "print/mkTablePrinter.h"
+#include "print/mkLinenoise.h"
 
 //thread
 #include "thread/mkUniqueThread.h"
+#include "thread/mkAddTimeoutForFunc.h"
 
-//utillty
-#include "utility/mkAddTimeoutForFunc.h"
-#include "utility/mkLinenoise.h"
-#include "utility/mkMiscellaneous.h"
-#include "utility/mkUniqueProfilePoint.h"
-
+//module
+#include "module/mkModuleInstance.h"
 
 #endif // __markcore

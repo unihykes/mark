@@ -1,4 +1,4 @@
-/***************************************************************************************************
+﻿/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ info:
 #ifndef __mkModuleInstance
 #define __mkModuleInstance
 
-#include "print/mkPrint.h"
-#include "module/mkTrace.h"
-#include "module/mkLog.h"
-#include "module/mkOptionSwitch.h"
-#include "module/mkException.h"
+
+class mkTrace;
+class mkLog;
+class mkPrint;
+class mkOptionSwitch;
 
 class MK_DLL_EXPORT mkModuleInstance final
 {
@@ -35,24 +35,50 @@ public:
     mkModuleInstance(const std::string& moduleName, const std::string& resName);
     ~mkModuleInstance();
     
+    static int GetLastError (void)
+    {
+    	#ifdef __WINDOWS__
+    		return ::GetLastError();
+    	#else
+    		return errno;
+    	#endif
+    }
+
+    static void SetLastError (int err)
+    {
+    	#ifdef __WINDOWS__
+    		::SetLastError(err);
+    	#else
+    		errno = err;
+    	#endif
+    }
+    
+public:
     shared_ptr<mkTrace> _trace;
     shared_ptr<mkLog> _loger;
     shared_ptr<mkPrint> _print;
+    shared_ptr<mkOptionSwitch> _switch;
 };
-
 
 //声明全局变量
 MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 
 //定义全局变量
 #define MK_DEFINE_MODULE_INSTANCE(moduleName, resName)                                          \
-    MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(make_shared<mkModuleInstance>(#moduleName, #resName));              \
+    MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(                    \
+        std::make_shared<mkModuleInstance>(#moduleName, #resName));
 
-#define MK_PRINT_MSG(...)   (*g_moduleInstance->_print)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+//定义全局宏
+#define MK_PRINT(...)       (*g_moduleInstance->_print)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #define MK_TRACE(...)       (*g_moduleInstance->_trace)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #define MK_LOG(...)         (*g_moduleInstance->_loger)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
-#define MK_PRINT            MK_PRINT_MSG
 
-
-
+#define MK_THROW(errorid, ...)                                              \
+    do {                                                                    \
+        auto __errMsg__ = mkSharedFormat::fmt(__VA_ARGS__);                 \
+        MK_LOG(__VA_ARGS__);                                                \
+        mkException __e__(string(__errMsg__.get()), __FILE__, __LINE__, errorid);   \
+        throw __e__;                                                        \
+    } while(0)
+    
 #endif

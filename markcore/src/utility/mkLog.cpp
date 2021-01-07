@@ -25,8 +25,8 @@ info:
 #include <fstream>
 
 #include<mkheaders.h>
-#include "language/mkTime.h"
-#include "language/mkSourceLocation.h"
+#include "utility/mkTime.h"
+#include "utility/mkSourceLocation.h"
 #include"mkLog.h"
 
 mkLog::mkLog(const std::string& moduleName)

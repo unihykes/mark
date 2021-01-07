@@ -23,8 +23,6 @@ info:
 #include<mkheaders.h>
 #include "markcore.h"
 
-MK_DEFINE_MODULE_INSTANCE(markcore, markcore);
-
 #ifdef __WINDOWS__
     void* hModule = 0;
     

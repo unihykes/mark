@@ -1,4 +1,4 @@
-/***************************************************************************************************
+﻿/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,20 +14,18 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2018-6
+Time:2018-8
 
 info:
-
+    对linenoise的封装
 ***************************************************************************************************/
 
-#include <markcore.h>
-#include <gtest/gtest.h>
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+#include<mkheaders.h>
 
-
-TEST(TablePrinter, func)
-{
-	mkTablePrinter pr;
-	//std::shared_ptr<TablePrinter> printGrid(new TablePrinter("xx", 4, 3));
-}
+#ifdef __WINDOWS__
+	#include "linenoise/linenoise.h"
+#else
+	#include "linenoise/linenoise.c"
+#endif
+#include"mkLinenoise.h"

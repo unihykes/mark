@@ -1,0 +1,24 @@
+This is a small library which can segment Chinese phrases.
+
+The library contains only one class "wordseg"
+
+wordseg.load_dict(dictionary_file)
+Load the dictionary.
+There is a default dictionary under data, based on People's Daily materials, and you can provide your own
+
+segment(phrase, include_cjk_word, include_cjk_ideogram)
+Segment phrase.
+If include_cjk_word is True, result includes all non-CJK words and CJK phrase is broken into words.
+If include_cjk_ideogram is True, result includes all non-CJK words and CJK phrase is broken into ideograms.
+If both are set, result includes both segmentations, note non-CJK words will be included twice.
+
+This library also do some transformations to latin words, i.e. "Café" will be transformed into "cafe", this could be usedful when you are build full-text search index as user may want "Café" while they are searching "cafe".
+
+TODO:
+1. Now the lib uses a weighted shortest path algorithm to break CJK phrases, with some optimizations, generally the result should be better than MMSeg(http://technology.chtsai.org/mmseg/) and close to HMM, but there still some error cases, try "make test" to check out. This cannot be easily solved without more domain specific materials and more advanced algorithm, such as HMM.
+2. Latin transformation should be configurable, this is not priority as I'm using this lib in a search engine :-)
+3. CJK names, this is a major lack
+4. CJK numbers, well, low priority
+5. Code cleanup, a lot of test/debug code still exists.
+
+Thanks to ntrifunovic@sf.net and his/her very easy-to-use UTF8CPP(http://utfcpp.sourceforge.net/) project; also thanks to C++ standard committee for their slow-and-buggy Unicode I/O support in STL.

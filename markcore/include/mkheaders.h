@@ -126,14 +126,23 @@ typedef uint64_t			uint64;
 	#define MK_ASSERT(f)	((void)(f))
 #endif
 
-//定义dll导出符号宏
+//定义动态库导出符号宏
 #ifdef __WINDOWS__
-	#define DLL_EXPORT			__declspec(dllexport)
-	#define DLL_IMPORT			__declspec(dllimport)
+        #define MK_VISIBILITY_HIDDEN
+        #define DLL_EXPORT              __declspec(dllexport)
+        #define DLL_IMPORT              __declspec(dllimport)
 #else 
-	#define DLL_EXPORT
-	#define DLL_IMPORT
+    #if __GNUC__ >= 4 && !defined(__AIX__)
+        #define MK_VISIBILITY_HIDDEN    __attribute__ ((visibility ("hidden")))
+        #define DLL_EXPORT              __attribute__ ((visibility ("default")))
+        #define DLL_IMPORT              __attribute__ ((visibility ("default")))
+    #else
+        #define MK_VISIBILITY_HIDDEN
+        #define DLL_EXPORT
+        #define DLL_IMPORT
+    #endif
 #endif
+
 #ifdef __MAKE_MK_DLL__
 	//导出c动态库
 	#define MK_CDLL_EXPORT		extern "C" DLL_EXPORT
@@ -144,15 +153,6 @@ typedef uint64_t			uint64;
 	#define MK_CDLL_EXPORT		extern "C" DLL_IMPORT
 	//导入c++动态库
 	#define MK_DLL_EXPORT		DLL_IMPORT
-#endif
-
-//定义so中导出符号
-#if (__GNUC__ >= 4) && !defined(__AIX__)
-    #define MK_VISIBILITY_HIDDEN    __attribute__ ((visibility ("hidden")))
-    #define MK_VISIBILITY_DEFAULT   __attribute__ ((visibility ("default")))
-#else
-    #define MK_VISIBILITY_HIDDEN
-    #define MK_VISIBILITY_DEFAULT
 #endif
 
 //定义func

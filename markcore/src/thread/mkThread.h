@@ -1,4 +1,4 @@
-/***************************************************************************************************
+ï»¿/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ Author:liu.hao(33852613@163.com)
 Time:2020-6
 
 info:
-    Ïß³Ì¹ÜÀí
+    çº¿ç¨‹ç®¡ç†
 ***************************************************************************************************/
 
 #ifndef __mkThread
@@ -55,7 +55,7 @@ public:
                 }
                 
                 try {
-                    //ÊÊÓÃÓÚ¶àÏß³ÌÇÀÕ¼Ê½Ïû·ÑÍ¬Ò»¸ö×ÊÔ´¶ÓÁĞ
+                    //é€‚ç”¨äºå¤šçº¿ç¨‹æŠ¢å å¼æ¶ˆè´¹åŒä¸€ä¸ªèµ„æºé˜Ÿåˆ—
                     OnProc();
                 }
                 catch(Exception& e) {
@@ -75,9 +75,9 @@ public:
             threadEvent->signal();
         };
         
-        //Ô¤·ÖÅän¸öÏß³Ì
+        //é¢„åˆ†é…nä¸ªçº¿ç¨‹
         for(int i = 0 ; i != count; ++i) {
-            std::shared_ptr<Event> threadEvent = std::make_shared<Event>(false);//false:ºöÂÔsignalÖ®ºóµÄÒ»ÖÁ¶à´Îwait
+            std::shared_ptr<Event> threadEvent = std::make_shared<Event>(false);//false:å¿½ç•¥signalä¹‹åçš„ä¸€è‡³å¤šæ¬¡wait
             std::shared_ptr<std::thread> threadProc(new std::thread(threadFunc, threadEvent));
             threadProc->detach();
             _vThreadEvents.push_back(threadEvent);
@@ -86,7 +86,7 @@ public:
     
     virtual void Stop()
     {
-        //Í£Ö¹ËùÓĞÏß³Ì
+        //åœæ­¢æ‰€æœ‰çº¿ç¨‹
         _threadAbortFlag = true;
         OnStop();
         for(auto& threadEvent : _vThreadEvents) {
@@ -104,7 +104,7 @@ private:
     virtual void OnProc() = 0;
     virtual void OnError(Exception& e) = 0;
     virtual void OnEnd() = 0;
-    virtual void OnStop() = 0;//Í¨Öª OnProc ½â³ı×èÈû
+    virtual void OnStop() = 0;//é€šçŸ¥ OnProc è§£é™¤é˜»å¡
 };
 
 #endif // __mkThread

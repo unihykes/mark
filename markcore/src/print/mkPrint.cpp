@@ -21,8 +21,8 @@ info:
 ***************************************************************************************************/
 #include <iostream>
 #include<mkheaders.h>
-#include "language/mkTime.h"
-#include "language/mkSourceLocation.h"
+#include "utility/mkTime.h"
+#include "utility/mkSourceLocation.h"
 #include"mkPrint.h"
 
 mkPrint::mkPrint(const std::string& moduleName)

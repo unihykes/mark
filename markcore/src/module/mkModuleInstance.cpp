@@ -1,4 +1,4 @@
-/***************************************************************************************************
+﻿/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -21,10 +21,20 @@ info:
 ***************************************************************************************************/
 
 #include<mkheaders.h>
-#include"mkModuleInstance.h"
+#include "utility/mkTrace.h"
+#include "utility/mkLog.h"
+#include "utility/mkOptionSwitch.h"
+#include "print/mkPrint.h"
+#include "mkModuleInstance.h"
+
+MK_DEFINE_MODULE_INSTANCE(markcore, markcore);
 
 mkModuleInstance::mkModuleInstance(const std::string& moduleName, const std::string& resName)
 {
+    _trace = make_shared<mkTrace>(moduleName);
+    _loger = make_shared<mkLog>(moduleName);
+    _print = make_shared<mkPrint>(moduleName);
+    _switch = make_shared<mkOptionSwitch>();
 }
 
 mkModuleInstance::~mkModuleInstance()

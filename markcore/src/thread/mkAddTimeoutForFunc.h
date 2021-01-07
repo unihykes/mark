@@ -24,8 +24,10 @@ info:
 
 #include <thread>
 #include <future>
-#include <exception>
-#include <sstream>//for stringstream
+#include "utility/mkSourceLocation.h"
+#include "utility/mkFormat.h"
+#include "utility/mkException.h"
+#include "module/mkModuleInstance.h"
 
 //returntype = 当前函数返回值类型
 #define ADD_TIMEOUT_BEGIN(returntype)                                                              \
@@ -59,49 +61,21 @@ public:
         auto status = future.wait_for(dTimeout);
         
         if(status == std::future_status::timeout) {
-            ThrowTimeoutException(file, line, funcName, errorId, defaultErrorMsg);
+            const char* fileName = mkSourceLocation::file_name(file);
+            if(defaultErrorMsg.empty()) {
+                MK_THROW(errorId, "(%s:%d): Timeout when method(%s) is called.", fileName, line, funcName);
+            }
+            else {
+                MK_THROW(errorId, "(%s:%d): %s.", fileName, line, defaultErrorMsg.c_str());
+            }
         }
         
         try {
             return future.get();
         }
         catch(std::exception& e) {
-            MK_PRINT("error = %s", e.what());
             throw e;
         }
-    }
-    
-private:
-    void ThrowTimeoutException(const char* file, int line, const char* funcName, 
-                               const int& errorId, const string& defaultErrorMsg = "")
-    {
-        #ifdef __WINDOWS__ 
-            constexpr const char identify = '\\';
-        #else 
-            constexpr const char identify = '/';
-        #endif
-        const char* fileName = strrchr(file, identify) ? strrchr(file, identify) + 1 : file;
-        
-        string errorMsg;
-        if(defaultErrorMsg.empty()) {
-            stringstream stream;
-            stream<<"Timeout when method(" << funcName << ") is called.";
-            stream>>errorMsg;
-        }
-        else {
-            errorMsg = defaultErrorMsg;
-        }
-        
-        stringstream stream;
-        stream<<"("<<fileName<<":"<<line<<"): "<<errorMsg;
-        
-        string fullErrorMsg;
-        stream>>fullErrorMsg;
-        
-        MK_PRINT ("error = %s",fullErrorMsg.c_str());
-        
-        //todo:throw
-        //throw mkException (errorMsg, errorId);
     }
 };
 

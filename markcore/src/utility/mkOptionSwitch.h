@@ -48,7 +48,7 @@ public:
     
 private:
     //设置key-value(需要派生类实现)
-    virtual void OnSetValue(const TypeKey& key, const TypeValue& value) = 0;
+    virtual bool OnSetValue(const TypeKey& key, const TypeValue& value) = 0;
     
     //应用全部属性,在应用时有特殊逻辑的话,请重载之;
     virtual void OnApply()
@@ -62,16 +62,14 @@ private:
     {
         //未注册,逐个遍历
         if(_keySet.empty()) {
-            OnSetValue(key, value);
-            return false;
+            return OnSetValue(key, value);
         }
         //已注册,则在注册列表里查找key是否存在,不存在则不用遍历(减少无效调用)
         if(_keySet.count(key) == 0) {
             return false;
         }
         else {
-            OnSetValue(key, value);
-            return true;
+            return OnSetValue(key, value);
         }
     }
     
@@ -100,13 +98,15 @@ public:
     }
     
     //批量设置选项的某个属性
-    virtual void SetOptions(const TypeKey& key, const TypeValue& value) final
+    virtual void SetOptions(const TypeKey& key, const TypeValue& value, bool unshared) final
     {
         bool validKey = false;
         for(auto& elem : _options) {
             if(elem.second->SetAttribute(key, value)) {
                 validKey = true;
-                break;
+                if(unshared) {
+                    break;
+                }
             }
         }
         if(!validKey) {
@@ -115,7 +115,7 @@ public:
     }
     
     //应用所有选项
-    virtual void Applys() final
+    virtual void Applys()
     {
         for(auto& elem : _options) {
             elem.second->OnApply();
@@ -160,6 +160,12 @@ public:
         }
     }
 
+    //重置某选项
+    template<class T> void ClearOption()
+    {
+        RemoveOption<T>();
+        Register<T>();
+    }
     
     //获取指定选项[只读]
     template<class T> 
@@ -188,12 +194,12 @@ public:
         if(iter != _options.end()) {
             delete iter->second;
             iter->second = nullptr;
+            _options.erase(iter);
         }
         else {
             //todo
             mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "T is invalid");
         }
-        _options.erase(iter);
     }
     
 protected:
@@ -210,10 +216,49 @@ protected:
 };
 
 
-
 //默认std::string作为key-value
 using mkIOption = mkIOption_base<string,string>;
 using mkIOptionSwitch = mkIOptionSwitch_base<string,string>;
+
+
+class MK_DLL_EXPORT mkOptionSwitch  : public mkIOptionSwitch
+{
+public:
+    mkOptionSwitch();
+    virtual ~mkOptionSwitch();
+
+    //解析执行参数,返回gtest参数
+    pair<int, char**> InitEnv(int argc, char** argv);
+    
+    //加载配置文件中的参数
+    void LoadByConfig(const string& configFileName);
+    
+    //加载命令行参数
+    virtual void Applys();
+    
+    template<class T> 
+    void LoadOption(const string& configFileName)
+    {
+    }
+    
+    template<class T> 
+    void ApplyOption()
+    {
+        for(const auto& elem : _mapArgs) {
+            const string& key = elem.first;
+            for(const auto& value : elem.second) {
+                this->SetOption<T>(key, value);
+            }
+        }
+        this->Apply<T>();//应用之
+    }
+    
+private:
+    int                             _gtest_argc;
+    char**                          _gtest_argv;
+    vector<std::string>             _vGtestArgs;
+    map<string, vector<string>>     _mapArgs;
+};
 
 
 #endif //__mkOptionSwitch

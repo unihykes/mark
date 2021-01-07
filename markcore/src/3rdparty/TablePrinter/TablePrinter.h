@@ -1,4 +1,4 @@
-//
+﻿//
 //  TablePrinter <https://github.com/tangwing/PrettyTablePrinter>
 //  A single-header only C++ library for easy (and pretty, for later versions) display 
 //  of tables in console applications.

@@ -23,7 +23,7 @@ info:
 #ifndef __mkPrint
 #define __mkPrint
 
-#include "language/mkFormat.h"
+#include "utility/mkFormat.h"
 
 class MK_DLL_EXPORT mkPrint
 {
@@ -47,7 +47,7 @@ public:
     template<typename ... TArgs>
     void operator()(const char* file, int line, const char* func, const wchar_t* format, TArgs... args)
     {
-        string msg = mkSharedFormat::fmtW(format, args...);
+        string msg = mkSharedFormat{}(format, args...);
         Output(file, line, func, msg.c_str());
     }
     

@@ -4,19 +4,20 @@
 https://m.fontke.com/tool/rgb/abb3bf/
 
 ## 用户设置
-config.cson 备份至:2019-7-1
+config.cson 备份至:20201-1-7
 
 ```cson
+
 "*":
   "auto-encoding":
-    disallowEncTypes: "windows1252"
+    disallowEncTypes: "GBK"
+    forceEncTypes: "windows 1252:GBK"
   "autocomplete-plus":
     autoActivationDelay: 3
   "bracket-matcher":
     autocompleteBrackets: false
     highlightMatchingLineNumber: true
   core:
-    allowPendingPaneItems: false
     closeDeletedFileTabs: true
     disabledPackages: [
       "whitespace"
@@ -47,25 +48,26 @@ config.cson 备份至:2019-7-1
       "autocomplete-css"
       "autocomplete-html"
       "autocomplete-atom-api"
-      "markdown-preview"
       "autocomplete-plus"
       "package-generator"
       "language-rust-bundled"
       "language-go"
       "language-gfm"
+      "markdown-preview"
+      "language-c"
     ]
     packagesWithKeymapsDisabled: [
       "bracket-matcher"
     ]
+    reopenProjectMenuCount: 10
     telemetryConsent: "no"
     themes: [
       "one-light-ui"
-      "one-dark-syntax"
+      "one-light-syntax"
     ]
     uriHandlerRegistration: "always"
   editor:
     autoIndentOnPaste: false
-    fontSize: 12
     invisibles: {}
     lineHeight: 1.1
     preferredLineLength: 100
@@ -73,6 +75,7 @@ config.cson 备份至:2019-7-1
     showIndentGuide: true
     showInvisibles: true
     tabLength: 4
+    tabType: "soft"
   "exception-reporting":
     userId: "fb7193ae-67e0-479a-ae72-e9dad3b0861b"
   "find-and-replace":
@@ -92,17 +95,14 @@ config.cson 备份至:2019-7-1
     useGitHubStyle: true
   "markdown-preview-enhanced":
     enableExtendedTableSyntax: true
-    scrollSync: false
+    previewTheme: "one-light.css"
   "one-dark-ui":
     stickyHeaders: true
     tabSizing: "Minimum"
-  "plantuml-viewer":
-    charset: "utf-8"
-    graphvizDotExecutable: "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe"
   "platformio-ide-terminal":
     core:
-      autoRunCommand: "cd U:\\unihykes\\Apollo_Unique\\apollo\\cmake\\tools"
       shell: "C:\\Windows\\System32\\cmd.exe"
+      workingDirectory: "Home"
     style:
       theme: "one-dark"
   tabs:
@@ -114,6 +114,10 @@ config.cson 备份至:2019-7-1
   welcome:
     showOnStartup: false
   "wrap-guide": {}
+".c.source":
+  editor:
+    autoIndent: false
+    autoIndentOnPaste: false
 
 
 
@@ -163,11 +167,8 @@ atom-text-editor .syntax--comment {
 #### language-cmake
     语言支持-cmake
     
-#### language-gfm-enhanced
-    语言支持-Markdown语法高亮
-
-#### language-plantuml
-    语言支持-plantuml
+#### language-cpp14
+    语言支持c++
     
 #### language-thrift
     语言支持-thrift
@@ -181,23 +182,18 @@ atom-text-editor .syntax--comment {
     https://www.java.com/zh_CN/
     https://sourceforge.net/projects/plantuml/files/plantuml.jar/download
     
-#### plantuml-viewer
-    快捷键ctrl+alt+P(可能会和网易云音乐冲突)
-    语法教程:http://plantuml.com/class-diagram
-    安装教程:https://blog.csdn.net/github_36409600/article/details/73522019
-    使用教程:https://www.cnblogs.com/Jeson2016/p/6837186.html
+    plantuml语法教程:
+    http://plantuml.com/class-diagram
     
-
-    需要额外安装:graphviz:
-    http://www.graphviz.org/download/
+    语言支持-Markdown语法高亮:
+    language-gfm-enhanced
+    language-dot
+    language-mermaid
+    language-plantuml
+    language-markdown
     
-    需要额外安装java:
-    https://www.java.com/zh_CN/
-    https://sourceforge.net/projects/plantuml/files/plantuml.jar/download
-    
-    配置:
-    charset设置为utf8
-    Graphviz Dot Excutable路径:C:\Program Files (x86)\Graphviz2.38\bin\dot.exe
+#### multiline-tab
+    多行标签栏
     
 #### platformio-ide-terminal
     控制台命令行插件
@@ -213,7 +209,4 @@ atom-text-editor .syntax--comment {
         
 #### simlified-chinese-menu
     中文汉化插件
-    
-#### multiline-tab
-    多行标签栏
     

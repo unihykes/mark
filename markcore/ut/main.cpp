@@ -29,14 +29,13 @@ MK_DEFINE_MODULE_INSTANCE(ut_markcore, ut_markcore);
 
 int main(int argc, char** argv) 
 {
-	// 获取输入参数
-	if(argc == 1) {
-		printf("eg: ./test --gtest_filter=aaaUT.*    or: ./test --gtest_filter=aaaUT.*:bbbUT.*");
-		return 0;
-	}
-	
-	//testing::AddGlobalTestEnvironment(new ncEnvironment());
-	testing::InitGoogleTest(&argc, argv); 
-	int ret = RUN_ALL_TESTS ();
-	return ret;
+    auto gtestEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
+    // 获取输入参数
+    if(gtestEnv.first == 1) {
+        testing::GTEST_FLAG(list_tests) = true;
+    }
+    
+    testing::InitGoogleTest(&gtestEnv.first, gtestEnv.second);
+    int ret = RUN_ALL_TESTS ();
+    return ret;
 }
