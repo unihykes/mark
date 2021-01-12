@@ -21,7 +21,7 @@ info:
 ***************************************************************************************************/
 
 #include<mkheaders.h>
-#include "utility/mkString.h"
+#include "3rdparty/string_utils/string_utility.hpp"
 #include"mkOptionSwitch.h"
 
 mkOptionSwitch::mkOptionSwitch()
@@ -54,7 +54,7 @@ mkOptionSwitch::InitEnv(int argc, char** argv)
         string arg(argv[i]);
         
         //cmd参数
-        if(mkString::startsWith(arg, "--cmd") || mkString::startsWith(arg, "--gtest_filter")) {
+        if(string_utility<string>::starts_with(arg, "--cmd") || string_utility<string>::starts_with(arg, "--gtest_filter")) {
             string gtestArg = "--gtest_filter=";
             gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vGtestArgs.push_back(gtestArg);

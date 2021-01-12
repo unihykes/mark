@@ -23,129 +23,66 @@ info:
 #ifndef __mkTypeCast
 #define __mkTypeCast
 
-class mkTypeCast
+class MK_DLL_EXPORT mkTypeCast
 {
 public:
-    //http://blog.csdn.net/sunnyfans/article/details/8286906
     //OUT size must >= 2 bytes
-    static void shortToBytes (short v, unsigned char* buf)
-    {
-    	*buf++ = ((int)(v >> 8) & 0xFF);
-    	*buf++ = ((int)(v >> 0) & 0xFF);
-    }
-
+    static void shortToBytes (short v, unsigned char* buf);
+    
     //OUT size must >= 2 bytes
-    static void ushortToBytes (unsigned short v, unsigned char* buf)
-    {
-    	*buf++ = ((int)(v >> 8) & 0xFF);
-    	*buf++ = ((int)(v >> 0) & 0xFF);
-    }
-
+    static void ushortToBytes (unsigned short v, unsigned char* buf);
+    
     //IN size must >= 2 bytes
-    static unsigned short bytesToUShort (const unsigned char* buf)
-    {
-    	int v1 = buf[0];
-    	int v2 = buf[1];
-    	
-    	return ((unsigned short) ((v1 << 8) + (v2 << 0)));
-    }
-
+    static unsigned short bytesToUShort (const unsigned char* buf);
+    
     //OUT size must >= 4 bytes
-    static void intToBytes (int i, unsigned char* b)
-    {
-    	b[0] = ((unsigned char)(i >> 24) & 0xFF);
-    	b[1] = ((unsigned char)(i >> 16) & 0xFF);
-    	b[2] = ((unsigned char)(i >> 8) & 0xFF);
-    	b[3] = ((unsigned char)(i >> 0) & 0xFF);
-    }
-
+    static void intToBytes (int i, unsigned char* b);
+    
     //OUT size must >= 4 bytes
-    static void uintToBytes (unsigned int u, unsigned char* b)
-    {
-    	b[0] = ((int)(u >> 24) & 0xFF);
-    	b[1] = ((int)(u >> 16) & 0xFF);
-    	b[2] = ((int)(u >> 8) & 0xFF);
-    	b[3] = ((int)(u >> 0) & 0xFF);
-    }
-
+    static void uintToBytes (unsigned int u, unsigned char* b);
+    
     //IN size must >= 4 bytes
-    static unsigned int bytesToUInt (const unsigned char* buf)
-    {
-    	int v1 = buf[0];
-    	int v2 = buf[1];
-    	int v3 = buf[2];
-    	int v4 = buf[3];
-    	
-    	return ((unsigned int) ((v1 << 24) + (v2 << 16) + (v3 << 8) + (v4 << 0)));
-    }
-
+    static unsigned int bytesToUInt (const unsigned char* buf);
+    
     //IN size must >= 4 bytes
-    static int bytesToInt (const unsigned char* buf)
-    {
-    	return (int) (bytesToUInt (buf));
-    }
-
+    static int bytesToInt (const unsigned char* buf);
+    
     //OUT size must >= 8 bytes
-    static void int64ToBytes (int64 u, unsigned char* b)
-    {
-    	b[0] = ((int)(u >> 56) & 0xFF);
-    	b[1] = ((int)(u >> 48) & 0xFF);
-    	b[2] = ((int)(u >> 40) & 0xFF);
-    	b[3] = ((int)(u >> 32) & 0xFF);
-    	b[4] = ((int)(u >> 24) & 0xFF);
-    	b[5] = ((int)(u >> 16) & 0xFF);
-    	b[6] = ((int)(u >> 8) & 0xFF);
-    	b[7] = ((int)(u >> 0) & 0xFF);
-    }
-
+    static void int64ToBytes (int64 u, unsigned char* b);
+    
     //OUT size must >= 8 bytes
-    static void uint64ToBytes (uint64 u, unsigned char* b)
-    {
-    	b[0] = ((int)(u >> 56) & 0xFF);
-    	b[1] = ((int)(u >> 48) & 0xFF);
-    	b[2] = ((int)(u >> 40) & 0xFF);
-    	b[3] = ((int)(u >> 32) & 0xFF);
-    	b[4] = ((int)(u >> 24) & 0xFF);
-    	b[5] = ((int)(u >> 16) & 0xFF);
-    	b[6] = ((int)(u >> 8) & 0xFF);
-    	b[7] = ((int)(u >> 0) & 0xFF);
-    }
-
+    static void uint64ToBytes (uint64 u, unsigned char* b);
+    
     //IN size must >= 8 bytes
-    static uint64 bytesToUInt64 (const unsigned char* buf)
-    {
-    	uint64 v,t;
-    	v = t = buf[0];
-    	v <<= 56;
-
-    	t = buf[1];
-    	v |= (t << 48);
-
-    	t = buf[2];
-    	v |= (t << 40);
-
-    	t = buf[3];
-    	v |= (t << 32);
-
-    	t = buf[4];
-    	v |= (t << 24);
-
-    	t = buf[5];
-    	v |= (t << 16);
-
-    	t = buf[6];
-    	v |= (t << 8);
-
-    	t = buf[7];
-    	v |= t;
-
-    	return v;
-    }
-
+    static uint64 bytesToUInt64 (const unsigned char* buf);
+    
     //IN size must >= 8 bytes
-    static int64 bytesToInt64 (const unsigned char* buf)
+    static int64 bytesToInt64 (const unsigned char* buf);
+    
+public:
+    //wchar -> char
+    static shared_ptr<char> WcharToChar(const wchar_t* wp) 
     {
-    	return (int64)bytesToUInt64 (buf);
+        #ifdef __WINDOWS__ 
+            const unsigned int m_encode = CP_ACP;//默认
+            int len = WideCharToMultiByte(m_encode, 0, wp, (int)wcslen(wp), NULL, 0, NULL, NULL);
+            
+            shared_ptr<char> buf = shared_ptr<char>(new char[len+1], std::default_delete<char[]>());
+            WideCharToMultiByte(m_encode, 0, wp, (int)wcslen(wp), buf.get(), len, NULL, NULL);
+            buf.get()[len] = '\0';
+            return buf;
+        #else
+            return nullptr;
+        #endif
+    }
+    //char -> wchar
+    static shared_ptr<wchar_t> CharToWchar(const char* wp) 
+    {
+        #ifdef __WINDOWS__ 
+            return nullptr;
+        #else
+            return nullptr;
+        #endif
     }
 };
 

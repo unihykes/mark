@@ -13,43 +13,18 @@ LICENSE:
    limitations under the License.
    
 Author:liu.hao(33852613@163.com)
-   
-Time:2017-6
+
+Time:2021-1
 
 info:
 
 ***************************************************************************************************/
 
-#ifndef __markcore
-#define __markcore
+#include<mkheaders.h>
+#include"mkStringUtil.h"
 
-//common
-#include "mkheaders.h"
-
-//3rdparty
-#include "3rdparty/string_utils/string_utility.hpp"
-//#include "3rdparty/string_utils/string_convert.hpp"
-#include "3rdparty/cpptoml/cpptoml.h"
-
-//utility
-#include "utility/mkFormat.h"
-#include "utility/mkString.h"
-#include "utility/mkException.h"
-#include "utility/mkTypeCast.h"
-#include "utility/mkTrace.h"
-#include "utility/mkLog.h"
-#include "utility/mkOptionSwitch.h"
-#include "utility/mkUniqueProfilePoint.h"
-
-//print
-#include "print/mkTablePrinter.h"
-#include "print/mkLinenoise.h"
-
-//thread
-#include "thread/mkUniqueThread.h"
-#include "thread/mkAddTimeoutForFunc.h"
-
-//module
-#include "module/mkModuleInstance.h"
-
-#endif // __markcore
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void
+mk_char_string_util::swap(mk_char_string& lhs, mk_char_string& rhs) noexcept
+{
+}

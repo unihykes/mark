@@ -24,6 +24,7 @@ info:
 #define __mkFormat
 
 //#include <memory>//for xx
+#include "utility/mkTypeCast.h"
 
 class mkSharedFormat
 {
@@ -52,34 +53,15 @@ public:
     string operator()(const char* format, TArgs... args)
     {
         shared_ptr<char> buf = fmt(format, args...);
-        return string (buf.get());
+        return string(buf.get());
     }
     
     template<typename ... TArgs>
     string operator()(const wchar_t* format, TArgs... args)
     {
-        //计算缓冲区size
-        int size = std::swprintf(nullptr, 0, format, args...);
-        shared_ptr<wchar_t> bufW = shared_ptr<wchar_t>(new wchar_t[size+1], std::default_delete<wchar_t[]>());
-        std::swprintf(bufW.get(), size+1, format, args...);
-        
-        //wchar -> char
-        auto WcharToChar = [](const wchar_t* wp) ->string {
-            std::string str;
-            
-            #ifdef __WINDOWS__ 
-                const unsigned int m_encode = CP_ACP;//默认
-                int len = WideCharToMultiByte(m_encode, 0, wp, (int)wcslen(wp), NULL, 0, NULL, NULL);
-                char* m_char = new char[len + 1];
-                WideCharToMultiByte(m_encode, 0, wp, (int)wcslen(wp), m_char, len, NULL, NULL);
-                m_char[len] = '\0';
-                str = m_char;
-                delete [] m_char;
-            #endif
-            return str;
-        };
-        
-        return WcharToChar(bufW.get());
+        shared_ptr<wchar_t> bufW = mkSharedFormat::fmt(format, args...);
+        shared_ptr<char> buf = mkTypeCast::WcharToChar(bufW.get());
+        return string(buf.get());
     }
 };
 

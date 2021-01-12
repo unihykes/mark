@@ -67,7 +67,7 @@ public:
 	TablePrinter & SetColHeader(unsigned int colIndice, string header)
 	{
 		ColHeaders[colIndice]=(header);
-		ColWidths[colIndice]=(header.size());
+		ColWidths[colIndice]=static_cast<int>(header.size());
 		return *this;
 	}
 

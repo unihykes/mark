@@ -1,4 +1,4 @@
-ï»¿/***************************************************************************************************
+/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ info:
 TEST(mkheaders, pragma)
 {
 	#ifdef __WINDOWS__
-		// é“¾æ¥åŸºç¡€åº“
+		// Á´½Ó»ù´¡¿â
 		#pragma comment(lib, "shell32.lib")
 		#pragma comment(lib, "advapi32.lib")
 		#pragma comment(lib, "user32.lib")
@@ -36,7 +36,7 @@ TEST(mkheaders, pragma)
 		#pragma comment(lib, "Mpr.lib")
 		#pragma comment(lib, "DbgHelp.lib")
 		
-		//å…³é—­éƒ¨åˆ†ç¼–è¯‘è­¦å‘Š
+		//¹Ø±Õ²¿·Ö±àÒë¾¯¸æ
 		// 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
 		#pragma warning(disable:4251)
 		// 'function': was declared deprecated
@@ -54,7 +54,7 @@ TEST(mkheaders, pragma)
 
 TEST(mkheaders, PrintMacro)
 {
-	//æ“ä½œç³»ç»Ÿç‰ˆæœ¬,åœ¨begin.cmakeä¸­å®šä¹‰
+	//²Ù×÷ÏµÍ³°æ±¾,ÔÚbegin.cmakeÖĞ¶¨Òå
 	#ifdef __WINDOWS__
 		MK_PRINT("__WINDOWS__ = %d", __WINDOWS__);
 	#endif
@@ -63,7 +63,7 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//ç¼–è¯‘å™¨ç‰ˆæœ¬
+	//±àÒëÆ÷°æ±¾
 	#ifdef _MSC_VER
 		MK_PRINT("_MSC_VER = %d", _MSC_VER);
 	#endif
@@ -72,7 +72,7 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//VCç‰ˆæœ¬
+	//VC°æ±¾
 	#ifdef WINVER
 		MK_PRINT("WINVER = 0x%04x", WINVER);
 	#endif
@@ -87,7 +87,7 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//windowså¸¸ç”¨å¤´æ–‡ä»¶
+	//windows³£ÓÃÍ·ÎÄ¼ş
 	#ifdef _WINSOCK2API_
 		MK_PRINT("_WINSOCK2API_ is used");
 	#endif
@@ -99,7 +99,7 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//64ä½å®
+	//64Î»ºê
 	#ifdef __x86_64__
 		MK_PRINT("__x86_64__ is used");
 	#endif
@@ -130,7 +130,7 @@ TEST(mkheaders, PrintMacro)
 	
 	
 	
-	//unicodeå®,åœ¨begin.cmakeä¸­å®šä¹‰
+	//unicodeºê,ÔÚbegin.cmakeÖĞ¶¨Òå
 	#ifdef _UNICODE
 		MK_PRINT("_UNICODE = %d", _UNICODE);
 	#endif
@@ -139,14 +139,14 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//debugå®
+	//debugºê
 	#ifdef _DEBUG
 		MK_PRINT("_DEBUG = %d", _DEBUG);
 		MK_PRINT("__DEBUG__ is used");
 	#endif
 	
 	
-	//va_copyå®
+	//va_copyºê
 	#ifdef va_copy
 		MK_PRINT("va_copy is used");
 	#endif
@@ -155,20 +155,20 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//__FUNC_NAME__å®
+	//__FUNC_NAME__ºê
 	#ifdef __FUNC_NAME__
 		MK_PRINT(_T("__FUNC_NAME__ = %s"), __FUNC_NAME__);
 	#endif
 }
 
-TEST(mkheaders, auto_char)
+TEST(mkheaders, mk_char)
 {
-	const auto_char* ch1 = _T("abcecdrgg");
+	const mk_char* ch1 = _T("abcecdrgg");
 	MK_PRINT(_T("ch1 = %s"), ch1);
 	
-	const auto_char ch3[] = _T("123456789");
-    //auto_charé•¿åº¦
-    #define CONSTANT_STRING_LEN(str)			((sizeof(str)/sizeof(auto_char)) - 1)
+	const mk_char ch3[] = _T("123456789");
+    //mk_char ³¤¶È
+    #define CONSTANT_STRING_LEN(str)			((sizeof(str)/sizeof(mk_char)) - 1)
 	int size3 = CONSTANT_STRING_LEN(ch3);
 	MK_PRINT(_T("ch3 = %s, size = %d"), ch3, size3);
 }
@@ -313,95 +313,24 @@ TEST(mkTypeCast, bytesToInt64)
 				, v, buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7], result);
 }
 
-TEST(mkString, tchar_less)
-{
-	tchar_less oper;
-	bool result1 = oper(_T("abc"), _T("DEF"));
-	bool result2 = oper(_T("DEF"), _T("abc"));
-	MK_PRINT("result1 = %u, result2 = %u", result1, result2);
-}
-
-TEST(mkString, tchar_less_nocase)
-{
-	tchar_less_nocase oper;
-	bool result1 = oper(_T("abc"), _T("DEF"));
-	bool result2 = oper(_T("DEF"), _T("abc"));
-	MK_PRINT("result1 = %u, result2 = %u", result1, result2);
-}
-
-TEST(mkString, tchars_equal)
-{
-	tchars_equal oper;
-	bool result1 = oper(_T("ABC"), _T("abc"));
-	bool result2 = oper(_T("ABC"), _T("ABC"));
-	MK_PRINT("result1 = %u, result2 = %u", result1, result2);
-}
-
-
-TEST(mkString, create)
-{
-    mkString str;
-	#ifdef __WINDOWS__
-    	wstring xx = str;
-	#else
-		string xx = str;
-	#endif
-}
-
-
-TEST(mkString, format)
-{
-    double usedSecond = 0;
-    int loopCount = 100;
-    
-    {
-        mkUniqueProfilePoint point(usedSecond);
-        for(int i = 0; i != loopCount; ++i) {
-            shared_ptr<char> str = mkSharedFormat::fmt("[%d]:mkSharedFormat::%s",i,"ffffff");
-            MK_PRINT(str.get());
-        }
-    }
-    cout<<usedSecond<<endl;
-    
-    {
-        mkUniqueProfilePoint point(usedSecond);
-        for(int i = 0; i != loopCount; ++i) {
-            unique_ptr<char[]> str = mkUniqueFormat::fmt("[%d]:mkUniqueFormat::%s", i,"ffffff");
-            MK_PRINT(str.get());
-        }
-    }
-    cout<<usedSecond<<endl;
-    
-    {
-        mkUniqueProfilePoint point(usedSecond);
-        for(int i = 0; i != loopCount; ++i) {
-            mkFixedFormat<1024> fmt;
-            auto str1 = fmt("[%d]:Format102::%s",i,"aaaaa");
-            MK_PRINT(str1);
-        }
-    }
-    cout<<usedSecond<<endl;
-}
-
-
 TEST(mkTablePrinter, func)
 {
 	mkTablePrinter pr;
 	//std::shared_ptr<TablePrinter> printGrid(new TablePrinter("xx", 4, 3));
 }
 
-//æ¨¡æ‹Ÿç¬¬ä¸‰æ–¹API
+//Ä£ÄâµÚÈı·½API
 string thirdPartyApi(const string& param)
 {
     string result;
      
-    //æ¨¡æ‹ŸæŠ›å¼‚å¸¸
+    //Ä£ÄâÅ×Òì³£
     if(param == "throw") {
         string errorMsg = string("failed, param = ") + param; 
         throw string(errorMsg);
     }
      
-    //æ¨¡æ‹Ÿå¡æ­»
+    //Ä£Äâ¿¨ËÀ
     if(param == "endless") {
         while(true) {
             static int n = 0;
@@ -413,7 +342,7 @@ string thirdPartyApi(const string& param)
         }
     }
      
-    //æ¨¡æ‹Ÿæ­£å¸¸ç»“æŸ
+    //Ä£ÄâÕı³£½áÊø
     result = string("success, param = ") + param; 
     return result;
 }
@@ -421,11 +350,11 @@ string thirdPartyApi(const string& param)
 
 TEST(mkAddTimeoutForFunc, funcSync)
 {
-    //æ¨¡æ‹Ÿè‡ªå·±è´Ÿè´£çš„ä¸šåŠ¡é€»è¾‘
+    //Ä£Äâ×Ô¼º¸ºÔğµÄÒµÎñÂß¼­
     class ncMyProc
     {
     public:
-        //åŒæ­¥è°ƒç”¨, åŒæ­¥ç­‰å¾…,æ— è¶…æ—¶
+        //Í¬²½µ÷ÓÃ, Í¬²½µÈ´ı,ÎŞ³¬Ê±
         string funcSync(const string& param)
         {
             string result = thirdPartyApi(param);
@@ -450,20 +379,20 @@ TEST(mkAddTimeoutForFunc, funcSync)
 
 TEST(mkAddTimeoutForFunc, funcAsync)
 {
-    //æ¨¡æ‹Ÿè‡ªå·±è´Ÿè´£çš„ä¸šåŠ¡é€»è¾‘
+    //Ä£Äâ×Ô¼º¸ºÔğµÄÒµÎñÂß¼­
     class ncMyProcNew
     {
     public:
-        //å¼‚æ­¥è°ƒç”¨, åŒæ­¥ç­‰å¾…, è¶…æ—¶æŠ›å¼‚å¸¸
+        //Òì²½µ÷ÓÃ, Í¬²½µÈ´ı, ³¬Ê±Å×Òì³£
         string funcAsync(const string& param)
         {
-            ADD_TIMEOUT_BEGIN(string);//å®å‚æ•°æ˜¯å½“å‰å‡½æ•°çš„è¿”å›å€¼ç±»å‹
+            ADD_TIMEOUT_BEGIN(string);//ºê²ÎÊıÊÇµ±Ç°º¯ÊıµÄ·µ»ØÖµÀàĞÍ
              
             string result = thirdPartyApi(param);
             //do something else
             return result;
              
-            ADD_TIMEOUT_END(5, 0x0001);//5ç§’è¶…æ—¶,è¶…æ—¶æ—¶çš„å¼‚å¸¸IDä¸º0x0001;
+            ADD_TIMEOUT_END(5, 0x0001);//5Ãë³¬Ê±,³¬Ê±Ê±µÄÒì³£IDÎª0x0001;
         }
     };
     const std::array<string, 3> params = {"hello world", "throw", "endless"};
@@ -521,20 +450,20 @@ TEST(mkOptionSwitch, run)
     mkOptionSwitch switchs;
     switchs.ClearOption<mkOptionA>();
     
-    //è®¾ç½®é€‰é¡¹
+    //ÉèÖÃÑ¡Ïî
     switchs.SetOptions("aaa", "test_value1", false);
     switchs.SetOptions("ddd", "test_value2", false);
     switchs.SetOptions("fff", "test_value3", false);
     switchs.SetOptions("hhh", "test_value4", false);
     switchs.Applys();
     
-    //ä½¿ç”¨é€‰é¡¹
+    //Ê¹ÓÃÑ¡Ïî
     {
         auto pOption = switchs.GetOption<mkOptionA>();
 
     }
     
-    //ä¿®æ”¹é€‰é¡¹
+    //ĞŞ¸ÄÑ¡Ïî
     {
         switchs.SetOption<mkOptionA>("aaa", "test_valuexxx");
         switchs.Apply<mkOptionA>();

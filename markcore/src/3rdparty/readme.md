@@ -19,3 +19,6 @@ https://github.com/skystrife/cpptoml
 
 wordseg:
 https://github.com/windoze/wordseg
+
+win-iconv
+https://github.com/win-iconv/win-iconv

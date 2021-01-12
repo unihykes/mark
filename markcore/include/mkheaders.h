@@ -45,7 +45,7 @@ info:
 #include <array>
 using namespace std;
 
-//windows常用头文件
+//平台特有头文件
 #ifdef __WINDOWS__
 	//Visual C++ WIN32_LEAN_AND_MEAN, 这个定义通过排除一些不太常用的 API,减小了 Win32 头文件的大小 
 	#define WIN32_LEAN_AND_MEAN
@@ -57,29 +57,18 @@ using namespace std;
 			#include <winsock2.h>
 		#endif
 	#undef WIN32_LEAN_AND_MEAN
-	
-	//使用_T("")宏，定义于tchar.h下。
-	#ifndef _INC_TCHAR
-		#include <tchar.h>
-	#endif
-	
 //linux常用头文件
 #else
-	//linux下定义_T()宏，为了与windows保持一致
-	#if !defined(_T)
-		#define _T(str)		str
-	#endif
 	#include <unistd.h>
 	#include <errno.h>
 #endif
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // define
 //
 
-//定义64位宏
+//定义宏: __64BIT__
 #ifdef _MSC_VER
 	#ifdef _WIN64
 		#define __64BIT__
@@ -87,9 +76,15 @@ using namespace std;
 		#undef __64BIT__
 	#endif
 #else
-	#if(defined(__GNUC__) && (defined(__x86_64__)													\
-							|| defined (__ia64__) || defined (__PPC64__) || defined (__powerpc64__) \
-							|| defined (__mips64) || defined(__arch64__) || defined(__aarch64__)))
+	#if(defined(__GNUC__)                       \
+        && ( defined(__x86_64__)                \
+            || defined (__ia64__)               \
+            || defined (__PPC64__)              \
+            || defined (__powerpc64__)          \
+            || defined (__mips64)               \
+            || defined(__arch64__)              \
+            || defined(__aarch64__)             \
+            ) )
 		#if !defined(__64BIT__)
 			#define __64BIT__
 		#endif
@@ -101,12 +96,24 @@ using namespace std;
 #endif
 
 
-
-//定义unicode字符串
+//定义宏: _T
 #ifdef __WINDOWS__
-	typedef wchar_t			auto_char;
+	//使用_T("")宏，定义于tchar.h下。
+	#ifndef _INC_TCHAR
+		#include <tchar.h>
+	#endif
 #else
-	typedef char			auto_char;
+	//linux下定义_T()宏，为了与windows保持一致
+	#if !defined(_T)
+		#define _T(str)		str
+	#endif
+#endif
+
+//定义跨平台字符类型
+#ifdef __WINDOWS__
+	typedef wchar_t			mk_char;
+#else
+	typedef char			mk_char;
 #endif
 
 //定义int64
@@ -160,14 +167,6 @@ typedef uint64_t			uint64;
 #define __FUNC_NAME__			_T(__FUNCTION__)
 #else
 #define __FUNC_NAME__			__func__
-#endif
-
-
-//定义strlen和printf
-#ifdef __WINDOWS__
-	#define t_strlen			wcslen
-#else
-	#define t_strlen			strlen
 #endif
 
 
