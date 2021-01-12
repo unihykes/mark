@@ -16,12 +16,6 @@
 [submodule "3rd_Party/wxwidgets/wxWidgets"]
 	path = 3rd_Party/wxwidgets/wxWidgets
 	url = https://github.com/wxWidgets/wxWidgets.git
-[submodule "3rd_Party/linenoise"]
-	path = 3rd_Party/linenoise
-	url = https://github.com/antirez/linenoise.git
-[submodule "3rd_Party/TablePrinter"]
-	path = 3rd_Party/TablePrinter
-	url = https://github.com/tangwing/TablePrinter.git
 [submodule "3rd_Party/leveldb"]
 	path = 3rd_Party/leveldb
 	url = https://github.com/google/leveldb.git
