@@ -23,36 +23,71 @@ info:
 #ifndef __mkSingleton
 #define __mkSingleton
 
+#include <mutex>
 
 template<typename T>
 class mkSingleton
 {
 public:
-    enum class Mode
+    template<typename... Args>
+    static void Set(Args&&... args)
     {
-        GET,
-        DEL,
+        std::shared_ptr<T> newInstance(new T{std::forward<Args>(args)...});
+        Instance(Option::INSTANCE_SET, newInstance);
+    }
+    
+    static T& Get()
+    {
+        return *Instance(Option::INSTANCE_GET, nullptr);
+    }
+    
+    static void Delete()
+    {
+        Instance(Option::INSTANCE_DEL, nullptr);
+    }
+    
+private:
+    enum class Option
+    {
+        INSTANCE_SET,
+        INSTANCE_GET,
+        INSTANCE_DEL,
     };
     
-    template<typename... Args>
-    static T& Instance(const Mode& mode, Args&&... args)
+    static std::shared_ptr<T> Instance(const Option& option, std::shared_ptr<T> newInstance)
     {
-        static std::shared_ptr<T> instance{ std::forward<Args>(args)... };
+        // static静态变量线程安全(c++11)
+        static std::shared_ptr<T> instance(new T());
+        static std::mutex instanceMutex;
+        if(option == Option::INSTANCE_SET) {
+            if(newInstance) {
+                std::lock_guard<std::mutex> lock(instanceMutex);
+                instance = newInstance;
+            }
+        }
+        //获取单例
+        else if(option == Option::INSTANCE_GET) {
+            if(!instance) {
+                std::lock_guard<std::mutex> lock(instanceMutex);
+                throw std::exception("something is wrong");
+            }
+        }
+        //释放单例
+        else if(option == Option::INSTANCE_DEL) {
+            std::lock_guard<std::mutex> lock(instanceMutex);
+            instance.reset();
+        }
         
-        //使用单例
-        if(mode == Mode::GET) {
-            // static静态变量线程安全(c++11)
-            return *instance;
-        }
-        else if(mode == Mode::DEL) {//释放单例
-            instance = nullptr;
-        }
-    }
+        return instance;
+    };
     
     mkSingleton() = delete;
     virtual ~mkSingleton() = delete;
     mkSingleton(const mkSingleton&) = delete;
     mkSingleton& operator=(const mkSingleton&) = delete;
+    
+private:
+    std::shared_ptr<T> _instance;
 };
 
 
