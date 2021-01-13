@@ -31,24 +31,21 @@ info:
 
 //returntype = 当前函数返回值类型
 #define ADD_TIMEOUT_BEGIN(returntype)                                                              \
-    return mkAddTimeoutForFunc<returntype>()([&]()->returntype{
+    return mkTimerThread<returntype>{}([&]()->returntype{
 
-//timeout = 超时时限(单位:秒), errorId = 超时时抛出的异常id
-#define ADD_TIMEOUT_END(timeout,errorId)                                                           \
-    }, std::chrono::seconds(timeout), __FILE__, __LINE__, __func__, errorId);
-    
 //timeout = 超时时限(单位:秒), errorId = 超时时抛出的异常id, errorMsg= 超时时抛出的异常信息
 #define ADD_TIMEOUT_END_WITH_ERRMSG(timeout,errorId, errorMsg)                                     \
     }, std::chrono::seconds(timeout), __FILE__, __LINE__, __func__, errorId, errorMsg);
     
+//timeout = 超时时限(单位:秒), errorId = 超时时抛出的异常id
+#define ADD_TIMEOUT_END(timeout,errorId)                                                           \
+    ADD_TIMEOUT_END_WITH_ERRMSG(timeout, errorId, "")
     
 template<typename ReturnType>
-class mkAddTimeoutForFunc
+class mkTimerThread
 {
 public:
-    mkAddTimeoutForFunc(){}
-    mkAddTimeoutForFunc(const mkAddTimeoutForFunc&) = delete;
-    mkAddTimeoutForFunc& operator=(const mkAddTimeoutForFunc&) = delete;
+    mkTimerThread(){}
     
     template<typename F, class Rep, class Period>
     ReturnType operator()(F&& f, const std::chrono::duration<Rep,Period>& dTimeout,
@@ -77,6 +74,9 @@ public:
             throw e;
         }
     }
+private:
+    mkTimerThread(const mkTimerThread&) = delete;
+    mkTimerThread& operator=(const mkTimerThread&) = delete;
 };
 
 

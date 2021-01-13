@@ -29,18 +29,32 @@ template<typename T>
 class mkSingleton
 {
 public:
+    //创建单例
     template<typename... Args>
-    static void Set(Args&&... args)
+    static void Create(Args&&... args)
     {
-        std::shared_ptr<T> newInstance(new T{std::forward<Args>(args)...});
-        Instance(Option::INSTANCE_SET, newInstance);
+        Instance(Option::INSTANCE_ADD, std::make_shared<T>(std::forward<Args>(args)...));
     }
-    
+    //重设单例
+    template<typename... Args>
+    static void Reset(Args&&... args)
+    {
+        Instance(Option::INSTANCE_DEL, nullptr);
+        Instance(Option::INSTANCE_SET, std::make_shared<T>(std::forward<Args>(args)...));
+    }
+    //获取单例,在调用该接口时如果其他线程正在调用Create/Reset/Delete,则线程不安全
     static T& Get()
     {
         return *Instance(Option::INSTANCE_GET, nullptr);
     }
     
+    //获取单例,在调用该接口时如果其他线程正在调用Create/Reset/Delete,线程安全,但上层可能会接管单例的生命周期
+    static std::shared_ptr<T> SafeGet()
+    {
+        return Instance(Option::INSTANCE_SAFE_GET, nullptr);
+    }
+    
+    //删除单例
     static void Delete()
     {
         Instance(Option::INSTANCE_DEL, nullptr);
@@ -49,33 +63,62 @@ public:
 private:
     enum class Option
     {
-        INSTANCE_SET,
-        INSTANCE_GET,
-        INSTANCE_DEL,
+        INSTANCE_ADD,//增
+        INSTANCE_GET,//查
+        INSTANCE_SAFE_GET,//查
+        INSTANCE_SET,//改
+        INSTANCE_DEL,//删
     };
     
     static std::shared_ptr<T> Instance(const Option& option, std::shared_ptr<T> newInstance)
     {
-        // static静态变量线程安全(c++11)
-        static std::shared_ptr<T> instance(new T());
+        static std::shared_ptr<T> instance = {newInstance ? newInstance : std::make_shared<T>()};
         static std::mutex instanceMutex;
-        if(option == Option::INSTANCE_SET) {
-            if(newInstance) {
-                std::lock_guard<std::mutex> lock(instanceMutex);
-                instance = newInstance;
-            }
-        }
-        //获取单例
-        else if(option == Option::INSTANCE_GET) {
-            if(!instance) {
-                std::lock_guard<std::mutex> lock(instanceMutex);
+        
+        switch (option) {
+            case Option::INSTANCE_ADD:
+                if(!newInstance) {
+                    throw std::exception("something is wrong");
+                }
+                break;
+                
+            case Option::INSTANCE_SET:
+                if(!newInstance) {
+                    throw std::exception("something is wrong");
+                }
+                else {
+                    std::lock_guard<std::mutex> lock(instanceMutex);
+                    instance = newInstance;
+                }
+                break;
+                
+            case Option::INSTANCE_GET:
+                if(!instance) {
+                    throw std::exception("something is wrong");
+                }
+                break;
+                
+            case Option::INSTANCE_SAFE_GET:
+                {
+                    std::lock_guard<std::mutex> lock(instanceMutex);
+                    std::shared_ptr<T> ret = instance;
+                    if(!ret) {
+                        throw std::exception("something is wrong");
+                    }
+                    return ret;
+                }
+                break;
+                
+            case Option::INSTANCE_DEL:
+                if(instance) {
+                    std::lock_guard<std::mutex> lock(instanceMutex);
+                    instance.reset();
+                }
+                break;
+                
+            default:
                 throw std::exception("something is wrong");
-            }
-        }
-        //释放单例
-        else if(option == Option::INSTANCE_DEL) {
-            std::lock_guard<std::mutex> lock(instanceMutex);
-            instance.reset();
+                break;
         }
         
         return instance;
@@ -85,9 +128,6 @@ private:
     virtual ~mkSingleton() = delete;
     mkSingleton(const mkSingleton&) = delete;
     mkSingleton& operator=(const mkSingleton&) = delete;
-    
-private:
-    std::shared_ptr<T> _instance;
 };
 
 

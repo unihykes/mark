@@ -13,44 +13,29 @@ LICENSE:
    limitations under the License.
    
 Author:liu.hao(33852613@163.com)
-   
-Time:2017-6
+
+Time:2020-6
 
 info:
-
+    线程管理
 ***************************************************************************************************/
 
-#ifndef __markcore
-#define __markcore
+#ifndef __mkEvent
+#define __mkEvent
 
-//common
-#include "mkheaders.h"
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 
-//3rdparty
-#include "3rdparty/string_utils/string_utility.hpp"
-//#include "3rdparty/string_utils/string_convert.hpp"
-#include "3rdparty/cpptoml/cpptoml.h"
+class mkEvent
+{
+public:
+    mkEvent()
+    {
+    }
+    
+    virtual ~mkEvent()
+    {
+    }
+};
 
-//utility
-#include "utility/mkFormat.h"
-#include "utility/mkString.h"
-#include "utility/mkException.h"
-#include "utility/mkTypeCast.h"
-#include "utility/mkTrace.h"
-#include "utility/mkLog.h"
-#include "utility/mkOptionSwitch.h"
-#include "utility/mkUniqueProfilePoint.h"
-
-//print
-#include "print/mkTablePrinter.h"
-#include "print/mkLinenoise.h"
-
-//module
-#include "module/mkModuleInstance.h"
-
-//thread
-#include "thread/mkUniqueThread.h"
-#include "thread/mkTimerThread.h"
-#include "thread/mkScopeLimiter.h"
-
-#endif // __markcore
+#endif // __mkThread

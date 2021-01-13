@@ -1,4 +1,4 @@
-/***************************************************************************************************
+﻿/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,8 +54,10 @@ TEST(gof, mkSingleton)
     };
     
     {
-        mkSingleton<mkSomeObj>::Set(1024);
+        mkSingleton<mkSomeObj>::Create(1024);
         mkSingleton<mkSomeObj>::Get().fun();
+        mkSingleton<mkSomeObj>::SafeGet()->fun();
+        mkSingleton<mkSomeObj>::Reset(2048);
         mkSingleton<mkSomeObj>::Delete();
     }
 }

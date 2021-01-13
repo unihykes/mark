@@ -20,37 +20,39 @@ info:
     线程管理
 ***************************************************************************************************/
 
-#ifndef __mkThread
-#define __mkThread
+#ifndef __mkLoopThread
+#define __mkLoopThread
 
 #include<thread>
 #include <mutex>
 #include <condition_variable>
+#include "thread/mkEvent.h"
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 
-class mkThread
+class mkLoopThread
 {
 public:
-    mkThread()
+    mkLoopThread()
         : _threadAbortFlag(false)
     {
-        MODULE_TRACE (_T("this = 0x%p"), this);
+        MK_TRACE (_T("this = 0x%p"), this);
     }
     
-    virtual ~mkThread()
+    virtual ~mkLoopThread()
     {
-        MODULE_TRACE (_T("this = 0x%p"), this);
+        MK_TRACE (_T("this = 0x%p"), this);
     }
     
     virtual void Start(const int count)
     {
-        auto threadFunc = [&](std::shared_ptr<Event> threadEvent){
+        auto threadFunc = [&](std::shared_ptr<mkEvent> threadEvent){
             OnBegin();
             
             while(true) {
                 if(_threadAbortFlag){
-                    MODULE_TRACE_WITH_LOG (_T("[this = 0x%p]"), this);
+                    MK_LOG (_T("[this = 0x%p]"), this);
                     break;
                 }
                 
@@ -60,24 +62,24 @@ public:
                 }
                 catch(Exception& e) {
                     OnError(e);
-                    MODULE_TRACE_WITH_LOG(_T("error = %s"), e.toFullString().getCStr());
+                    MK_LOG(_T("error = %s"), e.toFullString().getCStr());
                 }
                 catch(...) {
                     ncModuleException e(__FILE__, __LINE__, String(_T("unknown error")), Exception::NO_MAPPED_ERROR_ID, g_moduleProvider);
                     OnError(e);
-                    MODULE_TRACE_WITH_LOG(_T("error = %s"), e.toFullString().getCStr());
+                    MK_LOG(_T("error = %s"), e.toFullString().getCStr());
                 }
             }
             
             OnEnd();
             
-            MODULE_TRACE_WITH_LOG (_T("this = 0x%p, threadId = %d"), this, Thread::getCurThreadId());
+            MK_LOG(_T("this = 0x%p, threadId = %d"), this, Thread::getCurThreadId());
             threadEvent->signal();
         };
         
         //预分配n个线程
         for(int i = 0 ; i != count; ++i) {
-            std::shared_ptr<Event> threadEvent = std::make_shared<Event>(false);//false:忽略signal之后的一至多次wait
+            std::shared_ptr<mkEvent> threadEvent = std::make_shared<mkEvent>(false);//false:忽略signal之后的一至多次wait
             std::shared_ptr<std::thread> threadProc(new std::thread(threadFunc, threadEvent));
             threadProc->detach();
             _vThreadEvents.push_back(threadEvent);
@@ -97,7 +99,7 @@ public:
     
 protected:
     bool _threadAbortFlag;
-    vector<std::shared_ptr<Event>> _vThreadEvents;
+    vector<std::shared_ptr<mkEvent>> _vThreadEvents;
     
 private:
     virtual void OnBegin() = 0;
