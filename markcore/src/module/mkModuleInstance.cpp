@@ -21,22 +21,28 @@ info:
 ***************************************************************************************************/
 
 #include<mkheaders.h>
+#include "print/mkPrint.h"
 #include "utility/mkTrace.h"
 #include "utility/mkLog.h"
 #include "utility/mkOptionSwitch.h"
-#include "print/mkPrint.h"
+#include "utility/mkVersion.h"
+#include "utility/mkPerf.h"
 #include "mkModuleInstance.h"
 
-MK_DEFINE_MODULE_INSTANCE(markcore, markcore);
+MK_DEFINE_MODULE_INSTANCE(markcore, markcore, 1, 0, 0);
 
-mkModuleInstance::mkModuleInstance(const std::string& moduleName, const std::string& resName)
+mkModuleInstance::mkModuleInstance(const std::string& moduleName, const std::string& resName,
+    unsigned int major, unsigned int minor, unsigned int patch)
 {
     _trace = make_shared<mkTrace>(moduleName);
     _loger = make_shared<mkLog>(moduleName);
     _print = make_shared<mkPrint>(moduleName);
     _switch = make_shared<mkOptionSwitch>();
+    _version = make_shared<mkVersion>(major, minor, patch);
+    _perf = make_shared<mkPerf>(moduleName);
 }
 
 mkModuleInstance::~mkModuleInstance()
 {
+    
 }

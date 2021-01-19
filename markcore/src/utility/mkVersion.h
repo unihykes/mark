@@ -14,29 +14,30 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2018-2
+Time:2021-1
 
 info:
 
 ***************************************************************************************************/
-#include <markcore.h>
-#include <gtest/gtest.h>
 
-MK_DEFINE_MODULE_INSTANCE(use_markcore, use_markcore, 1, 1, 1);
-////////////////////////////////////////////////////////////////////////////////
-// main
-//
+#ifndef __mkVersion
+#define __mkVersion
 
-int main(int argc, char** argv) 
+class MK_DLL_EXPORT mkVersion
 {
-    auto gtestEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
-    // 获取输入参数
-    if(gtestEnv.first == 1) {
-        testing::GTEST_FLAG(list_tests) = true;
-    }
+public:
+    mkVersion(unsigned int major, unsigned int minor, unsigned int patch);
+    mkVersion(unsigned int version);
     
-    MK_PRINT("version = 0x%09x", g_moduleInstance->_version->Get());
-    testing::InitGoogleTest(&gtestEnv.first, gtestEnv.second);
-    int ret = RUN_ALL_TESTS ();
-    return ret;
-}
+    const unsigned int& Get() const;
+    unsigned int GetMajor() const;
+    unsigned int GetMinor() const;
+    unsigned int GetPatch() const;
+    int Compare(const unsigned int& target) const;
+    int Compare(const mkVersion& target) const;
+    
+private:
+    const unsigned int _version;
+};
+
+#endif

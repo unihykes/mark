@@ -86,7 +86,7 @@ TEST(mkString, format)
     int loopCount = 100;
     
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         for(int i = 0; i != loopCount; ++i) {
             shared_ptr<char> str = mkSharedFormat::fmt("[%d]:mkSharedFormat::%s",i,"ffffff");
             MK_PRINT(str.get());
@@ -95,7 +95,7 @@ TEST(mkString, format)
     cout<<usedSecond<<endl;
     
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         for(int i = 0; i != loopCount; ++i) {
             unique_ptr<char[]> str = mkUniqueFormat::fmt("[%d]:mkUniqueFormat::%s", i,"ffffff");
             MK_PRINT(str.get());
@@ -104,7 +104,7 @@ TEST(mkString, format)
     cout<<usedSecond<<endl;
     
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         for(int i = 0; i != loopCount; ++i) {
             mkFixedFormat<1024> fmt;
             auto str1 = fmt("[%d]:Format102::%s",i,"aaaaa");

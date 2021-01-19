@@ -23,50 +23,36 @@ info:
 #ifndef __mkModuleInstance
 #define __mkModuleInstance
 
-
 class mkTrace;
 class mkLog;
 class mkPrint;
 class mkOptionSwitch;
+class mkVersion;
+class mkPerf;
 
 class MK_DLL_EXPORT mkModuleInstance final
 {
 public:
-    mkModuleInstance(const std::string& moduleName, const std::string& resName);
+    mkModuleInstance(const std::string& moduleName, const std::string& resName, 
+                    unsigned int major, unsigned int minor, unsigned int patch);
     ~mkModuleInstance();
-    
-    static int GetLastError (void)
-    {
-    	#ifdef __WINDOWS__
-    		return ::GetLastError();
-    	#else
-    		return errno;
-    	#endif
-    }
-
-    static void SetLastError (int err)
-    {
-    	#ifdef __WINDOWS__
-    		::SetLastError(err);
-    	#else
-    		errno = err;
-    	#endif
-    }
     
 public:
     shared_ptr<mkTrace> _trace;
     shared_ptr<mkLog> _loger;
     shared_ptr<mkPrint> _print;
     shared_ptr<mkOptionSwitch> _switch;
+    shared_ptr<mkVersion> _version;
+    shared_ptr<mkPerf> _perf;
 };
 
 //声明全局变量
 MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 
 //定义全局变量
-#define MK_DEFINE_MODULE_INSTANCE(moduleName, resName)                                          \
+#define MK_DEFINE_MODULE_INSTANCE(moduleName, resName, major, minor, patch)                     \
     MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(                    \
-        std::make_shared<mkModuleInstance>(#moduleName, #resName));
+        std::make_shared<mkModuleInstance>(#moduleName, #resName, major, minor, patch));
 
 //定义全局宏
 #define MK_PRINT(...)       (*g_moduleInstance->_print)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
@@ -81,4 +67,11 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
         throw __e__;                                                        \
     } while(0)
     
+#endif
+
+
+#ifdef __MK_PERF_ENABLE__
+	#define NC_PROFILE_POINT() mkPerf::Point __mkPerf_Point(g_moduleInstance->_perf, __func__, __LINE__);
+#else
+	#define NC_PROFILE_POINT()
 #endif

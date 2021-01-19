@@ -31,22 +31,26 @@ TEST(gof, mkSingleton)
     public:
         mkSomeObj()
         {
+            NC_PROFILE_POINT();
             MK_PRINT("0x%p create, val = %d", this, _val);
         }
         
         mkSomeObj(const int& val)
             : _val(val)
         {
+            NC_PROFILE_POINT();
             MK_PRINT("0x%p create, val = %d", this, _val);
         }
         
         ~mkSomeObj()
         {
+            NC_PROFILE_POINT();
             MK_PRINT("0x%p delete, val = %d", this, _val);
         }
         
         void fun()
         {
+            NC_PROFILE_POINT();
             MK_PRINT("0x%p do something, val = %d", this, _val);
         }
     private:

@@ -186,13 +186,6 @@ TEST(mkheaders, MK_ASSERT)
 	//MK_ASSERT(false);
 }
 
-TEST(mkModuleInstance, LastError)
-{
-	MK_PRINT(_T("getLastError() = %d"), mkModuleInstance::GetLastError());
-	mkModuleInstance::SetLastError(12);
-	MK_PRINT(_T("getLastError() = %d"), mkModuleInstance::GetLastError());
-}
-
 TEST(mkTypeCast, shortToBytes)
 {
 	short v = 123;

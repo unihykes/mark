@@ -129,4 +129,26 @@ protected:
     mutable char* _what;
 }; // End mkException
 
+
+class mkErrorCode
+{
+    static int GetLastError (void)
+    {
+    	#ifdef __WINDOWS__
+    		return ::GetLastError();
+    	#else
+    		return errno;
+    	#endif
+    }
+
+    static void SetLastError (int err)
+    {
+    	#ifdef __WINDOWS__
+    		::SetLastError(err);
+    	#else
+    		errno = err;
+    	#endif
+    }
+};
+    
 #endif //__mkException

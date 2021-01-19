@@ -39,7 +39,8 @@ info:
 #include "utility/mkTrace.h"
 #include "utility/mkLog.h"
 #include "utility/mkOptionSwitch.h"
-#include "utility/mkUniqueProfilePoint.h"
+#include "utility/mkPerf.h"
+#include "utility/mkVersion.h"
 
 //print
 #include "print/mkTablePrinter.h"
