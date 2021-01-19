@@ -23,7 +23,7 @@ info:
 #ifndef __mkTrace
 #define __mkTrace
 
-#include "utility/mkFormat.h"
+#include "string/mkFormat.h"
 
 
 class MK_DLL_EXPORT mkTrace

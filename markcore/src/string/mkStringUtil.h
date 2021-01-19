@@ -23,7 +23,7 @@ info:
 #ifndef __mkStringUtil
 #define __mkStringUtil
 
-#include "utility/mkString.h"
+#include "string/mkString.h"
 
 class MK_DLL_EXPORT mk_char_string_util
 {

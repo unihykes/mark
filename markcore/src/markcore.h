@@ -31,9 +31,13 @@ info:
 //#include "3rdparty/string_utils/string_convert.hpp"
 #include "3rdparty/cpptoml/cpptoml.h"
 
+//string
+#include "string/mkFormat.h"
+#include "string/mkString.h"
+
 //utility
-#include "utility/mkFormat.h"
-#include "utility/mkString.h"
+
+
 #include "utility/mkException.h"
 #include "utility/mkTypeCast.h"
 #include "utility/mkTrace.h"

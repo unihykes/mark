@@ -25,7 +25,7 @@ info:
 #include <thread>
 #include <future>
 #include "utility/mkSourceLocation.h"
-#include "utility/mkFormat.h"
+#include "string/mkFormat.h"
 #include "utility/mkException.h"
 #include "module/mkModuleInstance.h"
 

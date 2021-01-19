@@ -23,7 +23,7 @@ info:
 #ifndef __mkString
 #define __mkString
 
-#include "utility/mkStringView.h"
+#include "string/mkStringView.h"
 
 using mk_char_traits = std::char_traits<mk_char>;
 using mk_char_string = std::basic_string<mk_char>;

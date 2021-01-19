@@ -19,8 +19,10 @@ INCLUDE_DIRECTORIES(../include;
                     ./${3rdparty_os};
 )
 
-ADD_SOURCE_DIRS(./module;
+ADD_SOURCE_DIRS(./gof;
+                ./module;
                 ./print;
+                ./string;
                 ./thread;
                 ./language;
                 ./utility;

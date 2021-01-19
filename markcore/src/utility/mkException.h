@@ -23,7 +23,7 @@ info:
 #ifndef __mkException
 #define __mkException
 
-#include "utility/mkFormat.h"
+#include "string/mkFormat.h"
 
 class mkException : public std::exception
 {
