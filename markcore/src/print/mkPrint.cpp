@@ -39,7 +39,7 @@ void
 mkPrint::Output(const char* file, int line, const char* func, const char* msg)
 {
     shared_ptr<char> buf = mkSharedFormat::fmt("[%s] [%s]: (%s:%d) %s() %s", 
-        _moduleName.c_str(), mkTime::GetCurrentTime().c_str(), mkSourceLocation::file_name(file), line, func, msg);
+        _moduleName.c_str(), mkTime::GetCurrentTimeStr().c_str(), mkSourceLocation::file_name(file), line, func, msg);
     
     std::cout<<buf.get()<<endl;//将消息打印到标准输出
 }

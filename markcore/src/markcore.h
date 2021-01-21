@@ -45,6 +45,7 @@ info:
 #include "utility/mkOptionSwitch.h"
 #include "utility/mkPerf.h"
 #include "utility/mkVersion.h"
+#include "utility/mkTime.h"
 
 //print
 #include "print/mkTablePrinter.h"

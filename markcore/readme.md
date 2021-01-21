@@ -1,4 +1,4 @@
-# readme
+# reference
 
 
 ```plantuml
@@ -11,21 +11,19 @@ package mkModuleInstance{
     class trace
     class log
     class gettext
-    class profile
+    class perf
     class allocator
     class switch
     class version
     class exception
     
     class mkModuleInstance {
-        +GetName()
-        +GetVersion()
     }
     gettext <.. mkModuleInstance
     stack <.. mkModuleInstance
     trace <.. mkModuleInstance
     log <.. mkModuleInstance
-    profile <.. mkModuleInstance
+    perf <.. mkModuleInstance
     allocator <.. mkModuleInstance
     switch <.. mkModuleInstance
     version <.. mkModuleInstance
@@ -35,24 +33,28 @@ package mkModuleInstance{
 ```
 
 ```plantuml
+skinparam packageStyle rect
 
-package XX{
+package gof{
     
 }
-package miscellany{
-    class assert
+package string{
 }
 
-package path
-{
+package print{
 }
 
-package thread
-{
+package thread{
 }
+```
+
 
 ## todo
-unordered
+- 压缩
+- 加密
+- 随机数
+- 管道
+- 共享内存
+- 字符编码
+- 获取硬件信息
 
-
-```

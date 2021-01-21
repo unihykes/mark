@@ -19,138 +19,24 @@ Time:2017-9
 info:
 
 ***************************************************************************************************/
+#include <markcore.h>
+#include <gtest/gtest.h>
 
-#include<iostream>
-#include<sstream>
-#include<vector>
-#include<string>
-using namespace std;
+#define BOOST_TIMER_SOURCE 
+#include <boost/timer/timer.hpp>
+#include <boost/smart_ptr/shared_ptr.hpp>
+//#include <boost/pool/object_pool.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-// 
-//
-#include<boost/timer.hpp>
-using namespace boost;
 
-void nc_progress_timer()
+TEST(timer, run)
 {
-	// timer
-	//stringstream ss;
-	{
-		//timer t(ss);
-        timer t;
-		cout<<"max timespan:" << t.elapsed_max()/3600 << "h" << endl;
-		cout <<"min timespan" << t.elapsed_min() <<"s" << endl;
-		cout <<"now time elapsed:" << t.elapsed () << "s" << endl;
-	}
-	//cout<<"xx" <<ss.str();
+    //boost::timer::auto_cpu_timer t;
+    //MK_PRINT("is_stopped = %d", t.is_stopped());
+    MK_PRINT("xxx");
+    
+    boost::shared_ptr<int> p(new int(111));
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// 
-//
-void nc_progress_display()
-{
-    /*
-	//progress_display
-	vector<int> v(100);
-	progress_display pd(long(v.size()));
-	for(int i = 0; i != 100; ++i) {
-		++pd;
-		//sleep(1);
-	}
-    */
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// 
-//
-#include<boost/date_time/gregorian/gregorian.hpp>
-using namespace boost::gregorian;
-void nc_Date()
-{
-	// date
-	date d1;
-	date d2(2014, 12, 16);
-	cout<<d1<<endl;
-	cout<<d2<<endl;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-//        
-//
-#include<boost/smart_ptr.hpp>
-void nc_Ptr()
-{
-	// scoped_ptr
-	int* p = new int(111);
-	scoped_ptr<int> ap (p);
-	if (ap) {
-		cout<<*ap<<endl;
-	}
-	else {
-		cout<<"ap is null"<<endl;
-	}
-	
-	// scoped_array
-	int* arr = new int[10];
-	scoped_array<int> sArr (arr);
-	sArr[0] = 222;
-	cout<< sArr[0]<<endl;
-	
-	
-	// shared_ptr
-	// 工厂函数make_shared
-	boost::shared_ptr<int> sp = boost::make_shared<int>(333);
-	if (sp) {
-		cout << *sp <<endl;
-	}
-	else {
-		cout<<"sp is null" <<endl;
-	}
-		
-	// static_pointer_cast
-	boost::shared_ptr<void> vp (new int(444));
-	boost::shared_ptr<int> realp = static_pointer_cast<int>(vp);
-	cout<<*realp<<endl;
-	
-	// shared_array
-	shared_array<int> parr(new int[10]);
-	parr[0] = 555;
-	cout<<parr[0] <<endl;
-}
-
-// 工厂模式
-class abstract
-{
-public:
-	virtual void fun() = 0;
-protected:
-	virtual ~abstract()
-	{
-		//析构函数protected，意味着除了自己和它的子类，其他对象无权调用delete删除它；	
-	}
-	
-};
-class imp :public abstract
-{
-public:
-	virtual void fun()
-	{
-		cout<<"call class imp" <<endl;
-	}
-};
-void nc_create_delete_abstract()
-{
-	boost::shared_ptr<abstract> p (new imp);
-	p->fun();
-	//利用工厂模式保证了指针的安全使用
-	//delete p.get();		//error:virtual abstract::~abstract()’是保护的
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// 
-//
 
 struct A
 {
@@ -163,10 +49,9 @@ struct A
 	}
 };
 
-#include<boost/pool/pool.hpp>
+
 
 /*
-#include<boost/pool/object_pool.hpp>
 
 void nc_pool ()
 {
@@ -206,18 +91,8 @@ void nc_pool ()
 }
 */
 
-////////////////////////////////////////////////////////////////////////////////
-// 
-//
-#include<boost/noncopyable.hpp>
 
-class donotcopy : public noncopyable
-{
-};
 
-////////////////////////////////////////////////////////////////////////////////
-// 
-//
 /*
 #include<boost/uuid/uuid.hpp>
 #include<boost/uuid/uuid_generators.hpp>

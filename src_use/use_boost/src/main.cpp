@@ -20,38 +20,24 @@ info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
 
-class ncEnvironment : public testing::Environment
-{
-public:
-//	virtual void SetUp(){}
-//	virtual void TearDown(){}
-};
+MK_DEFINE_MODULE_INSTANCE(use_boost, use_boost, 1, 1, 1);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // main
 //
 int main(int argc, char** argv)
 {
-	// 获取输入参数
-	if(argc == 1) {
-		wprintf(_T("-gtest_filter=aaaUT.*:bbbUT.*"));
-		return -1;
-	}
-	
-	try {
-		testing::AddGlobalTestEnvironment(new ncEnvironment());
-		testing::InitGoogleTest(&argc, argv); 
-		
-		int ret = RUN_ALL_TESTS ();
-		return ret;
-	}
-	catch (...) {
-		wprintf (_T("Test Error: Unknown."));
-		return -1;
-	}
-	
-	return 0;
+    auto gtestEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
+    // 获取输入参数
+    if(gtestEnv.first == 1) {
+        testing::GTEST_FLAG(list_tests) = true;
+    }
+    
+    MK_PRINT("version = 0x%09x", g_moduleInstance->_version->Get());
+    testing::InitGoogleTest(&gtestEnv.first, gtestEnv.second);
+    int ret = RUN_ALL_TESTS ();
+    return ret;
 }

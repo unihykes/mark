@@ -56,7 +56,7 @@ void
 mkTrace::Output(const char* file, int line, const char* func, const char* msg)
 {
     shared_ptr<char> buf = mkSharedFormat::fmt("[%s] [%s]: (%s:%d) %s() %s", 
-        _moduleName.c_str(), mkTime::GetCurrentTime().c_str(), mkSourceLocation::file_name(file), line, func, msg);
+        _moduleName.c_str(), mkTime::GetCurrentTimeStr().c_str(), mkSourceLocation::file_name(file), line, func, msg);
     
     //todo:性能待优化:缓存+异步sync
     fstream fs (_fileName, fstream::app | fstream::out | fstream::ate);//追加写

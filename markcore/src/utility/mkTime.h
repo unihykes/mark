@@ -28,15 +28,18 @@ info:
 class MK_DLL_EXPORT mkTime
 {
 public:
-    static string GetCurrentTime()
-    {
-        time_t rawtime;
-        time(&rawtime); 
-        string result = ctime(&rawtime);
-        result.erase(result.find('\n'), 1);//移除末尾\n
-        return result;
-    }
+    static int64 GetCurrentTime();
+    static string GetCurrentTimeStr();
     
+    mkTime(const int64 time);
+    ~mkTime();
+    unsigned int GetYear() const;
+    unsigned int GetMonth() const;
+    unsigned int GetDay() const;
+    unsigned int GetHours() const;
+    unsigned int GetMinutes() const;
+    unsigned int GetSeconds() const;
+    string ToString() const;
 };
 
 #endif

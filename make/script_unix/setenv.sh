@@ -17,6 +17,7 @@ cd ../../
 export MK_PATH=`pwd`
 cd ..
 export MK_PACKAGE=`pwd`
+cd $MK_PATH
 
 #设置环境变量
 CMAKE_PLATFORM_NAME="linux"

@@ -23,3 +23,47 @@ info:
 #include<mkheaders.h>
 #include"mkTime.h"
 
+int64
+mkTime::GetCurrentTime()
+{
+    #ifdef __WINDOWS__
+        SYSTEMTIME sysTime;
+        ::GetSystemTime(&sysTime);
+        
+        FILETIME fileTime;
+        ::SystemTimeToFileTime (&sysTime, &fileTime);
+        
+        int64 result = fileTime.dwHighDateTime;
+        result = result << 32;
+        result |= fileTime.dwLowDateTime;
+        result /= 10;
+        result -= 11644473600000000;//转为unix
+        return result;
+    #else
+        struct timeval currTime;
+        int64 result = 0;
+        if (gettimeofday(&currTime, NULL) == 0) {
+            result = ((int64)currTime.tv_sec * 1000000 + currTime.tv_usec);
+        }
+        return result;
+    #endif
+}
+string 
+mkTime::GetCurrentTimeStr()
+{
+    time_t rawtime;
+    time(&rawtime); 
+    string result = ctime(&rawtime);
+    result.erase(result.find('\n'), 1);//移除末尾\n
+    return result;
+}
+
+mkTime::mkTime(const int64 time)
+{
+    
+}
+
+mkTime::~mkTime()
+{
+    
+}

@@ -374,3 +374,8 @@ TEST(mkOptionSwitch, run)
     }
 }
 
+TEST(mkTime, run)
+{
+    MK_PRINT("time = %s", mkTime::GetCurrentTimeStr().c_str());
+    MK_PRINT("time = %lld", mkTime::GetCurrentTime());
+}
