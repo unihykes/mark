@@ -19,3 +19,6 @@
 [submodule "3rd_Party/libunwind/libunwind"]
 	path = 3rd_Party/libunwind/libunwind
 	url = https://github.com/libunwind/libunwind
+[submodule "3rd_Party/boost/boost"]
+	path = 3rd_Party/boost/boost
+	url = https://github.com/boostorg/boost.git
