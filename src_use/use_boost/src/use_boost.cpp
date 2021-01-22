@@ -25,8 +25,9 @@ info:
 #define BOOST_TIMER_SOURCE 
 #include <boost/timer/timer.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/atomic/atomic.hpp>
 //#include <boost/pool/object_pool.hpp>
-
+#include<boost/exception/all.hpp>
 
 TEST(timer, run)
 {
@@ -35,26 +36,106 @@ TEST(timer, run)
     MK_PRINT("xxx");
     
     boost::shared_ptr<int> p(new int(111));
+    boost::atomics::atomic_int64_t  val(1024);
+}
+#define DEFINE_NC_ERROR_INFO(type,name)									\
+	typedef boost::error_info<struct nc_tag_##name, type> set_##name;	\
+																				\
+	type name() const															\
+	{																			\
+		const type* result = boost::get_error_info<set_##name>(*this);		\
+		if (result) {															\
+			return *result;													\
+		}																		\
+		else																	\
+			return type();													\
+	}
+class ncException : virtual public std::exception, virtual public boost::exception
+{
+public:
+	DEFINE_NC_ERROR_INFO(int, errId);
+	DEFINE_NC_ERROR_INFO(string, errMsg);
+	DEFINE_NC_ERROR_INFO(string, errPath);
+	DEFINE_NC_ERROR_INFO(string, errFun);
+	DEFINE_NC_ERROR_INFO(int, errLine);
+	DEFINE_NC_ERROR_INFO(ncException, parentErr);
+	
+public:
+	string toFullString() const
+	{
+		if(errMsg().empty()) {
+			return what();
+		}
+		
+		char buf[1024];
+		sprintf(buf,"%s\n（errId:%d,errPath:%s,errFun:%s,errLine:%d）"
+				,errMsg().c_str(),errId(), errPath().c_str(),errFun().c_str(),errLine());
+		string result = buf;
+		return result;
+	}
+};
+#define NC_THROW(id,msg)													\
+	do {																		\
+		ncException __e;														\
+		__e << ncException::set_errId (id);								\
+		__e << ncException::set_errMsg (msg);								\
+		__e << ncException::set_errPath(string(__FILE__));				\
+		__e << ncException::set_errFun(string(__func__));			\
+		__e << ncException::set_errLine(__LINE__);						\
+		throw __e;																\
+	}while (0);
+
+#define NC_RETHROW(id,msg,parentErr)										\
+	do {																		\
+		ncException __re;														\
+		__re << ncException::set_errId (id);								\
+		__re << ncException::set_errMsg (msg);							\
+		__re << ncException::set_errPath(string(__FILE__));				\
+		__re << ncException::set_errFun(string(__func__));			\
+		__re << ncException::set_errLine(__LINE__);						\
+		__re << ncException::set_parentErr(parentErr);					\
+		throw __re;															\
+	}while (0);
+	
+
+	
+
+void nctestException()
+{
+	try {
+		try {
+			NC_THROW (10, "xxxx");
+		}
+		catch (ncException& e) {
+			NC_RETHROW (11, "other info", e);
+		}
+	}
+	catch (ncException& e) {
+		cout << e.toFullString()<<endl;
+		
+		ncException parent = e.parentErr();
+		cout << parent.toFullString()  <<endl;
+		
+		ncException parent2 = parent.parentErr();
+		cout << parent2.toFullString()  <<endl;	
+
+	}
 }
 
 
-struct A
-{
-	int a,b,c;
-	A(int x =1, int y =2, int z =3)
-		:a (x)
-		,b (y)
-		,c (z)
-	{
-	}
-};
-
-
-
 /*
-
 void nc_pool ()
 {
+    struct A
+    {
+        int a,b,c;
+        A(int x =1, int y =2, int z =3)
+            :a (x)
+            ,b (y)
+            ,c (z)
+        {
+        }
+    };
 	// pool
 	pool<> ipool(sizeof(int));
 	int* p = static_cast<int*>(ipool.malloc());
@@ -158,94 +239,6 @@ void ncSha ()
 //
 
 /*
-#include<boost/exception/all.hpp>
-
-
-#define NC_THROW(id,msg)													\
-	do {																		\
-		ncException __e;														\
-		__e << ncException::set_errId (id);								\
-		__e << ncException::set_errMsg (msg);								\
-		__e << ncException::set_errPath(string(__FILE__));				\
-		__e << ncException::set_errFun(string(__FUNCTION__));			\
-		__e << ncException::set_errLine(__LINE__);						\
-		throw __e;																\
-	}while (0);
-
-#define NC_RETHROW(id,msg,parentErr)										\
-	do {																		\
-		ncException __re;														\
-		__re << ncException::set_errId (id);								\
-		__re << ncException::set_errMsg (msg);							\
-		__re << ncException::set_errPath(string(__FILE__));				\
-		__re << ncException::set_errFun(string(__FUNCTION__));			\
-		__re << ncException::set_errLine(__LINE__);						\
-		__re << ncException::set_parentErr(parentErr);					\
-		throw __re;															\
-	}while (0);
-	
-#define DEFINE_NC_ERROR_INFO(type,name)									\
-	typedef boost::error_info<struct nc_tag_##name, type> set_##name;	\
-																				\
-	type name() const															\
-	{																			\
-		const type* result = get_error_info<set_##name>(*this);		\
-		if (result) {															\
-			return *result;													\
-		}																		\
-		else																	\
-			return type();													\
-	}
-	
-
-class ncException : 
-	virtual public std::exception, 
-	virtual public boost::exception
-{
-public:
-	DEFINE_NC_ERROR_INFO(int, errId);
-	DEFINE_NC_ERROR_INFO(string, errMsg);
-	DEFINE_NC_ERROR_INFO(string, errPath);
-	DEFINE_NC_ERROR_INFO(string, errFun);
-	DEFINE_NC_ERROR_INFO(int, errLine);
-	DEFINE_NC_ERROR_INFO(ncException, parentErr);
-	
-public:
-	string toFullString() const
-	{
-		if(errMsg().empty()) {
-			return what();
-		}
-		
-		char buf[1024];
-		sprintf(buf,"%s\n（errId:%d,errPath:%s,errFun:%s,errLine:%d）"
-				,errMsg().c_str(),errId(), errPath().c_str(),errFun().c_str(),errLine());
-		string result = buf;
-		return result;
-	}
-};
-
-void nctestException()
-{
-	try {
-		try {
-			NC_THROW (10, "xxxx");
-		}
-		catch (ncException& e) {
-			NC_RETHROW (11, "other info", e);
-		}
-	}
-	catch (ncException& e) {
-		cout << e.toFullString()<<endl;
-		
-		ncException parent = e.parentErr();
-		cout << parent.toFullString()  <<endl;
-		
-		ncException parent2 = parent.parentErr();
-		cout << parent2.toFullString()  <<endl;	
-
-	}
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // 

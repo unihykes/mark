@@ -23,8 +23,6 @@ info:
 #ifndef __mkTime
 #define __mkTime
 
-#include <ctime>
-
 class MK_DLL_EXPORT mkTime
 {
 public:

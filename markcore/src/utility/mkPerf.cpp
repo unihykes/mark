@@ -248,7 +248,7 @@ mkPerfPoint::~mkPerfPoint()
     #else
         struct timeval curtime;
         gettimeofday(&curtime, NULL);
-        _usedSecond = double(curtime.tv_sec + curtime.tv_usec - _beginTime.tv_sec - tv_usec)/1000000;
+        _usedSecond = double(curtime.tv_sec + curtime.tv_usec - _beginTime.tv_sec - curtime.tv_usec)/1000000;
     #endif
 }
 

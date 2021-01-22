@@ -24,6 +24,7 @@ info:
 #define __mkSingleton
 
 #include <mutex>
+#include <exception>
 
 template<typename T>
 class mkSingleton
@@ -78,13 +79,13 @@ private:
         switch (option) {
             case Option::INSTANCE_ADD:
                 if(!newInstance) {
-                    throw std::exception("something is wrong");
+                    throw std::logic_error("something is wrong");
                 }
                 break;
                 
             case Option::INSTANCE_SET:
                 if(!newInstance) {
-                    throw std::exception("something is wrong");
+                    throw std::logic_error("something is wrong");
                 }
                 else {
                     std::lock_guard<std::mutex> lock(instanceMutex);
@@ -94,7 +95,7 @@ private:
                 
             case Option::INSTANCE_GET:
                 if(!instance) {
-                    throw std::exception("something is wrong");
+                    throw std::logic_error("something is wrong");
                 }
                 break;
                 
@@ -103,7 +104,7 @@ private:
                     std::lock_guard<std::mutex> lock(instanceMutex);
                     std::shared_ptr<T> ret = instance;
                     if(!ret) {
-                        throw std::exception("something is wrong");
+                        throw std::logic_error("something is wrong");
                     }
                     return ret;
                 }
@@ -117,7 +118,7 @@ private:
                 break;
                 
             default:
-                throw std::exception("something is wrong");
+                throw std::logic_error("something is wrong");
                 break;
         }
         

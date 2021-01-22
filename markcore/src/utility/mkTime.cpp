@@ -19,7 +19,12 @@ Time:2021-1
 info:
 
 ***************************************************************************************************/
+#ifdef __WINDOWS__
+#else
+    #include <sys/time.h>
+#endif
 
+#include <ctime>
 #include<mkheaders.h>
 #include"mkTime.h"
 

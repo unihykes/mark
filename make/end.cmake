@@ -8,13 +8,10 @@ MESSAGE(STATUS "\n**deps--------------------------------------------------------
 INCLUDE_DIRECTORIES(${MK_SRC}/markcore/include;)
 
 # ≈‰÷√ boost œ‡πÿ“¿¿µ
-IF(${NEED_BOOSTBCP})
-	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boostbcp)
+IF(${NEED_BOOST_BCP})
+	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost/boost_bcp_1_75_0)
 	ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB -DBOOST_LIB_DIAGNOSTIC)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} boostbcp)
-	IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-		ADD_DEFINITIONS(-Wno-unused-local-typedefs)
-	ENDIF()
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} boost_bcp)
 ENDIF()
 
 IF(${NEED_BOOST_HPP})

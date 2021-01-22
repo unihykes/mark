@@ -25,6 +25,7 @@ info:
 #ifndef __mkOptionSwitch
 #define __mkOptionSwitch
 
+#include <sstream>
 #include <typeindex>
 #include "print/mkPrint.h"
 

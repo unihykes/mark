@@ -22,6 +22,8 @@ info:
 #ifndef __mkScopeLimiter
 #define __mkScopeLimiter
 
+#include <gof/mkSingleton.h>
+
 template<typename T>
 class mkScopeLimiter
 {
