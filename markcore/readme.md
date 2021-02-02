@@ -38,13 +38,41 @@ skinparam packageStyle rect
 package gof{
     
 }
+
+package utility{
+}
+
 package string{
+}
+
+package container{
+}
+
+package iterator{
+}
+
+package algorithms{
+}
+
+package numerics {
+}
+
+
+package locale{
+}
+
+package io{
+    
+}
+
+package filesystem{
 }
 
 package print{
 }
 
 package thread{
+    class atomic
 }
 ```
 
@@ -57,4 +85,7 @@ package thread{
 - 共享内存
 - 字符编码
 - 获取硬件信息
+    - 内存
+    - cpu
+
 

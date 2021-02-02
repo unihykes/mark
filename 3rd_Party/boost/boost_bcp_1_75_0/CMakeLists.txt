@@ -22,9 +22,9 @@ ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB
 #需要安装openssl:yum -y install openssl-devel
 ADD_DEFINITIONS(-DBOOST_ATOMIC_SOURCE)
 INCLUDE_DIRECTORIES(./libs/atomic/src)
-ADD_SOURCE_DIRS(./libs/atomic/src)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse -msse2 -msse3 -mssse3 -msse4.1")
 IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/atomic/src)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse -msse2 -msse3 -mssse3 -msse4.1")
     SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/atomic/src/wait_ops_windows.cpp)
 ENDIF()
 
@@ -40,37 +40,45 @@ SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/container/src/dlmalloc_e
 
 #context
 ADD_DEFINITIONS(-DBOOST_USE_UCONTEXT)
-ADD_SOURCE_DIRS(./libs/context/src)
-ADD_SOURCE_DIRS(./libs/context/src/posix)
-SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/context/src/untested.cpp)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/context/src)
+    ADD_SOURCE_DIRS(./libs/context/src/posix)
+    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/context/src/untested.cpp)
+ENDIF()
 
 #contract
 ADD_DEFINITIONS(-DBOOST_CONTRACT_SOURCE)
-ADD_SOURCE_DIRS(./libs/contract/src)
-
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/contract/src)
+ENDIF()
 
 #coroutine
 ADD_DEFINITIONS(-DBOOST_COROUTINES_SOURCE)
-ADD_SOURCE_DIRS(./libs/coroutine/src)
-ADD_SOURCE_DIRS(./libs/coroutine/src/posix)
-ADD_SOURCE_DIRS(./libs/coroutine/src/detail)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/coroutine/src)
+    ADD_SOURCE_DIRS(./libs/coroutine/src/posix)
+    ADD_SOURCE_DIRS(./libs/coroutine/src/detail)
+ENDIF()
 
 # date_time
 ADD_DEFINITIONS(-DBOOST_DATE_TIME_SOURCE)
-ADD_SOURCE_DIRS(./libs/date_time/src/posix_time)
-ADD_SOURCE_DIRS(./libs/date_time/src/gregorian)
-SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/date_time/src/gregorian/date_generators.cpp)
-SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/date_time/src/gregorian/greg_weekday.cpp)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/date_time/src/posix_time)
+    ADD_SOURCE_DIRS(./libs/date_time/src/gregorian)
+    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/date_time/src/gregorian/date_generators.cpp)
+    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/date_time/src/gregorian/greg_weekday.cpp)
+ENDIF()
 
 #exception
 ADD_SOURCE_DIRS(./libs/exception/src)
 
-
 #fiber
 ADD_DEFINITIONS(-DBOOST_FIBERS_SOURCE)
-ADD_SOURCE_DIRS(./libs/fiber/src)
-ADD_SOURCE_DIRS(./libs/fiber/src/algo)
-ADD_SOURCE_DIRS(./libs/fiber/src/numa/linux)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/fiber/src)
+    ADD_SOURCE_DIRS(./libs/fiber/src/algo)
+    ADD_SOURCE_DIRS(./libs/fiber/src/numa/linux)
+ENDIF()
 
 #filesystem
 ADD_DEFINITIONS(-DBOOST_FILESYSTEM_SOURCE)
@@ -82,29 +90,36 @@ ADD_SOURCE_DIRS(./libs/graph/src)
 
 
 #graph_parallel
-#需要安装mpi:yum -y install openmpi-devel 
-INCLUDE_DIRECTORIES(/usr/include/openmpi-x86_64)
-ADD_SOURCE_DIRS(./libs/graph_parallel/src)
-
+IF(UNIX)
+    #需要安装mpi:yum -y install openmpi-devel 
+    INCLUDE_DIRECTORIES(/usr/include/openmpi-x86_64)
+    ADD_SOURCE_DIRS(./libs/graph_parallel/src)
+ENDIF()
 
 #iostreams
 #需要安装bzip2(zlib.h):yum -y install bzip2-devel
 #需要安装xz(lzma.h): yum -y install xz-devel
 #需要安装zstd(zstd.h): todo
 ADD_DEFINITIONS(-DBOOST_IOSTREAMS_SOURCE)
-ADD_SOURCE_DIRS(./libs/iostreams/src)
-SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/iostreams/src/zstd.cpp)#todo:需要zstd支持
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/iostreams/src)
+    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/iostreams/src/zstd.cpp)#todo:需要zstd支持
+ENDIF()
 
 #json
-ADD_SOURCE_DIRS(./libs/json/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/json/src)
+ENDIF()
 
 #locale
 INCLUDE_DIRECTORIES(./libs/locale/src)
 ADD_DEFINITIONS(-DBOOST_LOCALE_SOURCE)
-ADD_SOURCE_DIRS(./libs/locale/src/posix)
-ADD_SOURCE_DIRS(./libs/locale/src/shared)
-ADD_SOURCE_DIRS(./libs/locale/src/util)
-ADD_SOURCE_DIRS(./libs/locale/src/std)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/locale/src/posix)
+    ADD_SOURCE_DIRS(./libs/locale/src/shared)
+    ADD_SOURCE_DIRS(./libs/locale/src/util)
+    ADD_SOURCE_DIRS(./libs/locale/src/std)
+ENDIF()
 
 #log todo
 #ADD_SOURCE_DIRS(./libs/log/src)
@@ -113,7 +128,9 @@ ADD_SOURCE_DIRS(./libs/locale/src/std)
 #ADD_SOURCE_DIRS(./libs/math/src/tr1)
 
 #mpi
-ADD_SOURCE_DIRS(./libs/mpi/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/mpi/src)
+ENDIF()
 
 #nowide
 ADD_DEFINITIONS(-DBOOST_NOWIDE_SOURCE)
@@ -147,7 +164,9 @@ ADD_SOURCE_DIRS(./libs/system/src)
 
 #test
 ADD_DEFINITIONS(-DBOOST_TEST_SOURCE)
-ADD_SOURCE_DIRS(./libs/test/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/test/src)
+ENDIF()
 
 #thread
 IF(WIN32)
@@ -155,21 +174,27 @@ IF(WIN32)
 ELSE()
     SET(boost_thread_dir pthread)
     SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/thread/src/pthread/once_atomic.cpp)
+    ADD_SOURCE_DIRS(./libs/thread/src)
+    ADD_SOURCE_DIRS(./libs/thread/src/${boost_thread_dir})
 ENDIF()
-ADD_SOURCE_DIRS(./libs/thread/src)
-ADD_SOURCE_DIRS(./libs/thread/src/${boost_thread_dir})
+
 
 #timer
 ADD_DEFINITIONS(-DBOOST_TIMER_SOURCE)
-ADD_SOURCE_DIRS(./libs/timer/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/timer/src)
+ENDIF()
 
 #type_erasure
 ADD_DEFINITIONS(-DBOOST_TYPE_ERASURE_SOURCE)
-ADD_SOURCE_DIRS(./libs/timer/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/type_erasure/src)
+ENDIF()
 
 #wave
 ADD_DEFINITIONS(-DBOOST_WAVE_SOURCE)
-ADD_SOURCE_DIRS(./libs/wave/src)
-
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/wave/src)
+ENDIF()
 
 INCLUDE($ENV{MK_MAKE}/end.cmake)
