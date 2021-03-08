@@ -341,7 +341,8 @@ TEST(mkOptionSwitch, run)
     class mkOptionA final : public mkIOption
     {
     public:
-        mkOptionA() 
+        mkOptionA()
+            : mkIOption()
         {
         }
         

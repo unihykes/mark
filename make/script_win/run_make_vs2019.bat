@@ -1,4 +1,4 @@
-::@echo off
+@echo off
 
 set CUR_CMAKELISTS_PATH=%cd%
 set BUILD_RELATIVE_PATH=
@@ -41,11 +41,7 @@ echo [cd]= %BUILD_ABSOLUTE_PATH%
 
 echo ** ---make run------
 
-::设置vs2015 toolset
-::如果安装vs2015时没有选择"针对C++的Windows XP支持"功能,则cmake无法识别"v140_xp",会报错：
-::-- The CXX compiler identification is unknown
-::若不需要支持windowXP,则可以将 v140_xp 修改为 v140
-
+::设置 cxx compiler
 if "%CMAKE_BUILD_VERSION%" == "x64" (
     set MAKE_VERSION=x64
     set CMAKE_GENERATOR="Visual Studio 16 2019"
@@ -81,7 +77,7 @@ if not exist ALL_BUILD.vcxproj (
     cmake  -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DAUTO_RUN=0 %* %CUR_CMAKELISTS_PATH%
 )
 :: 执行编译
-msbuild ALL_BUILD.vcxproj /nologo /p:Configuration=%CMAKE_BUILD_TYPE% /p:Platform=%MAKE_VERSION% /m  /verbosity:minimal
+msbuild ALL_BUILD.vcxproj /nologo /p:Configuration=%CMAKE_BUILD_TYPE% /p:Platform=%MAKE_VERSION% /m:4  /verbosity:minimal
 goto make_end
 
 
