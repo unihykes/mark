@@ -29,7 +29,6 @@ MK_DEFINE_MODULE_INSTANCE(use_markcore, use_markcore, 1, 1, 1);
 
 int main(int argc, char** argv) 
 {
-    auto i = u8'a';
     auto gtestEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
     // 获取输入参数
     if(gtestEnv.first == 1) {
