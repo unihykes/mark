@@ -1,28 +1,17 @@
-PROJECT(ut_mmap)
+PROJECT(use_algorithm)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
 
 
-
 INCLUDE($ENV{MK_MAKE}/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
-SET(TARGET_NAME ut_mmap)
+SET(TARGET_NAME use_algorithm)
 SET(AUTO_RUN OFF)
 
 #“¿¿µø‚
 SET(NEED_GTEST TRUE)
-
-#≤ª÷ß≥÷windows
-IF(WIN32)
-	SET(EXCLUDE_SOURCE_FILES	semUT.cpp
-								mmapUT.cpp)
-ELSE()
-	SET(LINK_CUSTOM_LIBS -lrt)
-ENDIF()
-
-
 
 INCLUDE($ENV{MK_MAKE}/end.cmake)
 
