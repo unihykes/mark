@@ -37,3 +37,18 @@
 [submodule "3rd_Party/leveldb/leveldb"]
 	path = 3rd_Party/leveldb/leveldb
 	url = https://github.com/google/leveldb.git
+[submodule "3rd_Party/jemalloc/jemalloc"]
+	path = 3rd_Party/jemalloc/jemalloc
+	url = https://github.com/jemalloc/jemalloc.git
+[submodule "3rd_Party/protobuf/protobuf"]
+	path = 3rd_Party/protobuf/protobuf
+	url = https://github.com/protocolbuffers/protobuf.git
+[submodule "3rd_Party/snappy/snappy"]
+	path = 3rd_Party/snappy/snappy
+	url = https://github.com/google/snappy.git
+[submodule "3rd_Party/zstd/zstd"]
+	path = 3rd_Party/zstd/zstd
+	url = https://github.com/facebook/zstd.git
+[submodule "3rd_Party/zlib/zlib"]
+	path = 3rd_Party/zlib/zlib
+	url = https://github.com/madler/zlib.git
