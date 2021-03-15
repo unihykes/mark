@@ -13,9 +13,6 @@
 [submodule "3rd_Party/wxwidgets/wxWidgets"]
 	path = 3rd_Party/wxwidgets/wxWidgets
 	url = https://github.com/wxWidgets/wxWidgets.git
-[submodule "3rd_Party/leveldb"]
-	path = 3rd_Party/leveldb
-	url = https://github.com/google/leveldb.git
 [submodule "3rd_Party/libunwind/libunwind"]
 	path = 3rd_Party/libunwind/libunwind
 	url = https://github.com/libunwind/libunwind
