@@ -10,6 +10,8 @@ SET(TARGET_NAME markcore)
 
 IF(WIN32)
 	set(3rdparty_os 3rdparty/_win)
+    ADD_SOURCE_DIRS(./${3rdparty_os}/win-iconv;)
+    SET(EXCLUDE_SOURCE_FILES ./${3rdparty_os}/win-iconv/win_iconv_test.c)
 ELSE()
 	set(3rdparty_os 3rdparty/_unix)
 ENDIF()
@@ -27,7 +29,6 @@ ADD_SOURCE_DIRS(./algorithm;
                 ./thread;
                 ./utility;
 )
-
 
 ADD_DEFINITIONS("-D__MAKE_MK_DLL__")
 
