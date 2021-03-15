@@ -22,3 +22,18 @@
 [submodule "3rd_Party/boost/boost"]
 	path = 3rd_Party/boost/boost
 	url = https://github.com/boostorg/boost.git
+[submodule "3rd_Party/redis/redis"]
+	path = 3rd_Party/redis/redis
+	url = https://github.com/redis/redis.git
+[submodule "3rd_Party/cpp-btree/cpp-btree"]
+	path = 3rd_Party/cpp-btree/cpp-btree
+	url = https://github.com/diegocaro/cpp-btree.git
+[submodule "3rd_Party/brpc/incubator-brpc"]
+	path = 3rd_Party/brpc/incubator-brpc
+	url = https://github.com/apache/incubator-brpc.git
+[submodule "3rd_Party/gflags/gflags"]
+	path = 3rd_Party/gflags/gflags
+	url = https://github.com/gflags/gflags.git
+[submodule "3rd_Party/crc32c/crc32c"]
+	path = 3rd_Party/crc32c/crc32c
+	url = https://github.com/google/crc32c.git

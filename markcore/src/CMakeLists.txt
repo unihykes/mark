@@ -19,12 +19,12 @@ INCLUDE_DIRECTORIES(../include;
                     ./${3rdparty_os};
 )
 
-ADD_SOURCE_DIRS(./gof;
+ADD_SOURCE_DIRS(./algorithm;
+                ./gof;
                 ./module;
                 ./print;
                 ./string;
                 ./thread;
-                ./language;
                 ./utility;
 )
 

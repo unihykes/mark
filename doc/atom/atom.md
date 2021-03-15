@@ -192,6 +192,14 @@ atom-text-editor .syntax--comment {
     language-plantuml
     language-markdown
     
+    如果需要导出pdf,需要安装 princexml
+    否则会报错:"princexml" is required to be installed.
+    https://www.princexml.com/download/
+    安装后需要设置环境变量
+    选择右键我的电脑->属性->高级系统设置->环境变量->系统变量->Path->编辑
+    把安装路径 C:\Program Files (x86)\Prince\engine\bin 这一路径添加到新建Path环境变量即可。
+
+
 #### multiline-tab
     多行标签栏
     

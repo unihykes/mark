@@ -1,10 +1,10 @@
 ::@echo off
 
+set VS2019_PATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools
+
 ::¼ì²é²ÎÊý
 @if "%1" == "64" goto 64
 @if "%1" == "32" goto 32
-
-set VS2019_PATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools
 
 :64
 set CMAKE_BUILD_VERSION=x64

@@ -44,11 +44,11 @@ echo ** ---make run------
 ::…Ë÷√ cxx compiler
 if "%CMAKE_BUILD_VERSION%" == "x64" (
     set MAKE_VERSION=x64
-    set CMAKE_GENERATOR="Visual Studio 16 2019"
+    set CMAKE_GENERATOR="Visual Studio 16 2019" -A x64
 )
 if "%CMAKE_BUILD_VERSION%" == "i386" (
     set MAKE_VERSION=x86
-    set CMAKE_GENERATOR="Visual Studio 16 2019"
+    set CMAKE_GENERATOR="Visual Studio 16 2019" -A Win32
 )
 
 ::maked clean
@@ -74,6 +74,7 @@ if not exist %BUILD_ABSOLUTE_PATH% (
 cd %BUILD_ABSOLUTE_PATH%
 
 if not exist ALL_BUILD.vcxproj (
+    echo cmake  -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DAUTO_RUN=0 %* %CUR_CMAKELISTS_PATH%
     cmake  -G %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DAUTO_RUN=0 %* %CUR_CMAKELISTS_PATH%
 )
 :: ÷¥––±‡“Î
