@@ -34,3 +34,6 @@
 [submodule "3rd_Party/crc32c/crc32c"]
 	path = 3rd_Party/crc32c/crc32c
 	url = https://github.com/google/crc32c.git
+[submodule "3rd_Party/leveldb/leveldb"]
+	path = 3rd_Party/leveldb/leveldb
+	url = https://github.com/google/leveldb.git
