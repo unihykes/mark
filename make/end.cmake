@@ -47,9 +47,33 @@ ENDIF()
 
 # “¿¿µ gflags
 IF(${NEED_GFLAGS})
-    ADD_DEFINITIONS(-D__USING_GFLAGS__)
-    INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/gflags/include)
+    include_directories(${MK_DEPS_PKGS}/gflags/include)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/gflags/lib gflags)
     SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} gflags)
+ENDIF()
+
+# “¿¿µ leveldb
+IF(${NEED_LEVELDB})
+    include_directories(${MK_DEPS_PKGS}/leveldb/include)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/leveldb/lib64 leveldb)
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} leveldb)
+ENDIF()
+
+# “¿¿µ protobuf
+IF(${NEED_PROTOBUF})
+    include_directories(${MK_DEPS_PKGS}/protobuf/include)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/protobuf/lib64 protobuf)
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} protobuf)
+ENDIF()
+
+# “¿¿µ brpc
+IF(${NEED_BRPC})
+    include_directories(${MK_DEPS_PKGS}/brpc/include)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/gflags/lib gflags)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/leveldb/lib64 leveldb)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/protobuf/lib64 protobuf)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/brpc/lib64 brpc)
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} brpc)
 ENDIF()
 
 # “¿¿µ makecore

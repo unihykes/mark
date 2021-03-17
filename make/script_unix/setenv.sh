@@ -16,7 +16,8 @@ fi
 cd ../../
 export MK_PATH=`pwd`
 cd ..
-export MK_PACKAGE=`pwd`
+
+export MK_PACKAGE=/eisoo/develop
 cd $MK_PATH
 
 #设置环境变量
@@ -36,6 +37,11 @@ export MK_MAKE=$MK_PATH/make
 export MK_TARGET=$MK_PACKAGE/mark_$MK_PLATFORM/target
 export MK_BUILD=$MK_PACKAGE/mark_$MK_PLATFORM/build
 export MK_DEPS_PKGS=/eisoo/depspkgs
+
+if [ ! -d ${MK_DEPS_PKGS}/__build ]
+then
+    mkdir ${MK_DEPS_PKGS}/__build
+fi
 
 export PATH=$PATH:$MK_MAKE/script_unix:$MK_MAKE/script_unix/bin
 chmod -R +x $MK_MAKE/script_unix/*.sh
