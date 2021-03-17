@@ -35,6 +35,7 @@ export MK_PLATFORM=${CMAKE_PLATFORM_NAME}_${CMAKE_PLATFORM_VERSION}_${CMAKE_BUIL
 export MK_MAKE=$MK_PATH/make
 export MK_TARGET=$MK_PACKAGE/mark_$MK_PLATFORM/target
 export MK_BUILD=$MK_PACKAGE/mark_$MK_PLATFORM/build
+export MK_DEPS_PKGS=/eisoo/depspkgs
 
 export PATH=$PATH:$MK_MAKE/script_unix:$MK_MAKE/script_unix/bin
 chmod -R +x $MK_MAKE/script_unix/*.sh

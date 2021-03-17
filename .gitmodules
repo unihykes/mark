@@ -49,3 +49,9 @@
 [submodule "3rd_Party/zlib/zlib"]
 	path = 3rd_Party/zlib/zlib
 	url = https://github.com/madler/zlib.git
+[submodule "3rd_Party/thrift/thrift"]
+	path = 3rd_Party/thrift/thrift
+	url = https://github.com/apache/thrift.git
+[submodule "3rd_Party/benchmark/benchmark"]
+	path = 3rd_Party/benchmark/benchmark
+	url = https://github.com/google/benchmark.git
