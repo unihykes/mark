@@ -1,0 +1,16 @@
+syntax="proto3";
+package use_brpc;
+
+option cc_generic_services = true;
+
+message ReadRequest {
+    int32 value = 1;
+};
+
+message ReadResponse {
+    int32 value = 1;
+};
+
+service Service {
+    rpc Read(ReadRequest) returns (ReadResponse);
+};

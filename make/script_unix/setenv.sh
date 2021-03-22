@@ -17,7 +17,7 @@ cd ../../
 export MK_PATH=`pwd`
 cd ..
 
-export MK_PACKAGE=/eisoo/develop
+export MK_PACKAGE=/unihykes
 cd $MK_PATH
 
 #设置环境变量
@@ -36,7 +36,7 @@ export MK_PLATFORM=${CMAKE_PLATFORM_NAME}_${CMAKE_PLATFORM_VERSION}_${CMAKE_BUIL
 export MK_MAKE=$MK_PATH/make
 export MK_TARGET=$MK_PACKAGE/mark_$MK_PLATFORM/target
 export MK_BUILD=$MK_PACKAGE/mark_$MK_PLATFORM/build
-export MK_DEPS_PKGS=/eisoo/depspkgs
+export MK_DEPS_PKGS=/unihykes/depspkgs
 
 if [ ! -d ${MK_DEPS_PKGS}/__build ]
 then

@@ -1,4 +1,4 @@
-﻿/***************************************************************************************************
+/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -20,27 +20,43 @@ info:
 
 ***************************************************************************************************/
 
-#include <markcore.h>
-#include <gtest/gtest.h>
-#include <gflags/gflags.h>
+#ifndef __mkBrpcClient
+#define __mkBrpcClient
 
-
-MK_DEFINE_MODULE_INSTANCE(use_brpc_client, use_brpc_client, 1, 1, 1);
-
-DEFINE_string(cmd, "default", "default");
-
-int main(int argc, char** argv)
+class mkBrpcChannel
 {
-    // 解析参数
-    auto gtestEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
+public:
+    mkBrpcChannel();
+    ~mkBrpcChannel();
     
-    // 获取输入参数
-    if(gtestEnv.first == 1) {
-        testing::GTEST_FLAG(list_tests) = true;
+    void Init();
+    void Fini();
+    
+    std::shared_ptr<use_brpc::Service_Stub> CreateClient()
+    {
+        return _pStub;
     }
     
-    GFLAGS_NS::ParseCommandLineFlags(&argc, &argv, true);
-    testing::InitGoogleTest(&gtestEnv.first, gtestEnv.second);
-    int ret = RUN_ALL_TESTS ();
-    return ret;
-}
+private:
+    brpc::ParallelChannel channel;//创建一条线程安全的通道
+    std::shared_ptr<use_brpc::Service_Stub> _pStub;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif

@@ -19,10 +19,12 @@ SET(NEED_PROTOBUF TRUE)
 SET(NEED_BRPC TRUE)
 SET(NEED_MARKCORE TRUE)
 
+include_directories(../proto)
+SET(INCLUDE_SOURCE_FILES    ../proto/use_brpc.pb.cc)
+
 #todo
 #include(${MK_PATH}/3rd_Party/protobuf/protoc-compile.cmake)
-#ADD_BUILD_PROTO_FILES( ../  echo.proto)
-# ${MK_DEPS_PKGS}/protobuf/bin/protoc  --cpp_out=./ --proto_path=../  echo.proto
+#ADD_BUILD_PROTO_FILES( ../  xx.proto)
 
 #end
 INCLUDE($ENV{MK_MAKE}/end.cmake)

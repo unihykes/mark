@@ -23,7 +23,7 @@ scp -r /etc root@192.168.60.135:/opt
 
 
 加端口号:
-scp -P 5557    /eisoo/six-th/a.out    eisoo_ssh@192.168.92.57:/eisoo/six-th
+scp -P 5557    /six-th/a.out    eisoo_ssh@192.168.92.57:/six-th
 
 
 

@@ -24,22 +24,31 @@ info:
 #include <butil/logging.h>
 #include <butil/string_printf.h>
 #include <brpc/server.h>
-#include "echo.pb.h"
+#include "use_brpc.pb.h"
 
-class EchoServiceImpl : public example::EchoService {
+class ServiceImpl : public use_brpc::Service {
 public:
-    EchoServiceImpl() {}
-    ~EchoServiceImpl() {};
+    ServiceImpl() {}
+    ~ServiceImpl() {};
     
-    void Echo(google::protobuf::RpcController* cntl_base,
-              const example::EchoRequest* request,
-              example::EchoResponse* response,
-              google::protobuf::Closure* done) 
+    virtual void Read(google::protobuf::RpcController* controller,
+        const use_brpc::ReadRequest* request,
+        use_brpc::ReadResponse* response,
+        google::protobuf::Closure* done) 
     {
         brpc::ClosureGuard done_guard(done);
-        brpc::Controller* cntl = static_cast<brpc::Controller*>(cntl_base);
+        brpc::Controller* cntl = static_cast<brpc::Controller*>(controller);
 
         // Echo request and its attachment
+        try {
+            //MK_PRINT("request::value = %d", request->value());
+            //MK_PRINT("request::atta = %s", cntl->request_attachment().to_string().c_str());
+        }
+        catch(std::exception& e) {
+            MK_PRINT("e = %s", e.what());
+            sleep(1);
+        }
+        
         response->set_value(request->value());
         if (1) {
             cntl->response_attachment().append(cntl->request_attachment());
@@ -50,8 +59,8 @@ public:
 TEST(use_brpc, default)
 {
     brpc::Server server;
-    EchoServiceImpl echo_service_impl;
-    if (server.AddService(&echo_service_impl, brpc::SERVER_DOESNT_OWN_SERVICE) != 0) {
+    ServiceImpl service;
+    if (server.AddService(&service, brpc::SERVER_DOESNT_OWN_SERVICE) != 0) {
         LOG(ERROR) << "Fail to add service";
         return;
     }

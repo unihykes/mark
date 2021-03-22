@@ -113,9 +113,10 @@ SET(SOURCESRCS ${SRC})
 #MESSAGE(STATUS "SET SOURCESRCS = ${SOURCESRCS}")
 
 
+#编译额外指定的源文件 INCLUDE_SOURCE_FILES
+SET(ALLSRCS ${SOURCESRCS} ${INCLUDE_SOURCE_FILES})
 
 # 获取所有源文件,并统一处理成以绝对路径显示的文件名,以便进行文件过滤
-SET(ALLSRCS ${SOURCESRCS} ${INCLUDE_SOURCE_FILES})
 SET(ALL_SOURCES "")
 FOREACH(_allsrc ${ALLSRCS})
     get_filename_component(_allsrc_path ${_allsrc} PATH)
