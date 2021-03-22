@@ -46,6 +46,8 @@ info:
 #include "utility/mkPerf.h"
 #include "utility/mkVersion.h"
 #include "utility/mkTime.h"
+#include "utility/mkTimer.h"
+#include "utility/mkRandom.h"
 
 //print
 #include "print/mkTablePrinter.h"
