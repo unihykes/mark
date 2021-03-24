@@ -10,25 +10,16 @@ INCLUDE_DIRECTORIES(${MK_SRC}/markcore/include;)
 # ≈‰÷√ boost œ‡πÿ“¿¿µ
 IF(${NEED_BOOST_BCP})
 	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost/boost_bcp_1_75_0)
-	ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB -DBOOST_LIB_DIAGNOSTIC)
+	ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB -DBOOST_ALL_DYN_LINK -DBOOST_LIB_DIAGNOSTIC)
     SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} boost_bcp)
+    IF(UNIX)
+        LINK_DIRECTORIES(/usr/lib64/openmpi/lib)
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lmpi")
+        #-lbz2 -lm
+    ELSE()
+    ENDIF()
 ENDIF()
 
-IF(${NEED_BOOST_HPP})
-    INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost;)
-ENDIF()
-
-IF(${NEED_BOOST_DYNAMIC})
-    INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost;)
-    #todo
-ENDIF()
-
-IF(${NEED_BOOST_STATIC})
-    INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost;)
-    #todo
-ENDIF()
-    
-    
 # ≈‰÷√ googletest œ‡πÿ“¿¿µ
 IF(${NEED_GTEST})
 	#gtest

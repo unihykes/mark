@@ -8,6 +8,8 @@ INCLUDE($ENV{MK_MAKE}/begin.cmake)
 SET(TARGET_TYPE LIBRARY)
 SET(TARGET_NAME markcore)
 
+set(NEED_BOOST_BCP true)
+
 IF(WIN32)
 	set(3rdparty_os 3rdparty/_win)
     ADD_SOURCE_DIRS(./${3rdparty_os}/win-iconv;)

@@ -26,7 +26,7 @@ info:
 TEST(mkTimer, run)
 {
     mkTimer timer;
-    Sleep(1000);
+    this_thread::sleep_for(std::chrono::seconds(1));
     MK_PRINT("Duration_ns = %lld", timer.Duration_ns());
     MK_PRINT("Duration_us = %lld", timer.Duration_us());
     MK_PRINT("Duration_ms = %lld", timer.Duration_ms());

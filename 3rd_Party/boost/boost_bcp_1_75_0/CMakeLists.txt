@@ -7,7 +7,6 @@ INCLUDE($ENV{MK_MAKE}/begin.cmake)
 SET(TARGET_TYPE LIBRARY)
 SET(TARGET_NAME boost_bcp)
 
-
 INCLUDE_DIRECTORIES(./)
 
 #宏定义
@@ -19,10 +18,10 @@ ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB
                 )
 
 #atomic
-#需要安装openssl:yum -y install openssl-devel
 ADD_DEFINITIONS(-DBOOST_ATOMIC_SOURCE)
-INCLUDE_DIRECTORIES(./libs/atomic/src)
 IF(UNIX)
+    #需要安装openssl:yum -y install openssl-devel
+    INCLUDE_DIRECTORIES(./libs/atomic/src)
     ADD_SOURCE_DIRS(./libs/atomic/src)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse -msse2 -msse3 -mssse3 -msse4.1")
     SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/atomic/src/wait_ops_windows.cpp)
@@ -30,13 +29,17 @@ ENDIF()
 
 #chrono
 ADD_DEFINITIONS(-DBOOST_CHRONO_SOURCE)
-ADD_SOURCE_DIRS(./libs/chrono/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/chrono/src)
+ENDIF()
 
 #container
 ADD_DEFINITIONS(-DBOOST_CONTAINER_SOURCE)
-ADD_SOURCE_DIRS(./libs/container/src)
-SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/container/src/dlmalloc_2_8_6.c)
-SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/container/src/dlmalloc_ext_2_8_6.c)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/container/src)
+    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/container/src/dlmalloc_2_8_6.c)
+    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/container/src/dlmalloc_ext_2_8_6.c)
+ENDIF()
 
 #context
 ADD_DEFINITIONS(-DBOOST_USE_UCONTEXT)
@@ -55,9 +58,10 @@ ENDIF()
 #coroutine
 ADD_DEFINITIONS(-DBOOST_COROUTINES_SOURCE)
 IF(UNIX)
-    ADD_SOURCE_DIRS(./libs/coroutine/src)
-    ADD_SOURCE_DIRS(./libs/coroutine/src/posix)
-    ADD_SOURCE_DIRS(./libs/coroutine/src/detail)
+    #todo:暂未解决运行时 undefined reference to `jump_fcontext'
+    #ADD_SOURCE_DIRS(./libs/coroutine/src)
+    #ADD_SOURCE_DIRS(./libs/coroutine/src/posix)
+    #ADD_SOURCE_DIRS(./libs/coroutine/src/detail)
 ENDIF()
 
 # date_time
@@ -70,7 +74,9 @@ IF(UNIX)
 ENDIF()
 
 #exception
-ADD_SOURCE_DIRS(./libs/exception/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/exception/src)
+ENDIF()
 
 #fiber
 ADD_DEFINITIONS(-DBOOST_FIBERS_SOURCE)
@@ -82,28 +88,35 @@ ENDIF()
 
 #filesystem
 ADD_DEFINITIONS(-DBOOST_FILESYSTEM_SOURCE)
-ADD_SOURCE_DIRS(./libs/filesystem/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/filesystem/src)
+ENDIF()
 
 #graph
 ADD_DEFINITIONS(-DBOOST_GRAPH_SOURCE)
-ADD_SOURCE_DIRS(./libs/graph/src)
-
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/graph/src)
+ENDIF()
 
 #graph_parallel
 IF(UNIX)
     #需要安装mpi:yum -y install openmpi-devel 
-    INCLUDE_DIRECTORIES(/usr/include/openmpi-x86_64)
     ADD_SOURCE_DIRS(./libs/graph_parallel/src)
+    INCLUDE_DIRECTORIES(/usr/include/openmpi-x86_64)
+    LINK_DIRECTORIES(/usr/lib64/openmpi/lib)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lmpi")
 ENDIF()
 
 #iostreams
-#需要安装bzip2(zlib.h):yum -y install bzip2-devel
-#需要安装xz(lzma.h): yum -y install xz-devel
-#需要安装zstd(zstd.h): todo
 ADD_DEFINITIONS(-DBOOST_IOSTREAMS_SOURCE)
 IF(UNIX)
+    #需要安装bzip2(zlib.h):yum -y install bzip2-devel
+    #需要安装xz(lzma.h): yum -y install xz-devel
+    #需要安装zstd(zstd.h): todo
     ADD_SOURCE_DIRS(./libs/iostreams/src)
-    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/iostreams/src/zstd.cpp)#todo:需要zstd支持
+    
+    #todo:暂未安装zstd
+    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/iostreams/src/zstd.cpp)
 ENDIF()
 
 #json
@@ -112,20 +125,28 @@ IF(UNIX)
 ENDIF()
 
 #locale
-INCLUDE_DIRECTORIES(./libs/locale/src)
 ADD_DEFINITIONS(-DBOOST_LOCALE_SOURCE)
 IF(UNIX)
-    ADD_SOURCE_DIRS(./libs/locale/src/posix)
-    ADD_SOURCE_DIRS(./libs/locale/src/shared)
-    ADD_SOURCE_DIRS(./libs/locale/src/util)
-    ADD_SOURCE_DIRS(./libs/locale/src/std)
+    #todo:暂未解决链接问题
+    #INCLUDE_DIRECTORIES(./libs/locale/src)
+    #ADD_SOURCE_DIRS(./libs/locale/src/encoding)
+    #ADD_SOURCE_DIRS(./libs/locale/src/posix)
+    #ADD_SOURCE_DIRS(./libs/locale/src/shared)
+    #ADD_SOURCE_DIRS(./libs/locale/src/util)
+    #ADD_SOURCE_DIRS(./libs/locale/src/std)
 ENDIF()
 
-#log todo
-#ADD_SOURCE_DIRS(./libs/log/src)
+#log
+IF(UNIX)
+    #todo:暂未解决编译问题
+    #ADD_SOURCE_DIRS(./libs/log/src)
+ENDIF()
 
-#math todo
-#ADD_SOURCE_DIRS(./libs/math/src/tr1)
+#math
+IF(UNIX)
+    #todo:暂未解决编译问题
+    #ADD_SOURCE_DIRS(./libs/math/src/tr1)
+ENDIF()
 
 #mpi
 IF(UNIX)
@@ -134,50 +155,66 @@ ENDIF()
 
 #nowide
 ADD_DEFINITIONS(-DBOOST_NOWIDE_SOURCE)
-ADD_SOURCE_DIRS(./libs/nowide/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/nowide/src)
+ENDIF()
 
 #program_options
 ADD_DEFINITIONS(-DBOOST_PROGRAM_OPTIONS_SOURCE)
-ADD_SOURCE_DIRS(./libs/program_options/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/program_options/src)
+ENDIF()
 
-#python todo
+#python
+IF(UNIX)
+    #todo:暂未解决编译问题
+ENDIF()
 
 #random 
 ADD_DEFINITIONS(-DBOOST_RANDOM_SOURCE)
-ADD_SOURCE_DIRS(./libs/random/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/random/src)
+ENDIF()
 
 #regex
 ADD_DEFINITIONS(-DBOOST_REGEX_SOURCE)
-ADD_SOURCE_DIRS(./libs/regex/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/regex/src)
+ENDIF()
 
 #serialization
 ADD_DEFINITIONS(-DBOOST_ARCHIVE_SOURCE)
-ADD_SOURCE_DIRS(./libs/serialization/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/serialization/src)
+ENDIF()
 
-
-#stacktrace todo
-#ADD_SOURCE_DIRS(./libs/stacktrace/src)
+#stacktrace
+IF(UNIX)
+    #todo:暂未解决编译问题
+    #ADD_SOURCE_DIRS(./libs/stacktrace/src)
+ENDIF()
 
 #system
 ADD_DEFINITIONS(-DBOOST_SYSTEM_SOURCE)
-ADD_SOURCE_DIRS(./libs/system/src)
+IF(UNIX)
+    ADD_SOURCE_DIRS(./libs/system/src)
+ENDIF()
 
 #test
 ADD_DEFINITIONS(-DBOOST_TEST_SOURCE)
 IF(UNIX)
-    ADD_SOURCE_DIRS(./libs/test/src)
+    #todo:暂未解决 undefined reference to `test_main(int, char**)'
+    #ADD_SOURCE_DIRS(./libs/test/src)
 ENDIF()
 
 #thread
 IF(WIN32)
-    SET(boost_thread_dir win32)
+    ADD_SOURCE_DIRS(./libs/thread/src/win32)
 ELSE()
-    SET(boost_thread_dir pthread)
-    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/thread/src/pthread/once_atomic.cpp)
     ADD_SOURCE_DIRS(./libs/thread/src)
-    ADD_SOURCE_DIRS(./libs/thread/src/${boost_thread_dir})
+    ADD_SOURCE_DIRS(./libs/thread/src/pthread)
+    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ./libs/thread/src/pthread/once_atomic.cpp)
 ENDIF()
-
 
 #timer
 ADD_DEFINITIONS(-DBOOST_TIMER_SOURCE)
@@ -195,6 +232,7 @@ ENDIF()
 ADD_DEFINITIONS(-DBOOST_WAVE_SOURCE)
 IF(UNIX)
     ADD_SOURCE_DIRS(./libs/wave/src)
+    ADD_SOURCE_DIRS(./libs/wave/src/cpplexer/re2clex)
 ENDIF()
 
 INCLUDE($ENV{MK_MAKE}/end.cmake)
