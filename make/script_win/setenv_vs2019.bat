@@ -35,6 +35,7 @@ set MK_PLATFORM=%CMAKE_PLATFORM_NAME%_%CMAKE_PLATFORM_VERSION%_%CMAKE_BUILD_VERS
 set MK_MAKE=%MK_PATH%/make
 set MK_TARGET=%MK_PACKAGE%/cache/mark_%MK_PLATFORM%/target
 set MK_BUILD=%MK_PACKAGE%/cache/mark_%MK_PLATFORM%/build
+set MK_DEPS_PKGS=%MK_PACKAGE%/cache/depspkgs
 
 @echo off
 set PATH=%MK_MAKE%/script_win;%PATH%

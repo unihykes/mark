@@ -14,4 +14,4 @@ cmake ${SRC_PATH}   -DCMAKE_INSTALL_PREFIX=${PREFIX_PATH}  \
 
 make -j4
 make install
-cd ../../
+cd  ${MK_PATH}/3rd_Party
