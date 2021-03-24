@@ -8,7 +8,7 @@ INCLUDE($ENV{MK_MAKE}/begin.cmake)
 SET(TARGET_TYPE LIBRARY)
 SET(TARGET_NAME markcore)
 
-set(NEED_BOOST_BCP true)
+set(NEED_BOOST_FULL true)
 
 IF(WIN32)
 	set(3rdparty_os 3rdparty/_win)
