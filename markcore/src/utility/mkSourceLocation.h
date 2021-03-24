@@ -23,43 +23,17 @@ info:
 #ifndef __mkSourceLocation
 #define __mkSourceLocation
 
-class mkSourceLocation
+class MK_DLL_EXPORT mkSourceLocation
 {
 public:
-    static mkSourceLocation current(const char* file = __FILE__, const char* func = nullptr, const uint32_t line = __LINE__)
-    {
-        mkSourceLocation result;
-        result._file = file;
-        result._func = func;
-        result._line = line;
-        return result;
-    }
+    static mkSourceLocation current(const char* file = __FILE__, 
+                                    const char* func = nullptr, 
+                                    const uint32_t line = __LINE__);
+    static const char* file_name(const char* file);
     
-    //获取文件名
-    static const char* file_name(const char* file)
-    {
-        #ifdef __WINDOWS__ 
-            const char identify = '\\';
-        #else 
-            const char identify = '/';
-        #endif
-        const char* fileName = strrchr(file, identify) ? strrchr(file, identify) + 1 : file;
-        return fileName;
-    }
-    
-    const char* file_name() const noexcept
-    {
-        return _file.c_str();
-    }
-    
-    const char* function_name() const noexcept
-    {
-        return _func.c_str();
-    }
-    const uint32_t& line() const noexcept
-    {
-        return _line;
-    }
+    const char* file_name() const noexcept;
+    const char* function_name() const noexcept;
+    const uint32_t& line() const noexcept;
 
 private:
     std::string _file;

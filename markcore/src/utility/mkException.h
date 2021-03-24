@@ -25,7 +25,7 @@ info:
 
 #include "string/mkFormat.h"
 
-class mkException : public std::exception
+class MK_DLL_EXPORT mkException : public std::exception
 {
 public:
 	mkException ()noexcept

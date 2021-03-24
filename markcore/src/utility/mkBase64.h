@@ -24,7 +24,7 @@ info:
 #define __mkBase64
 
 
-class mkBase64
+class MK_DLL_EXPORT mkBase64
 {
 public:
     static bool Base64Encode(const std::string& input, std::string* output);
