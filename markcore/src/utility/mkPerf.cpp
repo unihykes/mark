@@ -24,10 +24,11 @@ info:
 #else
     #include <windows.h>
 #endif
-#include <mkheaders.h>
 #include <iostream>
+#include <mkheaders.h>
+#include "module/mkModuleInstance.h"
 #include "mkPerf.h"
-#include "markcore.h"
+
 
 class mkPerfFuncInfo
 {

@@ -20,25 +20,30 @@ info:
 
 ***************************************************************************************************/
 
-#ifndef __mkTimer
-#define __mkTimer
-
 #include <chrono>
+#include <mkheaders.h>
+#include "mkRandom.h"
 
-class MK_DLL_EXPORT mkTimer
+mkRandom::mkRandom()
 {
-public:
-    mkTimer();
-    ~mkTimer();
-    void Reset();
-    int64 Duration_ns() const;
-    int64 Duration_us() const;
-    int64 Duration_ms() const;
-    int64 Duration_sec() const;
-    int64 Duration_min() const;
-    int64 Duration_hr() const;
-private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> _begin;
-};
+    unsigned int tp = static_cast<unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+    _engine.seed(tp);
+}
 
-#endif
+mkRandom::~mkRandom()
+{
+}
+
+int 
+mkRandom::GetInt(int min, int max)
+{
+    std::uniform_int_distribution<int> ret(min, max);
+    return ret(_engine);
+}
+
+double 
+mkRandom::GetDouble(double min, double max)
+{
+    std::uniform_real_distribution<double> ret(min, max);
+    return ret(_engine);
+}

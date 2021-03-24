@@ -11,6 +11,12 @@ set(BOOST_ROOT ./boost_1_75_0)
 
 INCLUDE_DIRECTORIES(${BOOST_ROOT})
 
+IF(WIN32)
+    # windows下强制生成.lib文件,否则无法被link
+    ADD_DEFINITIONS("-D__MAKE_MK_DLL__")
+    ADD_SOURCE_DIRS(./)
+ENDIF()
+
 #宏定义
 ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB
                 -DBOOST_ALL_DYN_LINK
@@ -211,7 +217,7 @@ ENDIF()
 
 #thread
 IF(WIN32)
-    ADD_SOURCE_DIRS(${BOOST_ROOT}/libs/thread/src/win32)
+    #ADD_SOURCE_DIRS(${BOOST_ROOT}/libs/thread/src/win32)
 ELSE()
     ADD_SOURCE_DIRS(${BOOST_ROOT}/libs/thread/src)
     ADD_SOURCE_DIRS(${BOOST_ROOT}/libs/thread/src/pthread)

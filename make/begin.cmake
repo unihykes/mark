@@ -79,7 +79,7 @@ IF(WIN32)
 	#windows±‡“Î—°œÓ:https://msdn.microsoft.com/en-us/library/thxezb7y.aspx
 	#/wd n : Disables the specified compiler warning where nis the compiler warning number.
 	#/wo n : Reports the error only once where n is a compiler warning.
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi /vmm /vmg /MP /wo4067 /wo4244 /wo4267 /wo4181 /wd4099 /wd4819 /wd4251")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi /vmm /vmg /MP /wo4067 /wo4244 /wo4267 /wo4181 /wd4099 /wd4819 /wd4251 /wd4275")
 	STRING(REPLACE "/EHsc" "/EHa /GS" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /INCREMENTAL:NO")
     SET(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")

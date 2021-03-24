@@ -1,4 +1,4 @@
-﻿/***************************************************************************************************
+/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,14 +14,19 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2017-8
+Time:2021-3
 
 info:
 
 ***************************************************************************************************/
 
 #include<mkheaders.h>
-#include "markcore.h"
+
+//# 强制生成.lib文件
+MK_DLL_EXPORT int get_boost_full_version() 
+{
+    return 175;
+}
 
 #ifdef __WINDOWS__
     void* hModule = 0;

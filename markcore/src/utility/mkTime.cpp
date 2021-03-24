@@ -28,6 +28,7 @@ info:
 #include<mkheaders.h>
 #include"mkTime.h"
 
+
 int64
 mkTime::GetCurrentTime()
 {
@@ -53,6 +54,7 @@ mkTime::GetCurrentTime()
         return result;
     #endif
 }
+
 string 
 mkTime::GetCurrentTimeStr()
 {

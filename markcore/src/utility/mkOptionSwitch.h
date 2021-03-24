@@ -111,7 +111,7 @@ public:
             }
         }
         if(!validKey) {
-            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "key is invalid");
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "key is invalid");
         }
     }
     
@@ -136,12 +136,12 @@ public:
             }
             else {
                 //key无效
-                mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "key is invalid");
+                mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "key is invalid");
             }
         }
         else {
             //选项不存在
-            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "T is invalid");
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "T is invalid");
         }
     }
     
@@ -157,7 +157,7 @@ public:
         }
         else {
             //todo
-            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "T is invalid");
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "T is invalid");
         }
     }
 
@@ -181,7 +181,7 @@ public:
         }
         else {
             stringstream err; err<<index.name()<<" is invalid.";
-            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, err.str().c_str());
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, err.str().c_str());
             throw std::logic_error(err.str());//todo
         }
     }
@@ -199,7 +199,7 @@ public:
         }
         else {
             //todo
-            mkPrint p("markcore"); p(__FILE__, __LINE__, __func__, "T is invalid");
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "T is invalid");
         }
     }
     

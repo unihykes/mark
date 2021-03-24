@@ -24,32 +24,15 @@ info:
 #define __mkRandom
 
 #include <random>
-#include <chrono>
 
 class MK_DLL_EXPORT mkRandom
 {
 public:
-    mkRandom()
-    {
-        unsigned int tp = static_cast<unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-        _engine.seed(tp);
-    }
+    mkRandom();
+    ~mkRandom();
     
-    ~mkRandom()
-    {
-    }
-    
-    int GetInt(int min, int max)
-    {
-        std::uniform_int_distribution<int> ret(min, max);
-        return ret(_engine);
-    }
-    
-    double GetDouble(double min, double max)
-    {
-        std::uniform_real_distribution<double> ret(min, max);
-        return ret(_engine);
-    }
+    int GetInt(int min, int max);
+    double GetDouble(double min, double max);
     
 private:
     std::default_random_engine _engine;

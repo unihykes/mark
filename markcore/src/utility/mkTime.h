@@ -29,8 +29,10 @@ public:
     static int64 GetCurrentTime();
     static string GetCurrentTimeStr();
     
+public:
     mkTime(const int64 time);
     ~mkTime();
+    
     unsigned int GetYear() const;
     unsigned int GetMonth() const;
     unsigned int GetDay() const;
