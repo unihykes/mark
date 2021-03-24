@@ -14,7 +14,7 @@ IF(${NEED_BOOST_BCP})
     SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} boost_bcp)
     IF(UNIX)
         LINK_DIRECTORIES(/usr/lib64/openmpi/lib)
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lmpi")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lmpi -lbz2")
         #-lbz2 -lm
     ELSE()
     ENDIF()
