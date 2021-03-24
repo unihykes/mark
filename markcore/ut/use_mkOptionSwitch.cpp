@@ -37,6 +37,11 @@ TEST(mkOptionSwitch, run)
         {
             return true;
         }
+        
+        int Get() const
+        {
+            return 1024;
+        }
     };
     
     mkOptionSwitch switchs;
@@ -52,6 +57,7 @@ TEST(mkOptionSwitch, run)
     //使用选项
     {
         auto pOption = switchs.GetOption<mkOptionA>();
+        pOption->Get();
 
     }
     
