@@ -46,19 +46,25 @@ public:
     shared_ptr<mkPerf> _perf;
 };
 
-//声明全局变量
+//声明全局变量: g_moduleInstance
 MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 
-//定义全局变量
+//定义全局变量: g_moduleInstance
 #define MK_DEFINE_MODULE_INSTANCE(moduleName, resName, major, minor, patch)                     \
     MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(                    \
         std::make_shared<mkModuleInstance>(#moduleName, #resName, major, minor, patch));
 
-//定义全局宏
+
+//全局宏:print
 #define MK_PRINT(...)       (*g_moduleInstance->_print)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+
+//全局宏:trace
 #define MK_TRACE(...)       (*g_moduleInstance->_trace)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
+
+//全局宏:log
 #define MK_LOG(...)         (*g_moduleInstance->_loger)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
 
+//全局宏:throw
 #define MK_THROW(errorid, ...)                                              \
     do {                                                                    \
         auto __errMsg__ = mkSharedFormat::fmt(__VA_ARGS__);                 \
@@ -69,9 +75,9 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
     
 #endif
 
-
+//全局宏:perf (性能桩)
 #ifdef __MK_PERF_ENABLE__
-	#define NC_PROFILE_POINT() mkPerf::Point __mkPerf_Point(g_moduleInstance->_perf, __func__, __LINE__);
+	#define MK_PERF() mkPerf::Point __mkPerf_Point(g_moduleInstance->_perf, __func__, __LINE__);
 #else
-	#define NC_PROFILE_POINT()
+	#define MK_PERF()
 #endif
