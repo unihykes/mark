@@ -208,8 +208,9 @@ protected:
     template<class T> void Register()
     {
         const static std::type_index index(typeid(T));
-        
-        _options.insert(make_pair(index, new T) );
+        if(_options.find(index) == _options.end()) {
+            _options.insert(make_pair(index, new T) );
+        }
     }
     
 protected:

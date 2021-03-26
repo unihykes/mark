@@ -14,3 +14,7 @@ p *((ncABC*)obj)
 
 ## jump
 可以用jump命令直接跳到某一行
+
+
+## gdb带参数启动
+gdb --args xxservice --abc=1 --cde=3 --xxx=xxx

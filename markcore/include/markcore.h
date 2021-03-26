@@ -57,6 +57,7 @@ info:
 #include "module/mkModuleInstance.h"
 
 //thread
+#include "thread/mkThread.h"
 #include "thread/mkUniqueThread.h"
 #include "thread/mkTimerThread.h"
 #include "thread/mkScopeLimiter.h"
