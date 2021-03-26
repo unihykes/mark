@@ -60,8 +60,14 @@ mkTime::GetCurrentTimeStr()
 {
     time_t rawtime;
     time(&rawtime); 
-    string result = ctime(&rawtime);
-    result.erase(result.find('\n'), 1);//移除末尾\n
+    string result = ctime(&rawtime);//todo:ctime()线程不安全,多线程会存在问题
+    
+    //移除末尾\n
+    auto pos = result.find_last_of('\n');
+    if(pos != string::npos) {
+        result.erase(pos, 1);
+    }
+    
     return result;
 }
 
