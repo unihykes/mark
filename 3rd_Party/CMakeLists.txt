@@ -6,6 +6,8 @@ CMAKE_POLICY(VERSION 2.8)
 
 ADD_SUBDIRECTORY(gtest)
 
+execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/benchmark/build.sh)
+
 execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gflags/build.sh
                 COMMAND sh $ENV{MK_PATH}/3rd_Party/leveldb/build.sh
                 COMMAND sh $ENV{MK_PATH}/3rd_Party/protobuf/build.sh)

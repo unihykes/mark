@@ -26,6 +26,18 @@ IF(${NEED_BOOST_FULL})
     ENDIF()
 ENDIF()
 
+# “¿¿µ benchmark
+IF(${NEED_BENCHMARK})
+    IF(WIN32)
+        include_directories(${MK_PATH}/3rd_Party/benchmark/benchmark/include)
+        seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/__build/benchmark/src/${CMAKE_BUILD_TYPE} benchmark)
+    ELSE()
+        include_directories(${MK_DEPS_PKGS}/benchmark/include)
+        seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/benchmark/lib64 benchmark)
+    ENDIF()
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} benchmark)
+ENDIF()
+
 # ≈‰÷√ googletest œ‡πÿ“¿¿µ
 IF(${NEED_GTEST})
 	#gtest

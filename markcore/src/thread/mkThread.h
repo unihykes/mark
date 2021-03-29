@@ -37,6 +37,11 @@ public:
         stream<<std::this_thread::get_id();
         return stream.str();
     }
+    
+    static void Sleep(const int64& ms)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+    }
 };
 
 #endif // __mkThread
