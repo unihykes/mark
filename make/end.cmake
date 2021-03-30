@@ -28,6 +28,8 @@ ENDIF()
 
 # “¿¿µ benchmark
 IF(${NEED_BENCHMARK})
+    #helpers
+    include_directories(${MK_PATH}/3rd_Party/benchmark/helpers)
     IF(WIN32)
         include_directories(${MK_PATH}/3rd_Party/benchmark/benchmark/include)
         seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/__build/benchmark/src/${CMAKE_BUILD_TYPE} benchmark)

@@ -31,6 +31,8 @@
 *.out
 *.app
 
+LICENSE
+
 win_all*
 linux_all*
 build_target*
