@@ -111,7 +111,7 @@ public:
             }
         }
         if(!validKey) {
-            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "key is invalid");
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "key(%s) is invalid", key.c_str());//todo:TypeKey::c_str()
         }
     }
     
@@ -136,12 +136,13 @@ public:
             }
             else {
                 //key无效
-                mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "key is invalid");
+                mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "key(%s) is invalid", key.c_str());//todo:TypeKey::c_str()
             }
         }
         else {
             //选项不存在
-            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "T is invalid");
+            stringstream err; err<<index.name()<<" is invalid.";
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, err.str().c_str());
         }
     }
     
@@ -156,8 +157,8 @@ public:
             iter->second->OnApply();
         }
         else {
-            //todo
-            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "T is invalid");
+            stringstream err; err<<index.name()<<" is invalid.";
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, err.str().c_str());
         }
     }
 
@@ -198,8 +199,8 @@ public:
             _options.erase(iter);
         }
         else {
-            //todo
-            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "T is invalid");
+            stringstream err; err<<index.name()<<" is invalid.";
+            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, err.str().c_str());
         }
     }
     
