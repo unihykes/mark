@@ -76,15 +76,44 @@ static auto BENCHMARK_PRIVATE_NAME(n) = ::benchmark::RegisterBenchmark(#n, n);
 
 #include <benchmark/benchmark.h>
 
-#define MK_BM_FUNC(Fun) \
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//方式1:单独使用benchmark, 上层定义全局函数,直接注册
+#define MK_BM_REGISTER_FUNC(Fun) \
     static auto BENCHMARK_PRIVATE_NAME(Fun) = ::benchmark::RegisterBenchmark(#Fun, Fun)
     
-#define MK_BM_CLASS(Class) \
-    static auto BENCHMARK_PRIVATE_NAME(Class) = ::benchmark::internal::RegisterBenchmarkInternal(new Class())
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//方式2:单独使用benchmark, 样式类似全局函数, 上层无需定义 BM_CLASS
+
+#define MK_BM_BEGIN(BM_CLASS, Method)                                                                   \
+    class BM_CLASS##_##Method##_Benchmark : public benchmark::Fixture                                   \
+    {                                                                                                   \
+    public:                                                                                             \
+        BM_CLASS##_##Method##_Benchmark()                                                               \
+        {                                                                                               \
+            this->SetName(#BM_CLASS "/" #Method);                                                       \
+        }                                                                                               \
+        virtual void BenchmarkCase(::benchmark::State& __state__);                                      \
+    };                                                                                                  \
+    void BM_CLASS##_##Method##_Benchmark::BenchmarkCase(::benchmark::State& __state__)
+    
+
+#define MK_BM_END(BM_CLASS, Method) BENCHMARK_REGISTER_F(BM_CLASS, Method)
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//方式3:单独使用benchmark, 样式类似成员函数, 上层需要定义类 BM_CLASS, 
+#define MK_BM_F_BEGIN(BM_CLASS, Method) BENCHMARK_DEFINE_F(BM_CLASS, Method)(::benchmark::State& __state__)
+
+#define MK_BM_F_END(BM_CLASS, Method)   BENCHMARK_REGISTER_F(BM_CLASS, Method)
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//方式4: 与gtest的TEST()或者TEST_F()搭配使用
 template<class GTEST_CLASS>
-class mkTest2Benchmark : public benchmark::Fixture
+class mkTestToBenchmark : public benchmark::Fixture
 {
 
 public:
@@ -104,23 +133,26 @@ private:
     class mk_GTEST_CLASS_public : public GTEST_CLASS
     {
     public:
-      virtual void SetUp()
-      {
-          return GTEST_CLASS::SetUp();
-      }
-
-      virtual void TearDown()
-      {
-          return GTEST_CLASS::TearDown();
-      }
+        virtual void SetUp()
+        {
+            return GTEST_CLASS::SetUp();
+        }
+        virtual void TearDown()
+        {
+            return GTEST_CLASS::TearDown();
+        }
+  private:
+        virtual void TestBody()
+        {
+            //使该派生类可以实例化
+        }
     };
 private:
     std::shared_ptr<mk_GTEST_CLASS_public>    _pTest;
 };
 
-//在 TEST(...) 或者 TEST_F() 之后使用,借用 TEST(...) 或者 TEST_F() 的业务逻辑
-#define MK_BM_FROM_TEST_BEGIN(GTEST_CLASS, Method)                                                      \
-    class GTEST_CLASS##_##Method##_Benchmark : public mkTest2Benchmark<GTEST_CLASS##_##Method##_Test>   \
+#define MK_BM_FROM_TEST_F_BEGIN(GTEST_CLASS, Method)                                                    \
+    class GTEST_CLASS##_##Method##_Benchmark : public mkTestToBenchmark<GTEST_CLASS>                    \
     {                                                                                                   \
     public:                                                                                             \
         GTEST_CLASS##_##Method##_Benchmark()                                                            \
@@ -131,9 +163,9 @@ private:
     };                                                                                                  \
     void GTEST_CLASS##_##Method##_Benchmark::BenchmarkCase(::benchmark::State& __state__)
     
-//紧随 MK_BM_FROM_TEST_BEGIN 之后使用,将该 benchmark 注册到待处理列表中
-#define MK_BM_FROM_TEST_END(GTEST_CLASS, Method)                                                        \
-    MK_BM_CLASS(GTEST_CLASS##_##Method##_Benchmark)
-
+#define MK_BM_FROM_TEST_F_END(GTEST_CLASS, Method)                                                      \
+    static auto BENCHMARK_PRIVATE_NAME(GTEST_CLASS##_##Method##_Benchmark)                              \
+        = ::benchmark::internal::RegisterBenchmarkInternal(new GTEST_CLASS##_##Method##_Benchmark())
+    
 
 #endif
