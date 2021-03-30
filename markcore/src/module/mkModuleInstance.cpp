@@ -55,12 +55,17 @@ MK_DEFINE_MODULE_INSTANCE(markcore, markcore, 1, 0, 0);
 #endif
 
 mkModuleInstance::mkModuleInstance(const std::string& moduleName, const std::string& resName,
-    unsigned int major, unsigned int minor, unsigned int patch)
+    unsigned int major, unsigned int minor, unsigned int patch, bool isExec)
 {
     _trace = make_shared<mkTrace>(moduleName);
     _loger = make_shared<mkLog>(moduleName);
     _print = make_shared<mkPrint>(moduleName);
-    _switch = make_shared<mkOptionSwitch>();
+    if(isExec) {
+        _switch = make_shared<mkExecOptionSwitch>();
+    }
+    else {
+        _switch = make_shared<mkOptionSwitch>();
+    }
     _version = make_shared<mkVersion>(major, minor, patch);
     _perf = make_shared<mkPerf>(moduleName);
 }

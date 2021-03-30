@@ -34,7 +34,7 @@ class MK_DLL_EXPORT mkModuleInstance final
 {
 public:
     mkModuleInstance(const std::string& moduleName, const std::string& resName, 
-                    unsigned int major, unsigned int minor, unsigned int patch);
+                    unsigned int major, unsigned int minor, unsigned int patch, bool isExec);
     ~mkModuleInstance();
     
 public:
@@ -52,8 +52,12 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 //定义全局变量: g_moduleInstance
 #define MK_DEFINE_MODULE_INSTANCE(moduleName, resName, major, minor, patch)                     \
     MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(                    \
-        std::make_shared<mkModuleInstance>(#moduleName, #resName, major, minor, patch));
+        std::make_shared<mkModuleInstance>(#moduleName, #resName, major, minor, patch, false));
 
+//定义全局变量: g_moduleInstance
+#define MK_DEFINE_EXEC_INSTANCE(moduleName, resName, major, minor, patch)                       \
+    MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(                    \
+        std::make_shared<mkModuleInstance>(#moduleName, #resName, major, minor, patch, true));
 
 //全局宏:print
 #define MK_PRINT(...)       (*g_moduleInstance->_print)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)

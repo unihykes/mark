@@ -23,7 +23,7 @@ info:
 #include <markcore.h>
 #include <benchmark/benchmark.h>
 
-MK_DEFINE_MODULE_INSTANCE(use_benchmark, use_benchmark, 1, 1, 1);
+MK_DEFINE_EXEC_INSTANCE(use_benchmark, use_benchmark, 1, 1, 1);
 
 
 int main(int argc, char** argv) 

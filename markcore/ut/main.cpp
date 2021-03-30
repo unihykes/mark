@@ -22,7 +22,7 @@ info:
 #include <markcore.h>
 #include <gtest/gtest.h>
 
-MK_DEFINE_MODULE_INSTANCE(use_markcore, use_markcore, 1, 1, 1);
+MK_DEFINE_EXEC_INSTANCE(use_markcore, use_markcore, 1, 1, 1);
 ////////////////////////////////////////////////////////////////////////////////
 // main
 //

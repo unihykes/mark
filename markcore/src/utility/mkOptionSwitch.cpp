@@ -25,12 +25,50 @@ info:
 #include"mkOptionSwitch.h"
 
 mkOptionSwitch::mkOptionSwitch()
+
+{
+}
+
+mkOptionSwitch::~mkOptionSwitch()
+{
+}
+
+//解析执行参数
+pair<int, char**> 
+mkOptionSwitch::InitEnv(int argc, char** argv)
+{
+    throw std::logic_error("do not support mkOptionSwitch::InitEnv(...)");
+}
+
+//加载配置文件中的参数
+void 
+mkOptionSwitch::LoadByConfig(const string& configFileName)
+{
+    //todo
+}
+
+//加载设置的参数
+void 
+mkOptionSwitch::Applys()
+{
+    for(const auto& elem : _mapArgs) {
+        const string& key = elem.first;
+        for(const auto& value : elem.second) {
+            this->SetOptions(key, value, false);
+        }
+    }
+    mkIOptionSwitch::Applys();//应用之
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+mkExecOptionSwitch::mkExecOptionSwitch()
     : _gtest_argc(0)
     , _gtest_argv(nullptr)
 {
 }
 
-mkOptionSwitch::~mkOptionSwitch()
+mkExecOptionSwitch::~mkExecOptionSwitch()
 {
     for(int i = 0; i != _gtest_argc; ++i) {
         // 这里有个问题,testing::InitGoogleTest(...)后,
@@ -46,7 +84,7 @@ mkOptionSwitch::~mkOptionSwitch()
 
 //解析执行参数
 pair<int, char**> 
-mkOptionSwitch::InitEnv(int argc, char** argv)
+mkExecOptionSwitch::InitEnv(int argc, char** argv)
 {
     _vGtestArgs.push_back(string(argv[0]));//可执行程序名称
     
@@ -81,23 +119,4 @@ mkOptionSwitch::InitEnv(int argc, char** argv)
         }
     }
     return make_pair(_gtest_argc, _gtest_argv);
-}
-
-//加载配置文件中的参数
-void 
-mkOptionSwitch::LoadByConfig(const string& configFileName)
-{
-}
-
-//加载命令行参数
-void 
-mkOptionSwitch::Applys()
-{
-    for(const auto& elem : _mapArgs) {
-        const string& key = elem.first;
-        for(const auto& value : elem.second) {
-            this->SetOptions(key, value, false);
-        }
-    }
-    mkIOptionSwitch::Applys();//应用之
 }

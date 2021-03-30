@@ -231,12 +231,12 @@ public:
     virtual ~mkOptionSwitch();
 
     //解析执行参数,返回gtest参数
-    pair<int, char**> InitEnv(int argc, char** argv);
+    virtual pair<int, char**> InitEnv(int argc, char** argv);
     
     //加载配置文件中的参数
     void LoadByConfig(const string& configFileName);
     
-    //加载命令行参数
+    //加载设置的参数
     virtual void Applys();
     
     template<class T> 
@@ -256,12 +256,23 @@ public:
         this->Apply<T>();//应用之
     }
     
+protected:
+    map<string, vector<string>>     _mapArgs;
+};
+
+
+class MK_DLL_EXPORT mkExecOptionSwitch  : public mkOptionSwitch
+{
+public:
+    mkExecOptionSwitch();
+    virtual ~mkExecOptionSwitch();
+
+    //解析执行参数,返回gtest参数
+    virtual pair<int, char**> InitEnv(int argc, char** argv);
 private:
     int                             _gtest_argc;
     char**                          _gtest_argv;
     vector<std::string>             _vGtestArgs;
-    map<string, vector<string>>     _mapArgs;
 };
-
 
 #endif //__mkOptionSwitch

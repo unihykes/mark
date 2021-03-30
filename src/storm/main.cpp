@@ -23,7 +23,7 @@ info:
 #include <markcore.h>
 #include <gtest/gtest.h>
 
-MK_DEFINE_MODULE_INSTANCE(storm, storm, 1, 1, 1);
+MK_DEFINE_EXEC_INSTANCE(storm, storm, 1, 1, 1);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // main

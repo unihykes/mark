@@ -25,7 +25,7 @@ info:
 #include <gflags/gflags.h>
 
 
-MK_DEFINE_MODULE_INSTANCE(use_brpc_client, use_brpc_client, 1, 1, 1);
+MK_DEFINE_EXEC_INSTANCE(use_brpc_client, use_brpc_client, 1, 1, 1);
 
 DEFINE_string(cmd, "default", "default");
 

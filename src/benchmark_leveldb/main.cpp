@@ -22,4 +22,4 @@ info:
 
 #include <markcore.h>
 
-MK_DEFINE_MODULE_INSTANCE(bm_leveldb, bm_leveldb, 1, 1, 1);
+MK_DEFINE_EXEC_INSTANCE(bm_leveldb, bm_leveldb, 1, 1, 1);
