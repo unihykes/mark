@@ -34,7 +34,7 @@ mkOptionSwitch::~mkOptionSwitch()
 }
 
 //解析执行参数
-pair<int, char**> 
+std::tuple<int, char**, int, char**>
 mkOptionSwitch::InitEnv(int argc, char** argv)
 {
     throw std::logic_error("do not support mkOptionSwitch::InitEnv(...)");
@@ -65,11 +65,22 @@ mkOptionSwitch::Applys()
 mkExecOptionSwitch::mkExecOptionSwitch()
     : _gtest_argc(0)
     , _gtest_argv(nullptr)
+    , _benchmark_argc(0)
+    , _benchmark_argv(nullptr)
 {
 }
 
 mkExecOptionSwitch::~mkExecOptionSwitch()
 {
+    for(int i = 0; i != _benchmark_argc; ++i) {
+        delete [] _benchmark_argv[i];
+        _benchmark_argv[i] = nullptr;
+    }
+    if(_benchmark_argv) {
+        delete [] _benchmark_argv;
+        _benchmark_argv = nullptr;
+    }
+    
     for(int i = 0; i != _gtest_argc; ++i) {
         // 这里有个问题,testing::InitGoogleTest(...)后,
         //_gtest_argc中的指针地址被偏移了,因此不能delete
@@ -83,19 +94,38 @@ mkExecOptionSwitch::~mkExecOptionSwitch()
 }
 
 //解析执行参数
-pair<int, char**> 
+std::tuple<int, char**, int, char**>
 mkExecOptionSwitch::InitEnv(int argc, char** argv)
 {
     _vGtestArgs.push_back(string(argv[0]));//可执行程序名称
+    _vBenchmarkArgs.push_back(string(argv[0]));//可执行程序名称
     
     for(int i = 1; i != argc; ++i) {
         string arg(argv[i]);
         
-        //cmd参数
-        if(string_utility<string>::starts_with(arg, "--cmd") || string_utility<string>::starts_with(arg, "--gtest_filter")) {
+        if(string_utility<string>::starts_with(arg, "--cmdg")) {
             string gtestArg = "--gtest_filter=";
             gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vGtestArgs.push_back(gtestArg);
+        }
+        else if(string_utility<string>::starts_with(arg, "--cmdb")) {
+            string benchmarkArg = "--benchmark_filter=";
+            benchmarkArg += arg.substr(arg.find_first_of('=') + 1) ;
+            _vBenchmarkArgs.push_back(benchmarkArg);
+        }
+        else if(string_utility<string>::starts_with(arg, "--gtest_")) {
+            _vGtestArgs.push_back(arg);
+        }
+        else if(string_utility<string>::starts_with(arg, "--benchmark_")) {
+            _vBenchmarkArgs.push_back(arg);
+        }
+        else if(string_utility<string>::starts_with(arg, "--cmd")) {
+            string gtestArg = "--gtest_filter=";
+            gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
+            _vGtestArgs.push_back(gtestArg);
+            string benchmarkArg = "--benchmark_filter=";
+            benchmarkArg += arg.substr(arg.find_first_of('=') + 1) ;
+            _vBenchmarkArgs.push_back(benchmarkArg);
         }
         
         //自定义参数
@@ -118,5 +148,16 @@ mkExecOptionSwitch::InitEnv(int argc, char** argv)
             _gtest_argv[_gtest_argc++] = arg;
         }
     }
-    return make_pair(_gtest_argc, _gtest_argv);
+    if(0 == _benchmark_argc) {
+        _benchmark_argv = new char*[_vBenchmarkArgs.size()];
+        
+        for(auto& elem : _vBenchmarkArgs) {
+            char* arg = new char[elem.size() + 1];
+            memcpy(arg, elem.c_str(), elem.size());
+            arg[elem.size()] = '\0';
+            _benchmark_argv[_benchmark_argc++] = arg;
+        }
+    }
+    
+    return std::make_tuple(_gtest_argc, _gtest_argv, _benchmark_argc, _benchmark_argv);
 }

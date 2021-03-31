@@ -231,7 +231,7 @@ public:
     virtual ~mkOptionSwitch();
 
     //解析执行参数,返回gtest参数
-    virtual pair<int, char**> InitEnv(int argc, char** argv);
+    virtual std::tuple<int, char**, int, char**> InitEnv(int argc, char** argv);
     
     //加载配置文件中的参数
     void LoadByConfig(const string& configFileName);
@@ -267,12 +267,17 @@ public:
     mkExecOptionSwitch();
     virtual ~mkExecOptionSwitch();
 
-    //解析执行参数,返回gtest参数
-    virtual pair<int, char**> InitEnv(int argc, char** argv);
+    //解析执行参数,返回gtest和benchmark的参数
+    virtual std::tuple<int, char**, int, char**> InitEnv(int argc, char** argv);
+    
 private:
     int                             _gtest_argc;
     char**                          _gtest_argv;
     vector<std::string>             _vGtestArgs;
+    
+    int                             _benchmark_argc;
+    char**                          _benchmark_argv;
+    vector<std::string>             _vBenchmarkArgs;
 };
 
 #endif //__mkOptionSwitch

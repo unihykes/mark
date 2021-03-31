@@ -21,6 +21,7 @@ info:
 ***************************************************************************************************/
 #include <markcore.h>
 #include <gtest/gtest.h>
+#include "benchmark_helpers.h"
 
 MK_DEFINE_EXEC_INSTANCE(use_markcore, use_markcore, 1, 1, 1);
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,14 +30,25 @@ MK_DEFINE_EXEC_INSTANCE(use_markcore, use_markcore, 1, 1, 1);
 
 int main(int argc, char** argv) 
 {
-    auto gtestEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
-    // 获取输入参数
-    if(gtestEnv.first == 1) {
+    MK_PRINT("version = 0x%09x", g_moduleInstance->_version->Get());
+    auto gbEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
+    
+    //run gtest
+    if(std::get<0>(gbEnv) == 1) {
         testing::GTEST_FLAG(list_tests) = true;
     }
+    testing::InitGoogleTest(&std::get<0>(gbEnv), std::get<1>(gbEnv));
+    RUN_ALL_TESTS ();
     
-    MK_PRINT("version = 0x%09x", g_moduleInstance->_version->Get());
-    testing::InitGoogleTest(&gtestEnv.first, gtestEnv.second);
-    int ret = RUN_ALL_TESTS ();
-    return ret;
+    //run benchmark
+    if(std::get<2>(gbEnv) > 1) {
+        ::benchmark::Initialize(&std::get<2>(gbEnv) , std::get<3>(gbEnv) );
+        if (::benchmark::ReportUnrecognizedArguments(std::get<2>(gbEnv), std::get<3>(gbEnv))) {
+            MK_PRINT("error");
+            return -1;
+        }
+        ::benchmark::RunSpecifiedBenchmarks();
+    }
+    
+    return 0;
 }
