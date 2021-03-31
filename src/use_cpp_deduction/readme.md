@@ -1,9 +1,10 @@
 
 [toc]
 
-# /unihykes/C++类型推导
-暂且只讲函数模板和auto的类型推导,decltype的类型推导略过不谈;<br>
-内容不多,直接开始:<br>
+# /unihykes/C++/类型推导
+摘要:
+>暂且只讲函数模板和auto的类型推导,decltype的类型推导略过不谈;<br>
+
 
 ## 一.函数模板类型推导
 
@@ -127,7 +128,7 @@ TEST(use_template, func3)
 [       OK ] use_template.func3 (4 ms)
 ```
 
-### 情形3:T
+#### 情形3:T
 
 ```cpp
 template<typename T>
@@ -169,7 +170,7 @@ TEST(use_template, func4)
 * 4.有一个特例,当用于auto声明变量的表达式是用大括号{}时,推导的类型是std::initializer_list<>;
 
 
-### 情形1: auto& 和 const auto&
+#### 情形1: auto& 和 const auto&
 
 ```cpp
 TEST(use_auto, func5)
@@ -197,7 +198,7 @@ TEST(use_auto, func5)
 
 
 
-### 情形2: auto&&
+#### 情形2: auto&&
 
 ```cpp
 TEST(use_auto, func6)
@@ -227,7 +228,7 @@ TEST(use_auto, func6)
 ```
 
 
-### 情形3: auto
+#### 情形3: auto
 
 ```cpp
 TEST(use_auto, func7)
@@ -248,7 +249,7 @@ TEST(use_auto, func7)
 ```
 
 
-### 情形4: 特例 {}
+#### 情形4: 特例 {}
 当用于auto声明变量的表达式是用大括号{}时,推导的类型是std::initializer_list<>;
 
 ```cpp
