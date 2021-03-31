@@ -1,4 +1,4 @@
-PROJECT(use_leveldb_bench)
+PROJECT(bm_leveldb)
 
 #version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
@@ -8,7 +8,7 @@ CMAKE_POLICY(VERSION 3.1)
 INCLUDE($ENV{MK_MAKE}/begin.cmake)
 
 #目标类型
-SET(TARGET_NAME use_leveldb_bench)
+SET(TARGET_NAME bm_leveldb)
 SET(TARGET_TYPE RUNTIME)
 
 #依赖库
