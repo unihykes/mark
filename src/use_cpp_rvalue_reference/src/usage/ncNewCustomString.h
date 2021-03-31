@@ -26,10 +26,10 @@ info:
 #ifdef __WINDOWS__
     #define usleep   Sleep
     //copy对象时间损耗:单位毫秒
-    #define LOSS_TIME  100
+    #define LOSS_TIME  1
 #else
     //copy对象时间损耗:单位微秒
-    #define LOSS_TIME  100000
+    #define LOSS_TIME  1
 #endif
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -44,7 +44,7 @@ public:
     ncNewCustomString(const char* source)
         :_str(nullptr)
     {
-        MK_PRINT_MSG("--(const char* source)");
+        MK_PRINT("--(const char* source)");
         
         _str = new char[strlen(source)+1];
         strcpy(_str, source);
@@ -53,7 +53,7 @@ public:
     
     ncNewCustomString(const ncNewCustomString& source)
     {
-        MK_PRINT_MSG("--(const ncNewCustomString& source)");
+        MK_PRINT("--(const ncNewCustomString& source)");
         
         _str = new char[strlen(source._str) + 1];
         strcpy(_str, source._str);
@@ -62,7 +62,7 @@ public:
     
     ncNewCustomString& operator = (const ncNewCustomString& source)
     {
-        MK_PRINT_MSG("--operator = (const ncNewCustomString& source)");
+        MK_PRINT("--operator = (const ncNewCustomString& source)");
         
         if (this != &source){
             char *tmp = new char[strlen(source._str) + 1];
@@ -76,7 +76,7 @@ public:
     
     ncNewCustomString(ncNewCustomString&& source)
     {
-        MK_PRINT_MSG("--(ncNewCustomString&& source)");
+        MK_PRINT("--(ncNewCustomString&& source)");
         
         _str = source._str;
         source._str = nullptr;
@@ -84,7 +84,7 @@ public:
     
     ncNewCustomString& operator = (ncNewCustomString&& source)
     {
-        MK_PRINT_MSG("--operator = (ncNewCustomString&& source)");
+        MK_PRINT("--operator = (ncNewCustomString&& source)");
         
         _str = source._str;
         source._str = nullptr;

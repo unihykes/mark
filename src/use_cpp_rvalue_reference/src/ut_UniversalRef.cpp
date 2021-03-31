@@ -21,7 +21,7 @@ info:
     一个简单的判断条件是, 参数既能是右值又可以是左值,则是universal引用;
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
 #include <boost/type_index.hpp>
 using boost::typeindex::type_id_with_cvr;
@@ -32,17 +32,17 @@ TEST(ut_UniversalRef, auto)
 {
     int n = 100;
     auto&& v1 = n;
-    MK_PRINT_MSG("type of v1 is  %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());
+    MK_PRINT("type of v1 is  %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());
     
     auto&& v2 = 512;
-    MK_PRINT_MSG("type of v2 is  %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());
+    MK_PRINT("type of v2 is  %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());
 }
 
 //universal引用
 template<typename T> 
 void fun_universal_a(T&& param_a)
 {
-    MK_PRINT_MSG("T is %s, type of param_a is %s", 
+    MK_PRINT("T is %s, type of param_a is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_a)>().pretty_name().c_str());
 }
@@ -70,7 +70,7 @@ TEST(ut_UniversalRef, fun_universal_a)
 //非universal引用
 void fun_universal_b(int&& param_b)
 {
-    MK_PRINT_MSG("type of param_b is %s",   type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
+    MK_PRINT("type of param_b is %s",   type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
 }
 TEST(ut_UniversalRef, fun_universal_b)
 {
@@ -84,7 +84,7 @@ TEST(ut_UniversalRef, fun_universal_b)
 template<typename T> 
 void fun_universal_c(const T&& param_c)
 {
-    MK_PRINT_MSG("T is %s, type of param_c is %s", 
+    MK_PRINT("T is %s, type of param_c is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_c)>().pretty_name().c_str());
 }
@@ -113,7 +113,7 @@ TEST(ut_UniversalRef, fun_universal_c)
 template<typename T>
 void fun_universal_d(vector<T>&& param_d)
 {
-    MK_PRINT_MSG("T is %s, type of param_d is %s", 
+    MK_PRINT("T is %s, type of param_d is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_d)>().pretty_name().c_str());
 }
@@ -132,12 +132,12 @@ struct ncLittleObj
 {
     ncLittleObj(int&& a, int&& b)
     {
-        MK_PRINT_MSG("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
+        MK_PRINT("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
     }
     
     ncLittleObj(const int& a, const int& b)
     {
-        MK_PRINT_MSG("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
+        MK_PRINT("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
     }
 };
 
@@ -150,7 +150,7 @@ public:
     //所以在调用时push_back函数时并不存在类型推导。
     void push_back(T&& param)
     {
-        MK_PRINT_MSG("T is %s, type of param is %s", 
+        MK_PRINT("T is %s, type of param is %s", 
             type_id_with_cvr<T>().pretty_name().c_str(),
             type_id_with_cvr<decltype(param)>().pretty_name().c_str());
     }

@@ -20,7 +20,7 @@ info:
     [亡值表达式]
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
 
 
@@ -42,7 +42,7 @@ TEST(ut_xRvalue, xRvalue1)
     /// 函数调用或重载运算符表达式，其返回类型为右值引用，例如 std::move(x) ； 
     {
         int x = 100;
-        MK_PRINT_MSG("std::move(x)          is %c-value", IsRight(std::move(x)));
+        MK_PRINT("std::move(x)          is %c-value", IsRight(std::move(x)));
     }
 }
 
@@ -51,8 +51,8 @@ TEST(ut_xRvalue, xRvalue2)
     /// a[n]，内建的下标表达式，其操作数之一是数组右值； 
     {
         using arrType = int[4];
-        MK_PRINT_MSG("arrType{0,1,2,3}      is %c-value", IsRight(arrType{0,1,2,3}) );
-        MK_PRINT_MSG("arrType{0,1,2,3}[2]   is %c-value", IsRight(arrType{0,1,2,3}[2]));///??todo:这里怎么还是左值arrType{0,1,2,3}[2]
+        MK_PRINT("arrType{0,1,2,3}      is %c-value", IsRight(arrType{0,1,2,3}) );
+        MK_PRINT("arrType{0,1,2,3}[2]   is %c-value", IsRight(arrType{0,1,2,3}[2]));///??todo:这里怎么还是左值arrType{0,1,2,3}[2]
     }
 }
 
@@ -67,7 +67,7 @@ TEST(ut_xRvalue, xRvalue3)
             int fun(){return 0;}
         };
         
-        MK_PRINT_MSG("ncObj().n             is %c-value", IsRight(ncObj().n));///在vs2015测试, 这里是左值,g++测试是右值
+        MK_PRINT("ncObj().n             is %c-value", IsRight(ncObj().n));///在vs2015测试, 这里是左值,g++测试是右值
     }
 }
 
@@ -82,7 +82,7 @@ TEST(ut_xRvalue, xRvalue4)
         };
         
         int ncObj::*pn = &ncObj::n;
-        MK_PRINT_MSG("ncObj().*pn           is %c-value", IsRight(ncObj().*pn));///在vs2015测试, 这里是左值,g++测试是右值
+        MK_PRINT("ncObj().*pn           is %c-value", IsRight(ncObj().*pn));///在vs2015测试, 这里是左值,g++测试是右值
     }
 }
 
@@ -92,7 +92,7 @@ TEST(ut_xRvalue, xRvalue5)
     {
         string a = "hello";
         string b = "world";
-        MK_PRINT_MSG("a?b:c                 is %c-value", IsRight((true?std::move(a):std::move(b))));
+        MK_PRINT("a?b:c                 is %c-value", IsRight((true?std::move(a):std::move(b))));
     }
 }
 
@@ -101,6 +101,6 @@ TEST(ut_xRvalue, xRvalue6)
     /// 转换为对象的右值引用类型的转型表达式，例如 static_cast<char&&>(x)； 
     {
         char x = 'a';
-        MK_PRINT_MSG("static_cast<char&&>(x)          is %c-value", IsRight(static_cast<char&&>(x)));
+        MK_PRINT("static_cast<char&&>(x)          is %c-value", IsRight(static_cast<char&&>(x)));
     }    
 }

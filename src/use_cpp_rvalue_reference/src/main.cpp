@@ -19,30 +19,32 @@ Time:2018-3
 info:
 
 ***************************************************************************************************/
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
-#include "mkUniqueProfilePoint.h"
+#include "benchmark_helpers.h"
 
-////////////////////////////////////////////////////////////////////////////////
-// main
-//
+MK_DEFINE_EXEC_INSTANCE(use_cpp_rvalue_reference, use_cpp_rvalue_reference, 1, 1, 1);
 
 int main(int argc, char** argv) 
 {
-    // 获取输入参数
-    if(argc == 1) {
-        printf("eg: ./test --gtest_filter=aaaUT.*    or: ./test --gtest_filter=aaaUT.*:bbbUT.*");
-        return 0;
+    auto gbEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
+    
+    //run gtest
+    if(std::get<0>(gbEnv) == 1) {
+        testing::GTEST_FLAG(list_tests) = true;
+    }
+    testing::InitGoogleTest(&std::get<0>(gbEnv), std::get<1>(gbEnv));
+    RUN_ALL_TESTS ();
+    
+    //run benchmark
+    if(std::get<2>(gbEnv) > 1) {
+        ::benchmark::Initialize(&std::get<2>(gbEnv) , std::get<3>(gbEnv) );
+        if (::benchmark::ReportUnrecognizedArguments(std::get<2>(gbEnv), std::get<3>(gbEnv))) {
+            MK_PRINT("error");
+            return -1;
+        }
+        ::benchmark::RunSpecifiedBenchmarks();
     }
     
-    //初始化 mkUniqueProfilePoint
-    double usedSecond = 0;
-    {
-        mkUniqueProfilePoint point(usedSecond);
-    }
-    
-    //testing::AddGlobalTestEnvironment(new ncEnvironment());
-    testing::InitGoogleTest(&argc, argv); 
-    int ret = RUN_ALL_TESTS ();
-    return ret;
+    return 0;
 }

@@ -20,7 +20,7 @@ info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
 
 /**T&&属于universal&&,
@@ -67,11 +67,11 @@ TEST(ut_Lvalue, L_value_1)
     {
         int v1 = 0;
         int&& v2 = 100;
-        MK_PRINT_MSG("v1                    is %c-value", IsRight(v1));//变量名, 变量的类型是int
-        MK_PRINT_MSG("v2                    is %c-value", IsRight(v2));//变量名, 变量的类型是右值引用int&&
-        MK_PRINT_MSG("std::cin              is %c-value", IsRight(cin));//变量名
-        MK_PRINT_MSG("Categories            is %c-value", IsRight(Categories));//函数名
-        MK_PRINT_MSG("ncCategoriesObj::n    is %c-value", IsRight(ncCategoriesObj::n)); //静态数据成员名
+        MK_PRINT("v1                    is %c-value", IsRight(v1));//变量名, 变量的类型是int
+        MK_PRINT("v2                    is %c-value", IsRight(v2));//变量名, 变量的类型是右值引用int&&
+        MK_PRINT("std::cin              is %c-value", IsRight(cin));//变量名
+        MK_PRINT("Categories            is %c-value", IsRight(Categories));//函数名
+        MK_PRINT("ncCategoriesObj::n    is %c-value", IsRight(ncCategoriesObj::n)); //静态数据成员名
     }
 }
 
@@ -84,9 +84,9 @@ TEST(ut_Lvalue, L_value_2)
         int i = 0;
         vector<int> v = {1,2,3,4,5};
         auto iter = v.begin();
-        MK_PRINT_MSG("Categories(str)       is %c-value", IsRight(Categories(str)));//返回左值引用的函数表达式
-        MK_PRINT_MSG("(str = \"test\")        is %c-value", IsRight(str="test"));//返回左值引用的重载运算符
-        MK_PRINT_MSG("++iter                is %c-value", IsRight(++iter));//返回左值引用的重载运算符
+        MK_PRINT("Categories(str)       is %c-value", IsRight(Categories(str)));//返回左值引用的函数表达式
+        MK_PRINT("(str = \"test\")        is %c-value", IsRight(str="test"));//返回左值引用的重载运算符
+        MK_PRINT("++iter                is %c-value", IsRight(++iter));//返回左值引用的重载运算符
     }
 }
 
@@ -98,16 +98,16 @@ TEST(ut_Lvalue, L_value_3)
     {
         int a = 10;
         int b = 2;
-        MK_PRINT_MSG("a = b                 is %c-value", IsRight(a = b));  //赋值表达式
-        MK_PRINT_MSG("a += b                is %c-value", IsRight(a += b)); //复合赋值表达式
-        MK_PRINT_MSG("a %%= b                is %c-value", IsRight(a %= b));//复合赋值表达式
+        MK_PRINT("a = b                 is %c-value", IsRight(a = b));  //赋值表达式
+        MK_PRINT("a += b                is %c-value", IsRight(a += b)); //复合赋值表达式
+        MK_PRINT("a %%= b                is %c-value", IsRight(a %= b));//复合赋值表达式
         
-        MK_PRINT_MSG("++a                   is %c-value", IsRight(++a));
-        MK_PRINT_MSG("--a                   is %c-value", IsRight(--a));
+        MK_PRINT("++a                   is %c-value", IsRight(++a));
+        MK_PRINT("--a                   is %c-value", IsRight(--a));
         
         int n = 1;
         int* p = &n;
-        MK_PRINT_MSG("*p                    is %c-value", IsRight(*p));
+        MK_PRINT("*p                    is %c-value", IsRight(*p));
     }
 }
 
@@ -119,11 +119,11 @@ TEST(ut_Lvalue, L_value_4)
     {
         int array[4] = {0,1,2,3};
         int* p = &array[0];
-        MK_PRINT_MSG("array[2]              is %c-value", IsRight(array[2]));
-        MK_PRINT_MSG("p[2]                  is %c-value", IsRight(p[2]));
+        MK_PRINT("array[2]              is %c-value", IsRight(array[2]));
+        MK_PRINT("p[2]                  is %c-value", IsRight(p[2]));
         
         using arrType = int[4];
-        //MK_PRINT_MSG("arrType[2]            is %c-value", IsRight(arrType{0,1,2,3}[2]));///??todo:这里怎么还是左值arrType{0,1,2,3}[2]
+        //MK_PRINT("arrType[2]            is %c-value", IsRight(arrType{0,1,2,3}[2]));///??todo:这里怎么还是左值arrType{0,1,2,3}[2]
     }
 }
 
@@ -142,12 +142,12 @@ TEST(ut_Lvalue, L_value_5)
         };
         
         ncObj obj;
-        MK_PRINT_MSG("obj.n                 is %c-value", IsRight(obj.n));
+        MK_PRINT("obj.n                 is %c-value", IsRight(obj.n));
         
         ncObj* p = &obj;
-        MK_PRINT_MSG("p->n                  is %c-value", IsRight(p->n));
+        MK_PRINT("p->n                  is %c-value", IsRight(p->n));
         
-        //MK_PRINT_MSG("ncObj().n             is %c-value", IsRight(ncObj().n));///经在vs2015测试, 这里是左值(C++11起)
+        //MK_PRINT("ncObj().n             is %c-value", IsRight(ncObj().n));///经在vs2015测试, 这里是左值(C++11起)
 
     }
 }
@@ -165,10 +165,10 @@ TEST(ut_Lvalue, L_value_6)
         int ncObj::*p = &ncObj::n;
         
         ncObj obj;
-        MK_PRINT_MSG("obj.*p                is %c-value", IsRight(obj.*p));
+        MK_PRINT("obj.*p                is %c-value", IsRight(obj.*p));
         
         ncObj* pObj = &obj;
-        MK_PRINT_MSG("pObj->*p              is %c-value", IsRight(pObj->*p));
+        MK_PRINT("pObj->*p              is %c-value", IsRight(pObj->*p));
     }
 }
 
@@ -178,8 +178,8 @@ TEST(ut_Lvalue, L_value_7)
     ///a ? b : c ，某些 b 和 c 的三元条件表达式（例如，它们都是同类型左值时，但细节见定义）； 
     {
         int b = 100;
-        MK_PRINT_MSG("a,b                   is %c-value", IsRight((12, b)));
-        MK_PRINT_MSG("a?b:c                 is %c-value", IsRight((true?b:b)));
+        MK_PRINT("a,b                   is %c-value", IsRight((12, b)));
+        MK_PRINT("a?b:c                 is %c-value", IsRight((true?b:b)));
     }
 }
 
@@ -187,7 +187,7 @@ TEST(ut_Lvalue, L_value_8)
 {
     ///字符串字面量，例如 "Hello, world!"； 
     {
-        MK_PRINT_MSG("\"hello world\"       is %c-value", IsRight("hello world"));
+        MK_PRINT("\"hello world\"       is %c-value", IsRight("hello world"));
     }
 }
 
@@ -196,7 +196,7 @@ TEST(ut_Lvalue, L_value_9)
     ///转换为左值引用类型的转型表达式，例如 static_cast<int&>(x)；
     {
         int x = 100;
-        MK_PRINT_MSG("static_cast<int&>(x)  is %c-value", IsRight(static_cast<int&>(x)));
+        MK_PRINT("static_cast<int&>(x)  is %c-value", IsRight(static_cast<int&>(x)));
     }
 }
 
@@ -218,12 +218,12 @@ TEST(ut_Lvalue, L_value_10)
 {
     ///函数调用表达式或重载的运算符表达式，其返回类型是到函数的右值引用； (C++11 起)
     {
-        MK_PRINT_MSG("fun_returnRvalueRef               is %c-value", IsRight(fun_returnRvalueRef()));
+        MK_PRINT("fun_returnRvalueRef               is %c-value", IsRight(fun_returnRvalueRef()));
     }
        
     ///转换为函数的右值引用类型的转型表达式，如 static_cast<void (&&)(int)>(x) 。 (C++11 起)
     {
-        MK_PRINT_MSG("static_cast<void(&&)()>(func)     is %c-value", IsRight(static_cast<void(&&)()>(func) ));
+        MK_PRINT("static_cast<void(&&)()>(func)     is %c-value", IsRight(static_cast<void(&&)()>(func) ));
     }
 }
 

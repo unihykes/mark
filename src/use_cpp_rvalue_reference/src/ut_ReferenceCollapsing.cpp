@@ -20,7 +20,7 @@ info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
 #include <boost/type_index.hpp>
 using boost::typeindex::type_id_with_cvr;
@@ -35,16 +35,16 @@ TEST(ut_ReferenceCollapsing, typedef)
     int n = 100;
     
     lRef&  r1 = n;
-    MK_PRINT_MSG("type of r1 is %s", type_id_with_cvr<decltype(r1)>().pretty_name().c_str());
+    MK_PRINT("type of r1 is %s", type_id_with_cvr<decltype(r1)>().pretty_name().c_str());
             
     lRef&& r2 = n;
-    MK_PRINT_MSG("type of r2 is %s", type_id_with_cvr<decltype(r2)>().pretty_name().c_str());
+    MK_PRINT("type of r2 is %s", type_id_with_cvr<decltype(r2)>().pretty_name().c_str());
     
     rRef&  r3 = n; 
-    MK_PRINT_MSG("type of r3 is %s", type_id_with_cvr<decltype(r3)>().pretty_name().c_str());
+    MK_PRINT("type of r3 is %s", type_id_with_cvr<decltype(r3)>().pretty_name().c_str());
     
     rRef&& r4 = 1;
-    MK_PRINT_MSG("type of r4 is %s", type_id_with_cvr<decltype(r4)>().pretty_name().c_str());
+    MK_PRINT("type of r4 is %s", type_id_with_cvr<decltype(r4)>().pretty_name().c_str());
 }
 
 TEST(ut_ReferenceCollapsing, decltype)
@@ -53,11 +53,11 @@ TEST(ut_ReferenceCollapsing, decltype)
     int& v1 = n;
     int&& v2 = 100;
     
-    MK_PRINT_MSG("type of decltype(v1)& is %s", type_id_with_cvr<decltype(v1)&>().pretty_name().c_str());
-    MK_PRINT_MSG("type of decltype(v1)&& is %s", type_id_with_cvr<decltype(v1)&&>().pretty_name().c_str());
+    MK_PRINT("type of decltype(v1)& is %s", type_id_with_cvr<decltype(v1)&>().pretty_name().c_str());
+    MK_PRINT("type of decltype(v1)&& is %s", type_id_with_cvr<decltype(v1)&&>().pretty_name().c_str());
     
-    MK_PRINT_MSG("type of decltype(v2)& is %s", type_id_with_cvr<decltype(v2)&>().pretty_name().c_str());
-    MK_PRINT_MSG("type of decltype(v2)&& is %s", type_id_with_cvr<decltype(v2)&&>().pretty_name().c_str());
+    MK_PRINT("type of decltype(v2)& is %s", type_id_with_cvr<decltype(v2)&>().pretty_name().c_str());
+    MK_PRINT("type of decltype(v2)&& is %s", type_id_with_cvr<decltype(v2)&&>().pretty_name().c_str());
 }
 
 
@@ -66,7 +66,7 @@ TEST(ut_ReferenceCollapsing, decltype)
 template<typename T> 
 void fun_collapsing_a(T& param_a)
 {
-    MK_PRINT_MSG("T is %s , type of param_a is %s", 
+    MK_PRINT("T is %s , type of param_a is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_a)>().pretty_name().c_str());
 }
@@ -90,7 +90,7 @@ TEST(ut_ReferenceCollapsing, template1)
 template<typename T> 
 void fun_collapsing_b(T&& param_b)
 {
-    MK_PRINT_MSG("T is %s , type of param_b is %s", 
+    MK_PRINT("T is %s , type of param_b is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
 }
@@ -132,7 +132,7 @@ TEST(ut_ReferenceCollapsing, template2)
 template<typename T> 
 void fun_collapsing_c(const T&& param_c)
 {
-    MK_PRINT_MSG("T is %s , type of param_c is %s", 
+    MK_PRINT("T is %s , type of param_c is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_c)>().pretty_name().c_str());
 }

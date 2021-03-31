@@ -25,10 +25,10 @@ info:
 #ifdef __WINDOWS__
     #define usleep   Sleep
     //copy对象时间损耗:单位毫秒
-    #define LOSS_TIME  100
+    #define LOSS_TIME  1
 #else
     //copy对象时间损耗:单位微秒
-    #define LOSS_TIME  100000
+    #define LOSS_TIME  1
 #endif
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +43,7 @@ public:
     ncOldCustomString(const char* source)
         :_str(nullptr)
     {
-        MK_PRINT_MSG("--(const char* source)");
+        MK_PRINT("--(const char* source)");
         
         _str = new char[strlen(source)+1];
         strcpy(_str, source);
@@ -52,7 +52,7 @@ public:
     
     ncOldCustomString(const ncOldCustomString& source)
     {
-        MK_PRINT_MSG("--(const ncOldCustomString& source)");
+        MK_PRINT("--(const ncOldCustomString& source)");
         
         _str = new char[strlen(source._str) + 1];
         strcpy(_str, source._str);
@@ -61,7 +61,7 @@ public:
     
     ncOldCustomString& operator = (const ncOldCustomString& source)
     {
-        MK_PRINT_MSG("--operator = (const ncOldCustomString& source)");
+        MK_PRINT("--operator = (const ncOldCustomString& source)");
         
         if (this != &source){
             char *tmp = new char[strlen(source._str) + 1];

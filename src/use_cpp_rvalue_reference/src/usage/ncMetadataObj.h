@@ -29,10 +29,10 @@ info:
 #ifdef __WINDOWS__
     #define usleep   Sleep
     //copy对象时间损耗:单位毫秒
-    #define LOSS_TIME  100
+    #define LOSS_TIME  1
 #else
     //copy对象时间损耗:单位微秒
-    #define LOSS_TIME  100000
+    #define LOSS_TIME  1
 #endif
 
 
@@ -53,32 +53,32 @@ public:
     ncMetadataObj(const ncOldCustomString& str)
         : _oldCustomStr(str)
     {
-        MK_PRINT_MSG("--(const ncOldCustomString& str)");
+        MK_PRINT("--(const ncOldCustomString& str)");
     }
     
     ncMetadataObj(ncOldCustomString&& str)
         : _oldCustomStr(std::move(str))
     {
-        MK_PRINT_MSG("--(ncOldCustomString&& str)");
+        MK_PRINT("--(ncOldCustomString&& str)");
     }
     
     //构造函数-newstring
     ncMetadataObj(const ncNewCustomString& str)
         : _newCustomStr(str)
     {
-        MK_PRINT_MSG("--(const ncNewCustomString& str)");
+        MK_PRINT("--(const ncNewCustomString& str)");
     }
     
     ncMetadataObj(ncNewCustomString&& str)
         : _newCustomStr(std::move(str))
     {
-        MK_PRINT_MSG("--(ncNewCustomString&& str)");
+        MK_PRINT("--(ncNewCustomString&& str)");
     }
     
     //拷贝构造函数
     ncMetadataObj(const ncMetadataObj& source)
     {
-        MK_PRINT_MSG("--(const ncMetadataObj& source)");
+        MK_PRINT("--(const ncMetadataObj& source)");
         
         _oldCustomStr = source._oldCustomStr;
         _newCustomStr = source._newCustomStr;
@@ -90,7 +90,7 @@ public:
     
     ncMetadataObj& operator = (const ncMetadataObj& source)
     {
-        MK_PRINT_MSG("--operator = (const ncMetadataObj& source)");
+        MK_PRINT("--operator = (const ncMetadataObj& source)");
         
         if (this != &source){
             _oldCustomStr = source._oldCustomStr;
@@ -103,7 +103,7 @@ public:
     
     ncMetadataObj(ncMetadataObj&& source)
     {
-        MK_PRINT_MSG("--(ncMetadataObj&& source)");
+        MK_PRINT("--(ncMetadataObj&& source)");
         
         _oldCustomStr = std::move(source._oldCustomStr);
         _newCustomStr = std::move(source._newCustomStr);
@@ -111,7 +111,7 @@ public:
     
     ncMetadataObj& operator = (ncMetadataObj&& source)
     {
-        MK_PRINT_MSG("--operator = (ncMetadataObj&& source)");
+        MK_PRINT("--operator = (ncMetadataObj&& source)");
         
         _oldCustomStr = std::move(source._oldCustomStr);
         _newCustomStr = std::move(source._newCustomStr);
@@ -121,7 +121,7 @@ public:
     
     void fun()
     {
-        MK_PRINT_MSG("");
+        MK_PRINT("");
     }
     
     void push_back(const ncNewCustomString& str)

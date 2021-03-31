@@ -20,7 +20,7 @@ info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
 #include <boost/type_index.hpp>
 using boost::typeindex::type_id_with_cvr;
@@ -89,19 +89,19 @@ TEST(ut_move, my_remove_reference)
    {
         using ReturnType = my_remove_reference<int>::type&&;//int&&
         int id = my_remove_reference<int>::id;//1
-        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+        MK_PRINT("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
    }
    
    {
         using ReturnType = my_remove_reference<int&>::type&&;//int&&
         int id = my_remove_reference<int&>::id;//2
-        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+        MK_PRINT("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
    }
    
    {
         using ReturnType = my_remove_reference<int&&>::type&&;//int&&
         int id = my_remove_reference<int&&>::id;//3
-        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+        MK_PRINT("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
    }
 }
 
@@ -113,7 +113,7 @@ TEST(ut_move, my_remove_reference)
 template<typename T>
 typename my_remove_reference<T>::type&& my_move(T&& param)
 {
-    MK_PRINT_MSG("T is %s, type of param is %s", 
+    MK_PRINT("T is %s, type of param is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(), 
         type_id_with_cvr<decltype(param)>().pretty_name().c_str());
      
@@ -125,19 +125,19 @@ TEST(ut_move, my_move)
 {
     int n = 5;
     auto&& ret1 = my_move(n);
-    MK_PRINT_MSG("type of ret1 is %s\n", type_id_with_cvr<decltype(ret1)>().pretty_name().c_str());
+    MK_PRINT("type of ret1 is %s\n", type_id_with_cvr<decltype(ret1)>().pretty_name().c_str());
     
     const int m = 12;
     auto&& ret2 = my_move(m);
-    MK_PRINT_MSG("type of ret2 is %s\n", type_id_with_cvr<decltype(ret2)>().pretty_name().c_str());
+    MK_PRINT("type of ret2 is %s\n", type_id_with_cvr<decltype(ret2)>().pretty_name().c_str());
     
     auto&& ret3 = my_move(100);
-    MK_PRINT_MSG("type of ret3 is %s\n", type_id_with_cvr<decltype(ret3)>().pretty_name().c_str());
+    MK_PRINT("type of ret3 is %s\n", type_id_with_cvr<decltype(ret3)>().pretty_name().c_str());
     
     int n2 = 11;
     int& nL = n2;
     auto&& ret4 = my_move(nL);
-    MK_PRINT_MSG("type of ret4 is %s\n", type_id_with_cvr<decltype(ret4)>().pretty_name().c_str());
+    MK_PRINT("type of ret4 is %s\n", type_id_with_cvr<decltype(ret4)>().pretty_name().c_str());
 }
 
 /**

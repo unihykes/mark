@@ -20,7 +20,7 @@ info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
 #include <boost/type_index.hpp>
 using boost::typeindex::type_id_with_cvr;
@@ -48,7 +48,7 @@ namespace example_std
 template<typename T>
 T&& my_forward(typename std::remove_reference<T>::type& param)
 {
-    MK_PRINT_MSG("T is %s, T&& is %s, type of param is %s", 
+    MK_PRINT("T is %s, T&& is %s, type of param is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<T&&>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param)>().pretty_name().c_str());
@@ -60,7 +60,7 @@ T&& my_forward(typename std::remove_reference<T>::type& param)
 template<typename T>
 void funcBBB(T&& param)
 {
-    MK_PRINT_MSG("T is %s, type of param is %s", 
+    MK_PRINT("T is %s, type of param is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param)>().pretty_name().c_str());
 }
@@ -68,7 +68,7 @@ void funcBBB(T&& param)
 template<typename T>
 void funcAAA(T&& param)
 {
-    MK_PRINT_MSG("T is %s, type of param is %s", 
+    MK_PRINT("T is %s, type of param is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param)>().pretty_name().c_str());
         

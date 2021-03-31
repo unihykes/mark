@@ -20,9 +20,9 @@ info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
-#include "mkUniqueProfilePoint.h"
+#include "benchmark_helpers.h"
 #include "ncOldCustomString.h"
 
 #define SOME_STRING                                                                                  \
@@ -40,7 +40,7 @@ info:
     abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz\
     abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz"
     
-static int loopCount = 6000000;//用来定义循环次数
+static int loopCount = 1;//用来定义循环次数
 static double usedSecond = 0;  //用来保存指定作用域所消耗时间
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,17 +65,33 @@ void fun_oldCustomString2()
 TEST(ut_oldCustomString, oldCustomString1)
 {
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         fun_oldCustomString1();
     }
-    MK_PRINT_MSG("fun_oldCustomString1() usedSecond = %.2f", usedSecond);
+    MK_PRINT("fun_oldCustomString1() usedSecond = %.2f", usedSecond);
     
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         fun_oldCustomString2();
     }
-    MK_PRINT_MSG("fun_oldCustomString2() usedSecond = %.2f", usedSecond);
+    MK_PRINT("fun_oldCustomString2() usedSecond = %.2f", usedSecond);
 }
+
+//benchmark
+MK_BM_BEGIN(ut_oldCustomString, fun_oldCustomString1)
+{
+    for (auto _ : __state__) {
+        fun_oldCustomString1();
+    }
+}MK_BM_END(ut_oldCustomString, fun_oldCustomString1);
+
+//benchmark
+MK_BM_BEGIN(ut_oldCustomString, fun_oldCustomString2)
+{
+    for (auto _ : __state__) {
+        fun_oldCustomString2();
+    }
+}MK_BM_END(ut_oldCustomString, fun_oldCustomString2);
 
 
 
@@ -94,24 +110,24 @@ ncOldCustomString fun_oldCustomString4()
 TEST(ut_oldCustomString, oldCustomString2)
 {
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         
         for(int i = 0; i != loopCount; ++i) {
             ncOldCustomString str;
             fun_oldCustomString3(str);
         }
     }
-    MK_PRINT_MSG("fun_oldCustomString3() usedSecond = %.2f", usedSecond);
+    MK_PRINT("fun_oldCustomString3() usedSecond = %.2f", usedSecond);
     
     
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         
         for(int i = 0; i != loopCount; ++i) {
             ncOldCustomString str;
             str = fun_oldCustomString4();
         }
     }
-    MK_PRINT_MSG("fun_oldCustomString4() usedSecond = %.2f", usedSecond);
+    MK_PRINT("fun_oldCustomString4() usedSecond = %.2f", usedSecond);
 }
 

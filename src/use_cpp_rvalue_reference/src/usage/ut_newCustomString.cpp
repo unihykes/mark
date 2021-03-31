@@ -20,9 +20,8 @@ info:
 
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
-#include "mkUniqueProfilePoint.h"
 #include "ncNewCustomString.h"
 
 #define SOME_STRING                                                                                  \
@@ -67,16 +66,16 @@ void fun_newCustomString2()
 TEST(ut_newCustomString, newCustomString1)
 {
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         fun_newCustomString1();
     }
-    MK_PRINT_MSG("fun_newCustomString1() usedSecond = %.2f", usedSecond);
+    MK_PRINT("fun_newCustomString1() usedSecond = %.2f", usedSecond);
     
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         fun_newCustomString2();
     }
-    MK_PRINT_MSG("fun_newCustomString2() usedSecond = %.2f", usedSecond);
+    MK_PRINT("fun_newCustomString2() usedSecond = %.2f", usedSecond);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,24 +94,24 @@ ncNewCustomString fun_newCustomString4()
 TEST(ut_newCustomString, newCustomString2)
 {
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         
         for(int i = 0; i != loopCount; ++i) {
             ncNewCustomString str;
             fun_newCustomString3(str);
         }
     }
-    MK_PRINT_MSG("fun_newCustomString3() usedSecond = %.2f", usedSecond);
+    MK_PRINT("fun_newCustomString3() usedSecond = %.2f", usedSecond);
     
     
     {
-        mkUniqueProfilePoint point(usedSecond);
+        mkPerfPoint point(usedSecond);
         
         for(int i = 0; i != loopCount; ++i) {
             ncNewCustomString str;
             str = fun_newCustomString4();
         }
     }
-    MK_PRINT_MSG("fun_newCustomString4() usedSecond = %.2f", usedSecond);
+    MK_PRINT("fun_newCustomString4() usedSecond = %.2f", usedSecond);
 }
 

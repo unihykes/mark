@@ -1,4 +1,4 @@
-PROJECT(blog_r-reference_dir)
+PROJECT(use_cpp_rvalue_reference_root)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)

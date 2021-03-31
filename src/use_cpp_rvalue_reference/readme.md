@@ -1,4 +1,4 @@
-# /unihykes/C++右值引用
+# /unihykes/C++/右值引用
 ﻿摘要:<br>
 &#8195; 突然决定整理一篇c++右值引用相关的文章,内容暂且分为以下几个主题:
 
@@ -17,16 +17,13 @@
 > 1.文中测试代码均为手写, 如发现错误, 请不吝告知 :
 >> 作者邮箱: 33852613@163.com <br>
 
-> 2.转载请注明出处：
->> https://blog.csdn.net/WOW542621126/article/details/80428174
-
-> 3.参考资料:
+> 2.参考资料:
 >> http://en.cppreference.com/w/<br>
 >> https://www.cnblogs.com/5iedu/p/7698710.html<br>
 >> https://www.cnblogs.com/qicosmos/p/3369940.html<br>
 >> 等等...
 
-> 4.流量预警: 
+> 3.流量预警: 
 >> 文章很长... <br>
 >> 图片很大... <br>
 >> 代码很多... <br>
@@ -329,11 +326,11 @@ TEST(ut_Lvalue, L_value_1)
 {
     int v1 = 0;
     int&& v2 = 100;
-    MK_PRINT_MSG("v1                    is %c-value", IsRight(v1));//变量名, 变量的类型是int
-    MK_PRINT_MSG("v2                    is %c-value", IsRight(v2));//变量名, 变量的类型是右值引用int&&
-    MK_PRINT_MSG("std::cin              is %c-value", IsRight(cin));//变量名
-    MK_PRINT_MSG("Categories            is %c-value", IsRight(Categories));//函数名
-    MK_PRINT_MSG("ncCategoriesObj::n    is %c-value", IsRight(ncCategoriesObj::n)); //静态数据成员名
+    MK_PRINT("v1                    is %c-value", IsRight(v1));//变量名, 变量的类型是int
+    MK_PRINT("v2                    is %c-value", IsRight(v2));//变量名, 变量的类型是右值引用int&&
+    MK_PRINT("std::cin              is %c-value", IsRight(cin));//变量名
+    MK_PRINT("Categories            is %c-value", IsRight(Categories));//函数名
+    MK_PRINT("ncCategoriesObj::n    is %c-value", IsRight(ncCategoriesObj::n)); //静态数据成员名
 }
 /*
 源码路径:
@@ -365,9 +362,9 @@ TEST(ut_Lvalue, L_value_2)
     int i = 0;
     vector<int> v = {1,2,3,4,5};
     auto iter = v.begin();
-    MK_PRINT_MSG("Categories(str)       is %c-value", IsRight(Categories(str)));//返回左值引用的函数表达式
-    MK_PRINT_MSG("(str = \"test\")        is %c-value", IsRight(str="test"));//返回左值引用的重载运算符
-    MK_PRINT_MSG("++iter                is %c-value", IsRight(++iter));//返回左值引用的重载运算符
+    MK_PRINT("Categories(str)       is %c-value", IsRight(Categories(str)));//返回左值引用的函数表达式
+    MK_PRINT("(str = \"test\")        is %c-value", IsRight(str="test"));//返回左值引用的重载运算符
+    MK_PRINT("++iter                is %c-value", IsRight(++iter));//返回左值引用的重载运算符
 }
 ```
 
@@ -385,16 +382,16 @@ TEST(ut_Lvalue, L_value_3)
 {
     int a = 10;
     int b = 2;
-    MK_PRINT_MSG("a = b                 is %c-value", IsRight(a = b));  //赋值表达式
-    MK_PRINT_MSG("a += b                is %c-value", IsRight(a += b)); //复合赋值表达式
-    MK_PRINT_MSG("a %%= b                is %c-value", IsRight(a %= b));//复合赋值表达式
+    MK_PRINT("a = b                 is %c-value", IsRight(a = b));  //赋值表达式
+    MK_PRINT("a += b                is %c-value", IsRight(a += b)); //复合赋值表达式
+    MK_PRINT("a %%= b                is %c-value", IsRight(a %= b));//复合赋值表达式
     
-    MK_PRINT_MSG("++a                   is %c-value", IsRight(++a));
-    MK_PRINT_MSG("--a                   is %c-value", IsRight(--a));
+    MK_PRINT("++a                   is %c-value", IsRight(++a));
+    MK_PRINT("--a                   is %c-value", IsRight(--a));
     
     int n = 1;
     int* p = &n;
-    MK_PRINT_MSG("*p                    is %c-value", IsRight(*p));
+    MK_PRINT("*p                    is %c-value", IsRight(*p));
 }
 
 ```
@@ -414,8 +411,8 @@ TEST(ut_Lvalue, L_value_4)
 {
     int array[4] = {0,1,2,3};
     int* p = &array[0];
-    MK_PRINT_MSG("array[2]              is %c-value", IsRight(array[2]));
-    MK_PRINT_MSG("p[2]                  is %c-value", IsRight(p[2]));
+    MK_PRINT("array[2]              is %c-value", IsRight(array[2]));
+    MK_PRINT("p[2]                  is %c-value", IsRight(p[2]));
 }
 
 ```
@@ -444,10 +441,10 @@ TEST(ut_Lvalue, L_value_5)
     };
     
     ncObj obj;
-    MK_PRINT_MSG("obj.n                 is %c-value", IsRight(obj.n));
+    MK_PRINT("obj.n                 is %c-value", IsRight(obj.n));
     
     ncObj* p = &obj;
-    MK_PRINT_MSG("p->n                  is %c-value", IsRight(p->n));
+    MK_PRINT("p->n                  is %c-value", IsRight(p->n));
 }
 
 //a 为右值且 m 为非引用类型的非静态数据成员的情况在 C++11 前为纯右值,C++11起为亡值
@@ -474,10 +471,10 @@ TEST(ut_Lvalue, L_value_6)
     int ncObj::*p = &ncObj::n;
     
     ncObj obj;
-    MK_PRINT_MSG("obj.*p                is %c-value", IsRight(obj.*p));
+    MK_PRINT("obj.*p                is %c-value", IsRight(obj.*p));
     
     ncObj* pObj = &obj;
-    MK_PRINT_MSG("pObj->*p              is %c-value", IsRight(pObj->*p));
+    MK_PRINT("pObj->*p              is %c-value", IsRight(pObj->*p));
 }
 
 ```
@@ -498,8 +495,8 @@ TEST(ut_Lvalue, L_value_6)
 TEST(ut_Lvalue, L_value_7)
 {
     int b = 100;
-    MK_PRINT_MSG("a,b                   is %c-value", IsRight((12, b)));
-    MK_PRINT_MSG("a?b:c                 is %c-value", IsRight((true?b:b)));
+    MK_PRINT("a,b                   is %c-value", IsRight((12, b)));
+    MK_PRINT("a?b:c                 is %c-value", IsRight((true?b:b)));
 }
 
 ```
@@ -519,7 +516,7 @@ TEST(ut_Lvalue, L_value_7)
 ```c++
 TEST(ut_Lvalue, L_value_8)
 {
-    MK_PRINT_MSG("\"hello world\"       is %c-value", IsRight("hello world"));
+    MK_PRINT("\"hello world\"       is %c-value", IsRight("hello world"));
 }
 
 ```
@@ -539,7 +536,7 @@ TEST(ut_Lvalue, L_value_8)
 TEST(ut_Lvalue, L_value_9)
 {
     int x = 100;
-    MK_PRINT_MSG("static_cast<int&>(x)  is %c-value", IsRight(static_cast<int&>(x)));
+    MK_PRINT("static_cast<int&>(x)  is %c-value", IsRight(static_cast<int&>(x)));
 }
 
 ```
@@ -572,8 +569,8 @@ funcType fun_returnRvalueRef()
 
 TEST(ut_Lvalue, L_value_10)
 {
-    MK_PRINT_MSG("fun_returnRvalueRef            is %c-value", IsRight(fun_returnRvalueRef()));
-    MK_PRINT_MSG("static_cast<void(&&)()>(func)  is %c-value", IsRight(static_cast<void(&&)()>(func) ));
+    MK_PRINT("fun_returnRvalueRef            is %c-value", IsRight(fun_returnRvalueRef()));
+    MK_PRINT("static_cast<void(&&)()>(func)  is %c-value", IsRight(static_cast<void(&&)()>(func) ));
 }
 
 /*
@@ -604,10 +601,10 @@ TEST(ut_Lvalue, L_value_10)
 ```c++
 TEST(ut_pRvalue, pRvalue1)
 {
-    MK_PRINT_MSG("42                    is %c-value", IsRight(42));
-    MK_PRINT_MSG("true                  is %c-value", IsRight(true));
-    MK_PRINT_MSG("nullptr               is %c-value", IsRight(nullptr));
-    MK_PRINT_MSG("string()              is %c-value", IsRight(string("")));
+    MK_PRINT("42                    is %c-value", IsRight(42));
+    MK_PRINT("true                  is %c-value", IsRight(true));
+    MK_PRINT("nullptr               is %c-value", IsRight(nullptr));
+    MK_PRINT("string()              is %c-value", IsRight(string("")));
 }
 /*
 源码路径:
@@ -630,11 +627,11 @@ rvaluereference\valueType\ut_pRvalue.cpp
 ```c++
 TEST(ut_pRvalue, pRvalue2)
 {
-    MK_PRINT_MSG("pow(2,2)              is %c-value", IsRight(pow(2,2)));
+    MK_PRINT("pow(2,2)              is %c-value", IsRight(pow(2,2)));
     
     vector<int> v = {1,2,3,4,5};
     auto iter = v.begin();
-    MK_PRINT_MSG("iter++                is %c-value", IsRight(iter++));
+    MK_PRINT("iter++                is %c-value", IsRight(iter++));
 }
 ```
 
@@ -657,8 +654,8 @@ TEST(ut_pRvalue, pRvalue2)
 TEST(ut_pRvalue, pRvalue3)
 {
     int a = 100;
-    MK_PRINT_MSG("a++                   is %c-value", IsRight(a++));
-    MK_PRINT_MSG("a--                   is %c-value", IsRight(a--));
+    MK_PRINT("a++                   is %c-value", IsRight(a++));
+    MK_PRINT("a--                   is %c-value", IsRight(a--));
 }
 ```
 
@@ -686,20 +683,20 @@ TEST(ut_pRvalue, pRvalue4)
     int a = 10;
     int b = 2;
     
-    MK_PRINT_MSG("a+b                   is %c-value", IsRight(a+b));
-    MK_PRINT_MSG("a%%b                   is %c-value", IsRight(a%b));
-    MK_PRINT_MSG("a&b                   is %c-value", IsRight(a&b));
-    MK_PRINT_MSG("a<<b                  is %c-value", IsRight(a<<b));
+    MK_PRINT("a+b                   is %c-value", IsRight(a+b));
+    MK_PRINT("a%%b                   is %c-value", IsRight(a%b));
+    MK_PRINT("a&b                   is %c-value", IsRight(a&b));
+    MK_PRINT("a<<b                  is %c-value", IsRight(a<<b));
     
-    MK_PRINT_MSG("a&&b                  is %c-value", IsRight(a&&b));
-    MK_PRINT_MSG("a||b                  is %c-value", IsRight(a||b));
-    MK_PRINT_MSG("!a                    is %c-value", IsRight(!a));
+    MK_PRINT("a&&b                  is %c-value", IsRight(a&&b));
+    MK_PRINT("a||b                  is %c-value", IsRight(a||b));
+    MK_PRINT("!a                    is %c-value", IsRight(!a));
     
-    MK_PRINT_MSG("a<b                   is %c-value", IsRight(a<b));
-    MK_PRINT_MSG("a==b                  is %c-value", IsRight(a==b));
-    MK_PRINT_MSG("a>=b                  is %c-value", IsRight(a>=b));
+    MK_PRINT("a<b                   is %c-value", IsRight(a<b));
+    MK_PRINT("a==b                  is %c-value", IsRight(a==b));
+    MK_PRINT("a>=b                  is %c-value", IsRight(a>=b));
     
-    MK_PRINT_MSG("&a                    is %c-value", IsRight(&a));
+    MK_PRINT("&a                    is %c-value", IsRight(&a));
 }
 ```
 
@@ -730,12 +727,12 @@ TEST(ut_pRvalue, pRvalue5)
     };
     
     ncObj obj;
-    MK_PRINT_MSG("obj.NC_OBJ_ENUM0      is %c-value", IsRight(obj.NC_OBJ_ENUM0));//成员枚举符:右值
-    MK_PRINT_MSG("obj.fun()             is %c-value", IsRight(obj.fun()));//非静态成员函数表达式:右值
+    MK_PRINT("obj.NC_OBJ_ENUM0      is %c-value", IsRight(obj.NC_OBJ_ENUM0));//成员枚举符:右值
+    MK_PRINT("obj.fun()             is %c-value", IsRight(obj.fun()));//非静态成员函数表达式:右值
     
     ncObj* p = &obj;
-    MK_PRINT_MSG("p->NC_OBJ_ENUM0      is %c-value", IsRight(p->NC_OBJ_ENUM0));
-    MK_PRINT_MSG("p->fun()             is %c-value", IsRight(p->fun()));
+    MK_PRINT("p->NC_OBJ_ENUM0      is %c-value", IsRight(p->NC_OBJ_ENUM0));
+    MK_PRINT("p->fun()             is %c-value", IsRight(p->fun()));
 }
 ```
 
@@ -771,10 +768,10 @@ TEST(ut_pRvalue, pRvalue6)
     
     ncObj obj;
     //这里如果函数返回void会编译错误,但是返回void的函数表达式也是右值
-    MK_PRINT_MSG("obj.*pFun             is %c-value", IsRight((obj.*pFun)()) ); 
+    MK_PRINT("obj.*pFun             is %c-value", IsRight((obj.*pFun)()) ); 
     
     ncObj* pObj = &obj;
-    MK_PRINT_MSG("pObj->*pFun           is %c-value", IsRight((pObj->*pFun)()));
+    MK_PRINT("pObj->*pFun           is %c-value", IsRight((pObj->*pFun)()));
 }
 ```
 
@@ -799,8 +796,8 @@ TEST(ut_pRvalue, pRvalue6)
 TEST(ut_pRvalue, pRvalue7)
 {
     int a = 100;
-    MK_PRINT_MSG("a,b                   is %c-value", IsRight((a++, 12)));
-    MK_PRINT_MSG("a?b:c                 is %c-value", IsRight((true?32:12)));
+    MK_PRINT("a,b                   is %c-value", IsRight((a++, 12)));
+    MK_PRINT("a?b:c                 is %c-value", IsRight((true?32:12)));
 }
 ```
 
@@ -824,9 +821,9 @@ TEST(ut_pRvalue, pRvalue7)
 TEST(ut_pRvalue, pRvalue8)
 {
     short x = 100;
-    MK_PRINT_MSG("static_cast<int>(x)   is %c-value", IsRight(static_cast<int>(x)));
-    MK_PRINT_MSG("std::string{}         is %c-value", IsRight(std::string{}));
-    MK_PRINT_MSG("(int)42               is %c-value", IsRight((int)42));
+    MK_PRINT("static_cast<int>(x)   is %c-value", IsRight(static_cast<int>(x)));
+    MK_PRINT("std::string{}         is %c-value", IsRight(std::string{}));
+    MK_PRINT("(int)42               is %c-value", IsRight((int)42));
 }
 ```
 
@@ -852,7 +849,7 @@ TEST(ut_pRvalue, pRvalue9)
     {
         void fun()
         {
-            MK_PRINT_MSG("this                       is %c-value", IsRight(this));
+            MK_PRINT("this                       is %c-value", IsRight(this));
         }
     };
     
@@ -885,7 +882,7 @@ TEST(ut_pRvalue, pRvalue10)
         NC_OBJ_ENUM1
     };
     
-    MK_PRINT_MSG("NC_OBJ_ENUM0          is %c-value", IsRight(NC_OBJ_ENUM0));
+    MK_PRINT("NC_OBJ_ENUM0          is %c-value", IsRight(NC_OBJ_ENUM0));
 }
 ```
 
@@ -908,11 +905,11 @@ TEST(ut_pRvalue, pRvalue10)
 ```c++
 TEST(ut_pRvalue, pRvalue11)
 {
-    MK_PRINT_MSG("[](int x){ return x * x; }  is %c-value", IsRight([](int x){ return x * x; }) );
+    MK_PRINT("[](int x){ return x * x; }  is %c-value", IsRight([](int x){ return x * x; }) );
     
     auto&& lam = [](int x){ return x * x; };
     bool isRValueRef = std::is_rvalue_reference<decltype(lam)>::value;
-    MK_PRINT_MSG("isRValueRef = %d", isRValueRef);
+    MK_PRINT("isRValueRef = %d", isRValueRef);
 }
 ```
 
@@ -944,7 +941,7 @@ TEST(ut_pRvalue, pRvalue11)
 TEST(ut_xRvalue, xRvalue1)
 {
     int x = 100;
-    MK_PRINT_MSG("std::move(x)          is %c-value", IsRight(std::move(x)));
+    MK_PRINT("std::move(x)          is %c-value", IsRight(std::move(x)));
 }
 /*
 源码路径:
@@ -973,8 +970,8 @@ rvaluereference\valueType\ut_xRvalue.cpp
 TEST(ut_xRvalue, xRvalue2)
 {
     using arrType = int[4];
-    MK_PRINT_MSG("arrType{0,1,2,3}      is %c-value", IsRight(arrType{0,1,2,3}) );
-    MK_PRINT_MSG("arrType{0,1,2,3}[2]   is %c-value", IsRight(arrType{0,1,2,3}[2]));
+    MK_PRINT("arrType{0,1,2,3}      is %c-value", IsRight(arrType{0,1,2,3}) );
+    MK_PRINT("arrType{0,1,2,3}[2]   is %c-value", IsRight(arrType{0,1,2,3}[2]));
 }
 ```
 
@@ -1004,7 +1001,7 @@ TEST(ut_xRvalue, xRvalue3)
         int fun(){return 0;}
     };
     
-    MK_PRINT_MSG("ncObj().n             is %c-value", IsRight(ncObj().n));///在vs2015测试, 这里是左值,g++测试是右值
+    MK_PRINT("ncObj().n             is %c-value", IsRight(ncObj().n));///在vs2015测试, 这里是左值,g++测试是右值
 }
 ```
 
@@ -1035,7 +1032,7 @@ TEST(ut_xRvalue, xRvalue4)
     };
     
     int ncObj::*pn = &ncObj::n;
-    MK_PRINT_MSG("ncObj().*pn           is %c-value", IsRight(ncObj().*pn));///在vs2015测试, 这里是左值,g++测试是右值
+    MK_PRINT("ncObj().*pn           is %c-value", IsRight(ncObj().*pn));///在vs2015测试, 这里是左值,g++测试是右值
 }
 ```
 
@@ -1062,7 +1059,7 @@ TEST(ut_xRvalue, xRvalue5)
 {
     string a = "hello";
     string b = "world";
-    MK_PRINT_MSG("a?b:c                 is %c-value", IsRight((true?std::move(a):std::move(b))));
+    MK_PRINT("a?b:c                 is %c-value", IsRight((true?std::move(a):std::move(b))));
 }
 ```
 
@@ -1079,7 +1076,7 @@ TEST(ut_xRvalue, xRvalue5)
 TEST(ut_xRvalue, xRvalue6)
 {
     char x = 'a';
-    MK_PRINT_MSG("static_cast<char&&>(x)          is %c-value", IsRight(static_cast<char&&>(x)));
+    MK_PRINT("static_cast<char&&>(x)          is %c-value", IsRight(static_cast<char&&>(x)));
 }
 ```
 
@@ -1121,13 +1118,13 @@ int&& func_R()
 TEST(ut_RvalueRef, RvalueRef1)
 {
     int&& num = 100;
-    MK_PRINT_MSG("100             is %c-value", IsRight(100));//字面量
-    MK_PRINT_MSG("num             is %c-value", IsRight(num));//具名的[右值引用]类型的[左值]变量
+    MK_PRINT("100             is %c-value", IsRight(100));//字面量
+    MK_PRINT("num             is %c-value", IsRight(num));//具名的[右值引用]类型的[左值]变量
     
     int&& result = func_R();
-    MK_PRINT_MSG("func_R          is %c-value", IsRight(func_R));//函数名(函数指针)
-    MK_PRINT_MSG("func_R()        is %c-value", IsRight(func_R() ));//函数返回值-匿名对象
-    MK_PRINT_MSG("result          is %c-value", IsRight(result));//函数返回值-具名对象
+    MK_PRINT("func_R          is %c-value", IsRight(func_R));//函数名(函数指针)
+    MK_PRINT("func_R()        is %c-value", IsRight(func_R() ));//函数返回值-匿名对象
+    MK_PRINT("result          is %c-value", IsRight(result));//函数返回值-具名对象
 }
 /*
 源码路径:
@@ -1231,20 +1228,20 @@ TEST(ut_metadataObj, push_back)
         ncNewCustomString str("some string...");
         obj.push_back(str);
     }
-    MK_PRINT_MSG("push_back--1 usedSecond = %.2f\n", usedSecond);
+    MK_PRINT("push_back--1 usedSecond = %.2f\n", usedSecond);
     
     {
         mkUniqueProfilePoint point(usedSecond);
         ncNewCustomString str("some string...");
         obj.push_back(std::move(str));
     }
-    MK_PRINT_MSG("push_back--2 usedSecond = %.2f\n", usedSecond);
+    MK_PRINT("push_back--2 usedSecond = %.2f\n", usedSecond);
     
     {
         mkUniqueProfilePoint point(usedSecond);
         obj.push_back(ncNewCustomString("some string..."));
     }
-    MK_PRINT_MSG("push_back--3 usedSecond = %.2f\n", usedSecond);
+    MK_PRINT("push_back--3 usedSecond = %.2f\n", usedSecond);
 }
 
 /*
@@ -1295,7 +1292,7 @@ private:
 //指针成员变量深拷贝memcopy---线性时间复杂度
 ncMetadataObj::ncMetadataObj(const ncMetadataObj& source)
 {
-    MK_PRINT_MSG("--(const ncMetadataObj& source)");
+    MK_PRINT("--(const ncMetadataObj& source)");
     
     _oldCustomStr = source._oldCustomStr;
     _newCustomStr = source._newCustomStr;
@@ -1310,7 +1307,7 @@ ncMetadataObj::ncMetadataObj(const ncMetadataObj& source)
 //指针成员变量浅拷贝----常量时间复杂度;
 ncMetadataObj::ncMetadataObj(ncMetadataObj&& source)
 {
-    MK_PRINT_MSG("--(ncMetadataObj&& source)");
+    MK_PRINT("--(ncMetadataObj&& source)");
     
     _oldCustomStr = std::move(source._oldCustomStr);
     _newCustomStr = std::move(source._newCustomStr);
@@ -1397,13 +1394,13 @@ TEST(ut_metadataObj, return_Value)
         mkUniqueProfilePoint point(usedSecond);
         GetOldString();
     }
-    MK_PRINT_MSG("usedSecond = %.2f\n", usedSecond);
+    MK_PRINT("usedSecond = %.2f\n", usedSecond);
     
     {
         mkUniqueProfilePoint point(usedSecond);
         GetNewString();
     }
-    MK_PRINT_MSG("usedSecond = %.2f\n", usedSecond);
+    MK_PRINT("usedSecond = %.2f\n", usedSecond);
 }
 ```
 
@@ -1423,14 +1420,14 @@ TEST(ut_metadataObj, constructor)
         ncMetadataObj obj1(ncOldCustomString("some string..."));
         obj1.fun();
     }
-    MK_PRINT_MSG("obj1 usedSecond = %.2f\n", usedSecond);
+    MK_PRINT("obj1 usedSecond = %.2f\n", usedSecond);
     
     {
         mkUniqueProfilePoint point(usedSecond);
         ncMetadataObj obj2(ncNewCustomString("some string..."));
         obj2.fun();
     }
-    MK_PRINT_MSG("obj2 usedSecond = %.2f", usedSecond);
+    MK_PRINT("obj2 usedSecond = %.2f", usedSecond);
 }
 ```
 
@@ -1475,10 +1472,10 @@ TEST(ut_UniversalRef, auto)
 {
     int n = 100;
     auto&& v1 = n;
-    MK_PRINT_MSG("type of v1 is  %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());
+    MK_PRINT("type of v1 is  %s", type_id_with_cvr<decltype(v1)>().pretty_name().c_str());
     
     auto&& v2 = 512;
-    MK_PRINT_MSG("type of v2 is  %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());
+    MK_PRINT("type of v2 is  %s", type_id_with_cvr<decltype(v2)>().pretty_name().c_str());
 }
 
 /*
@@ -1498,7 +1495,7 @@ rvaluereference\referenceType\ut_UniversalRef.cpp
 template<typename T> 
 void fun_universal_a(T&& param_a)
 {
-    MK_PRINT_MSG("T is %s, type of param_a is %s", 
+    MK_PRINT("T is %s, type of param_a is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_a)>().pretty_name().c_str());
 }
@@ -1531,7 +1528,7 @@ TEST(ut_UniversalRef, fun_universal_a)
 ```c++
 void fun_universal_b(int&& param_b)
 {
-    MK_PRINT_MSG("type of param_b is %s",   type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
+    MK_PRINT("type of param_b is %s",   type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
 }
 TEST(ut_UniversalRef, fun_universal_b)
 {
@@ -1550,7 +1547,7 @@ TEST(ut_UniversalRef, fun_universal_b)
 template<typename T> 
 void fun_universal_c(const T&& param_c)
 {
-    MK_PRINT_MSG("T is %s, type of param_c is %s", 
+    MK_PRINT("T is %s, type of param_c is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_c)>().pretty_name().c_str());
 }
@@ -1586,7 +1583,7 @@ TEST(ut_UniversalRef, fun_universal_c)
 template<typename T>
 void fun_universal_d(vector<T>&& param_d)
 {
-    MK_PRINT_MSG("T is %s, type of param_d is %s", 
+    MK_PRINT("T is %s, type of param_d is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_d)>().pretty_name().c_str());
 }
@@ -1611,12 +1608,12 @@ struct ncLittleObj
 {
     ncLittleObj(int&& a, int&& b)
     {
-        MK_PRINT_MSG("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
+        MK_PRINT("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
     }
     
     ncLittleObj(const int& a, const int& b)
     {
-        MK_PRINT_MSG("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
+        MK_PRINT("type of a is %s", type_id_with_cvr<decltype(a)>().pretty_name().c_str());
     }
 };
 
@@ -1629,7 +1626,7 @@ public:
     //所以在调用时push_back函数时并不存在类型推导。
     void push_back(T&& param)
     {
-        MK_PRINT_MSG("T is %s, type of param is %s", 
+        MK_PRINT("T is %s, type of param is %s", 
             type_id_with_cvr<T>().pretty_name().c_str(),
             type_id_with_cvr<decltype(param)>().pretty_name().c_str());
     }
@@ -1701,16 +1698,16 @@ TEST(ut_ReferenceCollapsing, typedef)
     int n = 100;
     
     lRef&  r1 = n;
-    MK_PRINT_MSG("type of r1 is %s", type_id_with_cvr<decltype(r1)>().pretty_name().c_str());
+    MK_PRINT("type of r1 is %s", type_id_with_cvr<decltype(r1)>().pretty_name().c_str());
             
     lRef&& r2 = n;
-    MK_PRINT_MSG("type of r2 is %s", type_id_with_cvr<decltype(r2)>().pretty_name().c_str());
+    MK_PRINT("type of r2 is %s", type_id_with_cvr<decltype(r2)>().pretty_name().c_str());
     
     rRef&  r3 = n; 
-    MK_PRINT_MSG("type of r3 is %s", type_id_with_cvr<decltype(r3)>().pretty_name().c_str());
+    MK_PRINT("type of r3 is %s", type_id_with_cvr<decltype(r3)>().pretty_name().c_str());
     
     rRef&& r4 = 1;
-    MK_PRINT_MSG("type of r4 is %s", type_id_with_cvr<decltype(r4)>().pretty_name().c_str());
+    MK_PRINT("type of r4 is %s", type_id_with_cvr<decltype(r4)>().pretty_name().c_str());
 }
 ```
 运行结果:<br>
@@ -1727,11 +1724,11 @@ TEST(ut_ReferenceCollapsing, decltype)
     int& v1 = n;
     int&& v2 = 100;
     
-    MK_PRINT_MSG("type of decltype(v1)& is %s", type_id_with_cvr<decltype(v1)&>().pretty_name().c_str());
-    MK_PRINT_MSG("type of decltype(v1)&& is %s", type_id_with_cvr<decltype(v1)&&>().pretty_name().c_str());
+    MK_PRINT("type of decltype(v1)& is %s", type_id_with_cvr<decltype(v1)&>().pretty_name().c_str());
+    MK_PRINT("type of decltype(v1)&& is %s", type_id_with_cvr<decltype(v1)&&>().pretty_name().c_str());
     
-    MK_PRINT_MSG("type of decltype(v2)& is %s", type_id_with_cvr<decltype(v2)&>().pretty_name().c_str());
-    MK_PRINT_MSG("type of decltype(v2)&& is %s", type_id_with_cvr<decltype(v2)&&>().pretty_name().c_str());
+    MK_PRINT("type of decltype(v2)& is %s", type_id_with_cvr<decltype(v2)&>().pretty_name().c_str());
+    MK_PRINT("type of decltype(v2)&& is %s", type_id_with_cvr<decltype(v2)&&>().pretty_name().c_str());
 }
 ```
 运行结果:<br>
@@ -1744,7 +1741,7 @@ TEST(ut_ReferenceCollapsing, decltype)
 template<typename T> 
 void fun_collapsing_a(T& param_a)
 {
-    MK_PRINT_MSG("T is %s , type of param_a is %s", 
+    MK_PRINT("T is %s , type of param_a is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_a)>().pretty_name().c_str());
 }
@@ -1771,7 +1768,7 @@ TEST(ut_ReferenceCollapsing, template1)
 template<typename T> 
 void fun_collapsing_b(T&& param_b)
 {
-    MK_PRINT_MSG("T is %s , type of param_b is %s", 
+    MK_PRINT("T is %s , type of param_b is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_b)>().pretty_name().c_str());
 }
@@ -1818,7 +1815,7 @@ TEST(ut_ReferenceCollapsing, template2)
 template<typename T> 
 void fun_collapsing_c(const T&& param_c)
 {
-    MK_PRINT_MSG("T is %s , type of param_c is %s", 
+    MK_PRINT("T is %s , type of param_c is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param_c)>().pretty_name().c_str());
 }
@@ -1939,19 +1936,19 @@ TEST(ut_move, my_remove_reference)
    {
         using ReturnType = my_remove_reference<int>::type&&;//int&&
         int id = my_remove_reference<int>::id;//1
-        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+        MK_PRINT("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
    }
    
    {
         using ReturnType = my_remove_reference<int&>::type&&;//int&&
         int id = my_remove_reference<int&>::id;//2
-        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+        MK_PRINT("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
    }
    
    {
         using ReturnType = my_remove_reference<int&&>::type&&;//int&&
         int id = my_remove_reference<int&&>::id;//3
-        MK_PRINT_MSG("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
+        MK_PRINT("id = %d, ReturnType is %s", id, type_id_with_cvr<ReturnType>().pretty_name().c_str());
    }
 }
 ```
@@ -1965,7 +1962,7 @@ TEST(ut_move, my_remove_reference)
 template<typename T>
 typename my_remove_reference<T>::type&& my_move(T&& param)
 {
-    MK_PRINT_MSG("T is %s, type of param is %s", 
+    MK_PRINT("T is %s, type of param is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(), 
         type_id_with_cvr<decltype(param)>().pretty_name().c_str());
      
@@ -1977,19 +1974,19 @@ TEST(ut_move, my_move)
 {
     int n = 5;
     auto&& ret1 = my_move(n);
-    MK_PRINT_MSG("type of ret1 is %s\n", type_id_with_cvr<decltype(ret1)>().pretty_name().c_str());
+    MK_PRINT("type of ret1 is %s\n", type_id_with_cvr<decltype(ret1)>().pretty_name().c_str());
     
     const int m = 12;
     auto&& ret2 = my_move(m);
-    MK_PRINT_MSG("type of ret2 is %s\n", type_id_with_cvr<decltype(ret2)>().pretty_name().c_str());
+    MK_PRINT("type of ret2 is %s\n", type_id_with_cvr<decltype(ret2)>().pretty_name().c_str());
     
     auto&& ret3 = my_move(100);
-    MK_PRINT_MSG("type of ret3 is %s\n", type_id_with_cvr<decltype(ret3)>().pretty_name().c_str());
+    MK_PRINT("type of ret3 is %s\n", type_id_with_cvr<decltype(ret3)>().pretty_name().c_str());
     
     int n2 = 11;
     int& nL = n2;
     auto&& ret4 = my_move(nL);
-    MK_PRINT_MSG("type of ret4 is %s\n", type_id_with_cvr<decltype(ret4)>().pretty_name().c_str());
+    MK_PRINT("type of ret4 is %s\n", type_id_with_cvr<decltype(ret4)>().pretty_name().c_str());
 }
 ```
 执行结果:<br>
@@ -2035,7 +2032,7 @@ T&& forward(typename std::remove_reference<T>::type& param)
 template<typename T>
 T&& my_forward(typename std::remove_reference<T>::type& param)
 {
-    MK_PRINT_MSG("T is %s, T&& is %s, type of param is %s", 
+    MK_PRINT("T is %s, T&& is %s, type of param is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<T&&>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param)>().pretty_name().c_str());
@@ -2046,7 +2043,7 @@ T&& my_forward(typename std::remove_reference<T>::type& param)
 template<typename T>
 void funcAAA(T&& param)
 {
-    MK_PRINT_MSG("T is %s, type of param is %s", 
+    MK_PRINT("T is %s, type of param is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param)>().pretty_name().c_str());
         
@@ -2056,7 +2053,7 @@ void funcAAA(T&& param)
 template<typename T>
 void funcBBB(T&& param)
 {
-    MK_PRINT_MSG("T is %s, type of param is %s", 
+    MK_PRINT("T is %s, type of param is %s", 
         type_id_with_cvr<T>().pretty_name().c_str(),
         type_id_with_cvr<decltype(param)>().pretty_name().c_str());
 }

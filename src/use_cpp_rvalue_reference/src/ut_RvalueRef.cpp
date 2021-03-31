@@ -20,7 +20,7 @@ info:
     [右值引用]
 ***************************************************************************************************/
 
-#include <mkheaders.h>
+#include <markcore.h>
 #include <gtest/gtest.h>
 
 template<class T>
@@ -44,13 +44,13 @@ int&& func_R()
 TEST(ut_RvalueRef, RvalueRef1)
 {
     int&& num = 100;
-    MK_PRINT_MSG("100             is %c-value", IsRight(100));//字面量
-    MK_PRINT_MSG("num             is %c-value", IsRight(num));//具名的[右值引用]类型的[左值]变量
+    MK_PRINT("100             is %c-value", IsRight(100));//字面量
+    MK_PRINT("num             is %c-value", IsRight(num));//具名的[右值引用]类型的[左值]变量
     
     int&& result = func_R();
-    MK_PRINT_MSG("func_R          is %c-value", IsRight(func_R));//函数名(函数指针)
-    MK_PRINT_MSG("func_R()        is %c-value", IsRight(func_R() ));//函数返回值-匿名对象
-    MK_PRINT_MSG("result          is %c-value", IsRight(result));//函数返回值-具名对象
+    MK_PRINT("func_R          is %c-value", IsRight(func_R));//函数名(函数指针)
+    MK_PRINT("func_R()        is %c-value", IsRight(func_R() ));//函数返回值-匿名对象
+    MK_PRINT("result          is %c-value", IsRight(result));//函数返回值-具名对象
 }
 
 

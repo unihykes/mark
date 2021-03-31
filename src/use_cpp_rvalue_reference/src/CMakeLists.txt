@@ -1,4 +1,4 @@
-PROJECT(blog_r-reference)
+PROJECT(use_cpp_rvalue_reference)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
@@ -6,19 +6,17 @@ CMAKE_POLICY(VERSION 2.8)
 INCLUDE($ENV{MK_MAKE}/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
-SET(TARGET_NAME blog_r-reference)
+SET(TARGET_NAME use_cpp_rvalue_reference)
 SET(AUTO_RUN OFF)
 
 #“¿¿µø‚
 SET(NEED_GTEST TRUE)
-SET(NEED_BOOST_HPP TRUE)
+SET(NEED_BENCHMARK TRUE)
+SET(NEED_BOOST_FULL TRUE)
+SET(NEED_MARKCORE TRUE)
 
 # ±‡“Îƒø¬º
-ADD_SOURCE_DIRS(./valueType;
-                ./referenceType;
-                ./usage;
-                ./collapsing;
-                ./move_forward;)
+ADD_SOURCE_DIRS(./usage;)
 
 IF(WIN32)
 ELSE()
