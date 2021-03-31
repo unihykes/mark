@@ -24,9 +24,6 @@ info:
 #include "benchmark_helpers.h"
 
 MK_DEFINE_EXEC_INSTANCE(use_markcore, use_markcore, 1, 1, 1);
-////////////////////////////////////////////////////////////////////////////////
-// main
-//
 
 int main(int argc, char** argv) 
 {

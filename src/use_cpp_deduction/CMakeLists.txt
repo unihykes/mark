@@ -1,4 +1,4 @@
-PROJECT(blog_deduction_dir)
+PROJECT(use_cpp_deduction_root)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)

@@ -17,16 +17,6 @@ Author:liu.hao(33852613@163.com)
 Time:2018-5
 
 info:
-
-***************************************************************************************************/
-
-#include <mkheaders.h>
-#include <gtest/gtest.h>
-
-#include <boost/type_index.hpp>
-using boost::typeindex::type_id_with_cvr;
-
-/**
     对于:函数模板
     T的类型推导,不仅依赖实参expr的类型,还依赖形参ParamType的类型,
     具体分三种情况:
@@ -40,7 +30,12 @@ using boost::typeindex::type_id_with_cvr;
     }
     
     func(expr);
-*/
+***************************************************************************************************/
+
+#include <markcore.h>
+#include <gtest/gtest.h>
+#include <boost/type_index.hpp>
+using boost::typeindex::type_id_with_cvr;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
@@ -51,15 +46,13 @@ using boost::typeindex::type_id_with_cvr;
     若实参expr具有引用类型,先将引用部分忽略;
     然后,对实参expr和形参ParamType类型执行模式匹配,决定T的类型;
 */
-
-
 template<typename T>
 void func1(T& param)
 {
-    MK_PRINT_MSG("T is : %s", type_id_with_cvr<T>().pretty_name().c_str());
+    MK_PRINT("T is : %s", type_id_with_cvr<T>().pretty_name().c_str());
 }
 
-TEST(ut_deduction, func1)
+TEST(use_template, func1)
 {
     int x = 11;
     const int cx = x;
@@ -74,10 +67,10 @@ TEST(ut_deduction, func1)
 template<typename T>
 void func2(const T& param)
 {
-    MK_PRINT_MSG("T is : %s", type_id_with_cvr<T>().pretty_name().c_str());
+    MK_PRINT("T is : %s", type_id_with_cvr<T>().pretty_name().c_str());
 }
 
-TEST(ut_deduction, func2)
+TEST(use_template, func2)
 {
     int x = 11;
     const int cx = x;
@@ -101,10 +94,10 @@ TEST(ut_deduction, func2)
 template<typename T>
 void func3(T&& param)
 {
-    MK_PRINT_MSG("T is : %s", type_id_with_cvr<T>().pretty_name().c_str());
+    MK_PRINT("T is : %s", type_id_with_cvr<T>().pretty_name().c_str());
 }
 
-TEST(ut_deduction, func3)
+TEST(use_template, func3)
 {
     int x = 11;
     const int cx = x;
@@ -129,10 +122,10 @@ TEST(ut_deduction, func3)
 template<typename T>
 void func4(T param)
 {
-    MK_PRINT_MSG("T is : %s", type_id_with_cvr<T>().pretty_name().c_str());
+    MK_PRINT("T is : %s", type_id_with_cvr<T>().pretty_name().c_str());
 }
 
-TEST(ut_deduction, func4)
+TEST(use_template, func4)
 {
     int x = 11;
     const int cx = x;
