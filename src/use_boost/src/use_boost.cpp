@@ -21,8 +21,6 @@ info:
 ***************************************************************************************************/
 #include <markcore.h>
 #include <gtest/gtest.h>
-
-#define BOOST_TIMER_SOURCE 
 #include <boost/timer/timer.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/atomic/atomic.hpp>
