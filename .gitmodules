@@ -55,3 +55,6 @@
 [submodule "3rd_Party/benchmark/benchmark"]
 	path = 3rd_Party/benchmark/benchmark
 	url = https://github.com/google/benchmark.git
+[submodule "3rd_Party/utfcpp/utfcpp"]
+	path = 3rd_Party/utfcpp/utfcpp
+	url = https://github.com/nemtrif/utfcpp.git
