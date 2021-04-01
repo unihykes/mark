@@ -14,25 +14,28 @@ INCLUDE_DIRECTORIES(${BOOST_ROOT})
 IF(WIN32)
     # windows下强制生成.lib文件,否则无法被link
     ADD_DEFINITIONS("-D__MAKE_MK_DLL__")
-    ADD_SOURCE_DIRS(./)
+    set(MK_BUILD_SOURCE_FILES ${MK_BUILD_SOURCE_FILES} boost_full.cpp)
 ENDIF()
 
 #宏定义
-ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB
-                -DBOOST_ALL_DYN_LINK
-                -DBOOST_THREAD_BUILD_DLL=1
+set(MK_DEFINITIONS_PUBLIC ${MK_DEFINITIONS_PUBLIC} BOOST_ATOMIC_NO_LIB BOOST_ALL_DYN_LINK)
+ADD_DEFINITIONS(-DBOOST_THREAD_BUILD_DLL=1
                 -DBOOST_ATOMIC_DYN_LINK=1
                 -DBOOST_SYSTEM_NO_DEPRECATED
                 )
 
 #atomic
-ADD_DEFINITIONS(-DBOOST_ATOMIC_SOURCE)
+#public-define
+set(MK_DEFINITIONS_PUBLIC ${MK_DEFINITIONS_PUBLIC} BOOST_ATOMIC_DYN_LINK)
+#private-define
+set(MK_DEFINITIONS_PRIVATE ${MK_DEFINITIONS_PRIVATE} BOOST_ATOMIC_SOURCE)
 IF(UNIX)
-    #需要安装openssl:yum -y install openssl-devel
     INCLUDE_DIRECTORIES(${BOOST_ROOT}/libs/atomic/src)
-    ADD_SOURCE_DIRS(${BOOST_ROOT}/libs/atomic/src)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse -msse2 -msse3 -mssse3 -msse4.1")
-    SET(EXCLUDE_SOURCE_FILES ${EXCLUDE_SOURCE_FILES} ${BOOST_ROOT}/libs/atomic/src/wait_ops_windows.cpp)
+    set(MK_BUILD_SOURCE_FILES ${MK_BUILD_SOURCE_FILES} ${BOOST_ROOT}/libs/atomic/src/lock_pool.cpp)
+ELSE()
+    INCLUDE_DIRECTORIES(${BOOST_ROOT}/libs/atomic/src)
+    set(MK_BUILD_SOURCE_FILES ${MK_BUILD_SOURCE_FILES} ${BOOST_ROOT}/libs/atomic/src/lock_pool.cpp)
+    set(MK_BUILD_SOURCE_FILES ${MK_BUILD_SOURCE_FILES} ${BOOST_ROOT}/libs/atomic/src/wait_ops_windows.cpp)
 ENDIF()
 
 #chrono
