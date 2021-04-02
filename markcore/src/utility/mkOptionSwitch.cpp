@@ -21,7 +21,7 @@ info:
 ***************************************************************************************************/
 
 #include<mkheaders.h>
-#include "3rdparty/string_utils/string_utility.hpp"
+#include "string/mkString.h"
 #include"mkOptionSwitch.h"
 
 mkOptionSwitch::mkOptionSwitch()
@@ -103,23 +103,23 @@ mkExecOptionSwitch::InitEnv(int argc, char** argv)
     for(int i = 1; i != argc; ++i) {
         string arg(argv[i]);
         
-        if(string_utility<string>::starts_with(arg, "--cmdg")) {
+        if(mkStringHelper::starts_with<string>(arg, "--cmdg")) {
             string gtestArg = "--gtest_filter=";
             gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vGtestArgs.push_back(gtestArg);
         }
-        else if(string_utility<string>::starts_with(arg, "--cmdb")) {
+        else if(mkStringHelper::starts_with<string>(arg, "--cmdb")) {
             string benchmarkArg = "--benchmark_filter=";
             benchmarkArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vBenchmarkArgs.push_back(benchmarkArg);
         }
-        else if(string_utility<string>::starts_with(arg, "--gtest_")) {
+        else if(mkStringHelper::starts_with<string>(arg, "--gtest_")) {
             _vGtestArgs.push_back(arg);
         }
-        else if(string_utility<string>::starts_with(arg, "--benchmark_")) {
+        else if(mkStringHelper::starts_with<string>(arg, "--benchmark_")) {
             _vBenchmarkArgs.push_back(arg);
         }
-        else if(string_utility<string>::starts_with(arg, "--cmd")) {
+        else if(mkStringHelper::starts_with<string>(arg, "--cmd")) {
             string gtestArg = "--gtest_filter=";
             gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vGtestArgs.push_back(gtestArg);

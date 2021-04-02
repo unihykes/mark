@@ -27,8 +27,6 @@ info:
 #include "mkheaders.h"
 
 //3rdparty
-#include "3rdparty/string_utils/string_utility.hpp"
-//#include "3rdparty/string_utils/string_convert.hpp"
 #include "3rdparty/cpptoml/cpptoml.h"
 
 //string
@@ -36,8 +34,6 @@ info:
 #include "string/mkString.h"
 
 //utility
-
-
 #include "utility/mkException.h"
 #include "utility/mkTypeCast.h"
 #include "utility/mkTrace.h"

@@ -23,7 +23,3 @@ info:
 #include<mkheaders.h>
 #include"mkString.h"
 
-void
-mkStringHelper::swap(mkString& lhs, mkString& rhs) noexcept
-{
-}

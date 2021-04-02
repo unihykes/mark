@@ -60,8 +60,35 @@ public:
     string operator()(const wchar_t* format, TArgs... args)
     {
         shared_ptr<wchar_t> bufW = mkSharedFormat::fmt(format, args...);
-        shared_ptr<char> buf = mkTypeCast::WcharToChar(bufW.get());
+        shared_ptr<char> buf = WcharToChar(bufW.get());
         return string(buf.get());
+    }
+    
+private:
+    //wchar -> char
+    static shared_ptr<char> WcharToChar(const wchar_t* wp) 
+    {
+        #ifdef __WINDOWS__ 
+            const unsigned int m_encode = CP_ACP;//默认
+            int len = WideCharToMultiByte(m_encode, 0, wp, (int)wcslen(wp), NULL, 0, NULL, NULL);
+            
+            shared_ptr<char> buf = shared_ptr<char>(new char[len+1], std::default_delete<char[]>());
+            WideCharToMultiByte(m_encode, 0, wp, (int)wcslen(wp), buf.get(), len, NULL, NULL);
+            buf.get()[len] = '\0';
+            return buf;
+        #else
+            return nullptr;
+        #endif
+    }
+
+    //char -> wchar
+    static shared_ptr<wchar_t> CharToWchar(const char* wp) 
+    {
+        #ifdef __WINDOWS__ 
+            return nullptr;
+        #else
+            return nullptr;
+        #endif
     }
 };
 
