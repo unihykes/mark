@@ -7,10 +7,11 @@ CMAKE_POLICY(VERSION 2.8)
 ADD_SUBDIRECTORY(gtest)
 
 execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/benchmark/build.sh)
+execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/libressl/build.sh)
+execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/libuuid/build.sh)
+execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gflags/build.sh)
+execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/leveldb/build.sh)
+execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/protobuf/build.sh)
 
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gflags/build.sh
-                COMMAND sh $ENV{MK_PATH}/3rd_Party/leveldb/build.sh
-                COMMAND sh $ENV{MK_PATH}/3rd_Party/protobuf/build.sh)
-                
 #由于与其他库有依赖的顺序问题,brpc需要手动编译
 #execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/brpc/build.sh)

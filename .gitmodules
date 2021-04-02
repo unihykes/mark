@@ -61,3 +61,6 @@
 [submodule "3rd_Party/libressl/libressl"]
 	path = 3rd_Party/libressl/libressl
 	url = https://github.com/libressl-portable/portable.git
+[submodule "3rd_Party/libexpat/libexpat"]
+	path = 3rd_Party/libexpat/libexpat
+	url = https://github.com/libexpat/libexpat.git
