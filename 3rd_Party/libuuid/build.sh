@@ -12,4 +12,4 @@ cd ${BUILD_PATH}
 ${SRC_PATH}/configure --prefix=${PREFIX_PATH}
 make -j4
 make install
-cd ../../
+cd  ${MK_PATH}/3rd_Party
