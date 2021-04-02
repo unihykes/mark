@@ -39,5 +39,6 @@ boostStringHelper::to_upper_copy(const string& src)
 void 
 boostStringHelper::to_upper(string& src)
 {
-    boost::algorithm::to_upper(boost::make_iterator_range(src));
+    //todo:
+    //boost::algorithm::to_upper(boost::make_iterator_range(src));
 }

@@ -99,6 +99,20 @@ IF(${NEED_BRPC})
     SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} brpc)
 ENDIF()
 
+# “¿¿µ ressl
+IF(${NEED_RESSL})
+    include_directories(${MK_DEPS_PKGS}/libressl/include)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/libressl/lib64 crypto ssl tls)
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} crypto ssl tls)
+ENDIF()
+
+# “¿¿µ uuid
+IF(${NEED_UUID})
+    include_directories(${MK_DEPS_PKGS}/libuuid/include/uuid)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/libuuid/lib uuid)
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} uuid)
+ENDIF()
+
 # “¿¿µ makecore
 IF(${NEED_MARKCORE})
 	ADD_DEFINITIONS(-D__USING_MAKECORE__)

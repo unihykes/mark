@@ -58,3 +58,6 @@
 [submodule "3rd_Party/utfcpp/utfcpp"]
 	path = 3rd_Party/utfcpp/utfcpp
 	url = https://github.com/nemtrif/utfcpp.git
+[submodule "3rd_Party/libressl/libressl"]
+	path = 3rd_Party/libressl/libressl
+	url = https://github.com/libressl-portable/portable.git

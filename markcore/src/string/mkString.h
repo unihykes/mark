@@ -23,6 +23,10 @@ info:
 #ifndef __mkString
 #define __mkString
 
+#include <iostream> //for std::hex()
+
+#include <iomanip> //for std::setw()
+
 using mkCharTraits = std::char_traits<mkChar>;
 using mkString = std::basic_string<mkChar>;
 //using mstring_view = std::basic_string_view<mkChar>;
