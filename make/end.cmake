@@ -44,17 +44,17 @@ IF(${NEED_LEVELDB})
 ENDIF()
 
 # “¿¿µ libexpat
-IF(${NEED_EXPAT})
+IF(${NEED_LIBEXPAT})
     include(${MK_PATH}/3rd_Party/libexpat/config.cmake)
 ENDIF()
 
 # “¿¿µ libressl
-IF(${NEED_RESSL})
+IF(${NEED_LIBRESSL})
     include(${MK_PATH}/3rd_Party/libressl/config.cmake)
 ENDIF()
 
 # “¿¿µ libuuid
-IF(${NEED_UUID})
+IF(${NEED_LIBUUID})
     include(${MK_PATH}/3rd_Party/libuuid/config.cmake)
 ENDIF()
 
