@@ -1,0 +1,10 @@
+IF(WIN32)
+    #todo:
+    #include_directories(${MK_PATH}/protobuf/include)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/__build/protobuf/${CMAKE_BUILD_TYPE} protobufd)
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} protobufd)
+ELSE()
+    include_directories(${MK_DEPS_PKGS}/protobuf/include)
+    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/protobuf/lib64 protobuf)
+    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} protobuf)
+ENDIF()

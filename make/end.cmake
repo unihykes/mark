@@ -1,131 +1,91 @@
 MESSAGE([${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}]: "include end.cmake")
 
-#ƒ¨»œ∞¸∫¨“˝”√ƒø¬º
-INCLUDE_DIRECTORIES(${MK_SRC}/markcore/include;)
-
-# ≈‰÷√ boost œ‡πÿ“¿¿µ
-IF(${NEED_BOOST_BCP})
-	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost/boost_bcp_1_75_0)
-	set(MK_DEFINITIONS_PUBLIC ${MK_DEFINITIONS_PUBLIC}  BOOST_ALL_NO_LIB BOOST_ALL_DYN_LINK BOOST_LIB_DIAGNOSTIC)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} boost_bcp)
-    IF(UNIX)
-        LINK_DIRECTORIES(/usr/lib64/openmpi/lib)
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lmpi -lbz2")
-        #-lbz2 -lm
-    ELSE()
-    ENDIF()
-ENDIF()
-IF(${NEED_BOOST_FULL})
-	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/boost/boost_full_1_75_0/boost_1_75_0)
-    set(MK_DEFINITIONS_PUBLIC ${MK_DEFINITIONS_PUBLIC}  BOOST_ALL_NO_LIB BOOST_ALL_DYN_LINK BOOST_LIB_DIAGNOSTIC)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} boost_full)
-    IF(UNIX)
-        LINK_DIRECTORIES(/usr/lib64/openmpi/lib)
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lmpi -lbz2")
-    ELSE()
-    ENDIF()
-ENDIF()
+#“¿¿µ mkheaders
+INCLUDE_DIRECTORIES(${MK_PATH}/markcore/include;)
 
 # “¿¿µ benchmark
 IF(${NEED_BENCHMARK})
-    #helpers
-    include_directories(${MK_PATH}/3rd_Party/benchmark/helpers)
-    IF(WIN32)
-        include_directories(${MK_PATH}/3rd_Party/benchmark/benchmark/include)
-        seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/__build/benchmark/src/${CMAKE_BUILD_TYPE} benchmark)
-    ELSE()
-        include_directories(${MK_DEPS_PKGS}/benchmark/include)
-        seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/benchmark/lib64 benchmark)
-    ENDIF()
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} benchmark)
+    include(${MK_PATH}/3rd_Party/benchmark/config.cmake)
 ENDIF()
 
-# ≈‰÷√ googletest œ‡πÿ“¿¿µ
-IF(${NEED_GTEST})
-	#gtest
-	ADD_DEFINITIONS(-D__USING_GTEST__)
-	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/gtest/googletest/googletest/include)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} gtest)
-    
-	# gmock
-	ADD_DEFINITIONS(-D__USING_GMOCK__)
-	INCLUDE_DIRECTORIES(${MK_PATH}/3rd_Party/gtest/googletest/googlemock/include)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} gmock)
-	IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-		LINK_LIBRARIES(pthread)
-	ENDIF()
-ENDIF()
-
-# “¿¿µ gflags
-IF(${NEED_GFLAGS})
-    include_directories(${MK_DEPS_PKGS}/gflags/include)
-    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/gflags/lib gflags)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} gflags)
-ENDIF()
-
-# “¿¿µ leveldb
-IF(${NEED_LEVELDB})
-    IF(WIN32)
-        include_directories(${MK_PATH}/3rd_Party/leveldb/leveldb/include)
-        seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/__build/leveldb/${CMAKE_BUILD_TYPE} leveldb)
-    ELSE()
-        include_directories(${MK_DEPS_PKGS}/leveldb/include)
-        seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/leveldb/lib64 leveldb)
-    ENDIF()
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} leveldb)
-ENDIF()
-
-# “¿¿µ protobuf
-IF(${NEED_PROTOBUF})
-    IF(WIN32)
-        #todo:
-        #include_directories(${MK_PATH}/protobuf/include)
-        seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/__build/protobuf/${CMAKE_BUILD_TYPE} protobufd)
-        SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} protobufd)
-    ELSE()
-        include_directories(${MK_DEPS_PKGS}/protobuf/include)
-        seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/protobuf/lib64 protobuf)
-        SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} protobuf)
-    ENDIF()
+# “¿¿µ boost
+IF(${NEED_BOOST_FULL})
+	include(${MK_PATH}/3rd_Party/boost/config.cmake)
 ENDIF()
 
 # “¿¿µ brpc
 IF(${NEED_BRPC})
-    include_directories(${MK_DEPS_PKGS}/brpc/include)
-    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/gflags/lib gflags)
-    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/leveldb/lib64 leveldb)
-    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/protobuf/lib64 protobuf)
-    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/brpc/lib64 brpc)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} brpc)
+    include(${MK_PATH}/3rd_Party/brpc/config.cmake)
 ENDIF()
 
-# “¿¿µ ressl
-IF(${NEED_RESSL})
-    include_directories(${MK_DEPS_PKGS}/libressl/include)
-    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/libressl/lib64 crypto ssl tls)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} crypto ssl tls)
+# “¿¿µ crc32c
+IF(${NEED_CRC32C})
+    include(${MK_PATH}/3rd_Party/crc32c/config.cmake)
 ENDIF()
 
-# “¿¿µ uuid
-IF(${NEED_UUID})
-    include_directories(${MK_DEPS_PKGS}/libuuid/include/uuid)
-    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/libuuid/lib uuid)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} uuid)
+# “¿¿µ gflags
+IF(${NEED_GFLAGS})
+    include(${MK_PATH}/3rd_Party/gflags/config.cmake)
 ENDIF()
 
-# “¿¿µ expat
+# “¿¿µ gtest
+IF(${NEED_GTEST})
+    include(${MK_PATH}/3rd_Party/gtest/config.cmake)
+ENDIF()
+
+# “¿¿µ jemalloc
+IF(${NEED_JEMALLOC})
+    include(${MK_PATH}/3rd_Party/jemalloc/config.cmake)
+ENDIF()
+
+# “¿¿µ leveldb
+IF(${NEED_LEVELDB})
+    include(${MK_PATH}/3rd_Party/leveldb/config.cmake)
+ENDIF()
+
+# “¿¿µ libexpat
 IF(${NEED_EXPAT})
-    include_directories(${MK_DEPS_PKGS}/libexpat/include)
-    seek_deps_library(${LIBS_PATH} ${MK_DEPS_PKGS}/libexpat/lib64 expat)
-    SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} expat)
+    include(${MK_PATH}/3rd_Party/libexpat/config.cmake)
+ENDIF()
+
+# “¿¿µ libressl
+IF(${NEED_RESSL})
+    include(${MK_PATH}/3rd_Party/libressl/config.cmake)
+ENDIF()
+
+# “¿¿µ libuuid
+IF(${NEED_UUID})
+    include(${MK_PATH}/3rd_Party/libuuid/config.cmake)
+ENDIF()
+
+# “¿¿µ protobuf
+IF(${NEED_PROTOBUF})
+    include(${MK_PATH}/3rd_Party/protobuf/config.cmake)
+ENDIF()
+
+# “¿¿µ snappy
+IF(${NEED_SNAPPY})
+    include(${MK_PATH}/3rd_Party/snappy/config.cmake)
+ENDIF()
+
+# “¿¿µ thrift
+IF(${NEED_THRIFT})
+    include(${MK_PATH}/3rd_Party/thrift/config.cmake)
+ENDIF()
+
+# “¿¿µ zlib
+IF(${NEED_ZLIB})
+    include(${MK_PATH}/3rd_Party/zlib/config.cmake)
+ENDIF()
+
+# “¿¿µ zstd
+IF(${NEED_ZSTD})
+    include(${MK_PATH}/3rd_Party/zstd/config.cmake)
 ENDIF()
 
 # “¿¿µ makecore
 IF(${NEED_MARKCORE})
-	ADD_DEFINITIONS(-D__USING_MAKECORE__)
-	INCLUDE_DIRECTORIES(${MK_SRC}/markcore/include;
-						${MK_SRC}/markcore/src;)
-	SET(LINK_CUSTOM_LIBS ${LINK_CUSTOM_LIBS} markcore)
+    include(${MK_PATH}/markcore/config.cmake)
 ENDIF()
 
 # …Ë÷√À˘”–µƒ¡¥Ω”ø‚
