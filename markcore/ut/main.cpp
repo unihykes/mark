@@ -30,22 +30,30 @@ int main(int argc, char** argv)
     MK_PRINT("version = 0x%09x", g_moduleInstance->_version->Get());
     auto gbEnv = g_moduleInstance->_switch->InitEnv(argc, argv);
     
+    int result = 0;
+    
     //run gtest
-    if(std::get<0>(gbEnv) == 1) {
-        testing::GTEST_FLAG(list_tests) = true;
+    if(std::get<0>(gbEnv) > 1) {
+        testing::InitGoogleTest(&std::get<0>(gbEnv), std::get<1>(gbEnv));
+        RUN_ALL_TESTS ();
+         ++result;
     }
-    testing::InitGoogleTest(&std::get<0>(gbEnv), std::get<1>(gbEnv));
-    RUN_ALL_TESTS ();
     
     //run benchmark
     if(std::get<2>(gbEnv) > 1) {
         ::benchmark::Initialize(&std::get<2>(gbEnv) , std::get<3>(gbEnv) );
-        if (::benchmark::ReportUnrecognizedArguments(std::get<2>(gbEnv), std::get<3>(gbEnv))) {
-            MK_PRINT("error");
-            return -1;
+        if (!benchmark::ReportUnrecognizedArguments(std::get<2>(gbEnv), std::get<3>(gbEnv))) {
+            ::benchmark::RunSpecifiedBenchmarks();
+            ++result;
         }
-        ::benchmark::RunSpecifiedBenchmarks();
     }
     
-    return 0;
+    //run nothing
+    if(!result) {
+        testing::GTEST_FLAG(list_tests) = true;
+        RUN_ALL_TESTS ();
+        return result;
+    }
+    
+    return result;
 }

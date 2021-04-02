@@ -21,5 +21,23 @@ info:
 ***************************************************************************************************/
 
 #include<mkheaders.h>
+#include<boost/algorithm/string.hpp>
 #include"mkString.h"
 
+std::string 
+boostStringHelper::to_upper_copy(const string& src)
+{
+    return boost::algorithm::to_upper_copy(src);
+    
+    /*
+    string result;
+    boost::algorithm::to_upper_copy(std::back_inserter(result), boost::make_iterator_range(src));
+    return result;
+    */
+}
+
+void 
+boostStringHelper::to_upper(string& src)
+{
+    boost::algorithm::to_upper(boost::make_iterator_range(src));
+}

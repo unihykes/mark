@@ -111,7 +111,7 @@ static auto BENCHMARK_PRIVATE_NAME(n) = ::benchmark::RegisterBenchmark(#n, n);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-//方式4: 与gtest的TEST()或者TEST_F()搭配使用
+//方式4: 与gtest的TEST_F()搭配使用
 template<class GTEST_CLASS>
 class mkTestToBenchmark : public benchmark::Fixture
 {

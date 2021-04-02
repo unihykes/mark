@@ -22,6 +22,7 @@ info:
 
 #include <markcore.h>
 #include <gtest/gtest.h>
+#include "benchmark_helpers.h"
 
 TEST(mkString, util)
 {
@@ -133,9 +134,33 @@ TEST(mkString, mkString)
     }
 }
 
-TEST(mkStringHelper, run)
+TEST(mkStringHelper, to_upper)
 {
-    string src;
-    string dest;
-    mkStringHelper::swap(src,dest);
+    string src("abc中文DEF");
+    string result = mkStringHelper::to_upper(src);
 }
+
+MK_BM_BEGIN(mkStringHelper, to_upper)
+{
+    string src("abc中文DEF");
+    for (auto _ : __state__) {
+        string result = mkStringHelper::to_upper(src);
+    }
+}
+MK_BM_END(mkStringHelper, to_upper);
+
+
+TEST(boostStringHelper, to_upper)
+{
+    string src("abc中文DEF");
+    string result = boostStringHelper::to_upper_copy(src);
+}
+
+MK_BM_BEGIN(boostStringHelper, to_upper)
+{
+    string src("abc中文DEF");
+    for (auto _ : __state__) {
+        string result = boostStringHelper::to_upper_copy(src);
+    }
+}
+MK_BM_END(boostStringHelper, to_upper);
