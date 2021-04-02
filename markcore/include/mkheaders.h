@@ -111,9 +111,9 @@ using namespace std;
 
 //定义跨平台字符类型
 #ifdef __WINDOWS__
-	typedef wchar_t			mk_char;
+	typedef wchar_t			mkChar;
 #else
-	typedef char			mk_char;
+	typedef char			mkChar;
 #endif
 
 //定义int64

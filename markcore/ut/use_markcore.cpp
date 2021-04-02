@@ -28,7 +28,7 @@ info:
 TEST(mkheaders, pragma)
 {
 	#ifdef __WINDOWS__
-		// Á´½Ó»ù´¡¿â
+		// é“¾æ¥åŸºç¡€åº“
 		#pragma comment(lib, "shell32.lib")
 		#pragma comment(lib, "advapi32.lib")
 		#pragma comment(lib, "user32.lib")
@@ -36,7 +36,7 @@ TEST(mkheaders, pragma)
 		#pragma comment(lib, "Mpr.lib")
 		#pragma comment(lib, "DbgHelp.lib")
 		
-		//¹Ø±Õ²¿·Ö±àÒë¾¯¸æ
+		//å…³é—­éƒ¨åˆ†ç¼–è¯‘è­¦å‘Š
 		// 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
 		#pragma warning(disable:4251)
 		// 'function': was declared deprecated
@@ -54,7 +54,7 @@ TEST(mkheaders, pragma)
 
 TEST(mkheaders, PrintMacro)
 {
-	//²Ù×÷ÏµÍ³°æ±¾,ÔÚbegin.cmakeÖĞ¶¨Òå
+	//æ“ä½œç³»ç»Ÿç‰ˆæœ¬,åœ¨begin.cmakeä¸­å®šä¹‰
 	#ifdef __WINDOWS__
 		MK_PRINT("__WINDOWS__ = %d", __WINDOWS__);
 	#endif
@@ -63,7 +63,7 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//±àÒëÆ÷°æ±¾
+	//ç¼–è¯‘å™¨ç‰ˆæœ¬
 	#ifdef _MSC_VER
 		MK_PRINT("_MSC_VER = %d", _MSC_VER);
 	#endif
@@ -72,7 +72,7 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//VC°æ±¾
+	//VCç‰ˆæœ¬
 	#ifdef WINVER
 		MK_PRINT("WINVER = 0x%04x", WINVER);
 	#endif
@@ -87,7 +87,7 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//windows³£ÓÃÍ·ÎÄ¼ş
+	//windowså¸¸ç”¨å¤´æ–‡ä»¶
 	#ifdef _WINSOCK2API_
 		MK_PRINT("_WINSOCK2API_ is used");
 	#endif
@@ -99,7 +99,7 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//64Î»ºê
+	//64ä½å®
 	#ifdef __x86_64__
 		MK_PRINT("__x86_64__ is used");
 	#endif
@@ -130,7 +130,7 @@ TEST(mkheaders, PrintMacro)
 	
 	
 	
-	//unicodeºê,ÔÚbegin.cmakeÖĞ¶¨Òå
+	//unicodeå®,åœ¨begin.cmakeä¸­å®šä¹‰
 	#ifdef _UNICODE
 		MK_PRINT("_UNICODE = %d", _UNICODE);
 	#endif
@@ -139,14 +139,14 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//debugºê
+	//debugå®
 	#ifdef _DEBUG
 		MK_PRINT("_DEBUG = %d", _DEBUG);
 		MK_PRINT("__DEBUG__ is used");
 	#endif
 	
 	
-	//va_copyºê
+	//va_copyå®
 	#ifdef va_copy
 		MK_PRINT("va_copy is used");
 	#endif
@@ -155,20 +155,20 @@ TEST(mkheaders, PrintMacro)
 	#endif
 	
 	
-	//__FUNC_NAME__ºê
+	//__FUNC_NAME__å®
 	#ifdef __FUNC_NAME__
 		MK_PRINT(_T("__FUNC_NAME__ = %s"), __FUNC_NAME__);
 	#endif
 }
 
-TEST(mkheaders, mk_char)
+TEST(mkheaders, mkChar)
 {
-	const mk_char* ch1 = _T("abcecdrgg");
+	const mkChar* ch1 = _T("abcecdrgg");
 	MK_PRINT(_T("ch1 = %s"), ch1);
 	
-	const mk_char ch3[] = _T("123456789");
-    //mk_char ³¤¶È
-    #define CONSTANT_STRING_LEN(str)			((sizeof(str)/sizeof(mk_char)) - 1)
+	const mkChar ch3[] = _T("123456789");
+    //mk_char é•¿åº¦
+    #define CONSTANT_STRING_LEN(str)			((sizeof(str)/sizeof(mkChar)) - 1)
 	int size3 = CONSTANT_STRING_LEN(ch3);
 	MK_PRINT(_T("ch3 = %s, size = %d"), ch3, size3);
 }

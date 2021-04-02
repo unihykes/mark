@@ -115,10 +115,10 @@ TEST(mkString, format)
 }
 
 
-TEST(mkString, mk_char_string)
+TEST(mkString, mkString)
 {
     {
-        mk_char_string str;
+        mkString str;
     	#ifdef __WINDOWS__
         	wstring xx = str;
     	#else
@@ -127,8 +127,8 @@ TEST(mkString, mk_char_string)
     }
     
     {
-        mk_char_string str(_T("abc中文def"));
-        str += _T("杂七杂八");
+        mkString str(_T("abc中文DEF"));
+        str += _T("abc中文DEF");
         MK_PRINT(_T("%s"), str.c_str());
     }
 }
