@@ -35,7 +35,7 @@ TEST(storm, conversion8)
 
         while (!ss.empty())
         {
-            printf ("%d ", ss.top());
+            printf ("%d\n", ss.top());
             ss.pop();
         }
     };

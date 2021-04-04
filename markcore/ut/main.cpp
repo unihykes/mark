@@ -23,7 +23,13 @@ info:
 #include <gtest/gtest.h>
 #include "benchmark_helpers.h"
 
-MK_DEFINE_EXEC_INSTANCE(use_markcore, use_markcore, 1, 1, 1);
+#ifndef __MK_MODULE_NAME__
+    #error "error, need to define macro __MK_MODULE_NAME__ first"
+#endif
+
+//MK_DEFINE_EXEC_INSTANCE(use_markcore, use_markcore,1,1,1);
+MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance 
+    = std::make_shared<mkModuleInstance>(__MK_MODULE_NAME__, __MK_MODULE_NAME__, 1, 1, 1, true);
 
 int main(int argc, char** argv) 
 {

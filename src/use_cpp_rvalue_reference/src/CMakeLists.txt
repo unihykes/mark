@@ -24,6 +24,9 @@ ELSE()
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors -Wno-unused-variable")
 ENDIF()
 
+#ΩË”√ main.cpp
+set(INCLUDE_SOURCE_FILES ${INCLUDE_SOURCE_FILES} ${MK_PATH}/markcore/ut/main.cpp)
+
 INCLUDE($ENV{MK_MAKE}/end.cmake)
 
 

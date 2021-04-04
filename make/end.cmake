@@ -1,5 +1,9 @@
 MESSAGE([${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}]: "include end.cmake")
 
+#∂®“Âƒ¨»œ∫Í __MK_MODULE_NAME__
+ADD_DEFINITIONS(-D__MK_MODULE_NAME__="${TARGET_NAME}")
+
+
 #“¿¿µ mkheaders
 INCLUDE_DIRECTORIES(${MK_PATH}/markcore/include;)
 
