@@ -3,6 +3,16 @@ MESSAGE([${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}]: "include end.cm
 #依赖 mkheaders
 INCLUDE_DIRECTORIES(${MK_PATH}/markcore/include;)
 
+#release版本下是否需要 debuginfo,可能会影响benchmark的结果
+IF(${NEED_DEBUGINFO})
+    IF("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+        IF("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+            SET(CMAKE_CXX_FLAGS "-g ${CMAKE_CXX_FLAGS}")
+            SET(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
+        ENDIF()
+    ENDIF()
+ENDIF()
+
 # 依赖 benchmark
 IF(${NEED_BENCHMARK})
     include(${MK_PATH}/3rd_Party/benchmark/config.cmake)

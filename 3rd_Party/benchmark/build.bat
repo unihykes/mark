@@ -9,6 +9,7 @@ cd %BUILD_PATH%
 
 cmake  -G  "Visual Studio 16 2019" -A x64  %SRC_PATH% ^
                     -DCMAKE_INSTALL_PREFIX=%PREFIX_PATH%  ^
+                    -DCMAKE_BUILD_TYPE=Release  ^
                     -DBUILD_SHARED_LIBS=ON ^
                     -DBENCHMARK_ENABLE_TESTING=OFF  ^
                     -DBENCHMARK_ENABLE_GTEST_TESTS=OFF

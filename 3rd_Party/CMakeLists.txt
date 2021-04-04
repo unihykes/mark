@@ -24,7 +24,6 @@ execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/crc32c/build.sh)
 execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gflags/build.sh)
 
 #gtest
-#ADD_SUBDIRECTORY(gtest)
 execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gtest/build.sh)
 
 #jemalloc
@@ -67,4 +66,5 @@ execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/zlib/build.sh)
 execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/zstd/build.sh)
 
 
-
+#ai:对其他库有依赖,需要手动编译
+#ADD_SUBDIRECTORY(ai)
