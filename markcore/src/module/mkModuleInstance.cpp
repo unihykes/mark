@@ -28,7 +28,7 @@ info:
 #include "utility/mkPerf.h"
 #include "mkModuleInstance.h"
 
-MK_DEFINE_MODULE_INSTANCE(markcore, markcore, 1, 0, 0);
+MK_DEFINE_MODULE_INSTANCE_VERSION(1, 0, 0);
 
 #ifdef __WINDOWS__
     void* hModule = 0;
@@ -36,7 +36,7 @@ MK_DEFINE_MODULE_INSTANCE(markcore, markcore, 1, 0, 0);
     static void NoMemory ()
     {
         assert (false);
-        throw std::exception("Failed to allocate memory!\n");
+        throw std::logic_error("Failed to allocate memory!\n");
     }
     
     extern "C" 
@@ -57,6 +57,14 @@ MK_DEFINE_MODULE_INSTANCE(markcore, markcore, 1, 0, 0);
 mkModuleInstance::mkModuleInstance(const std::string& moduleName, const std::string& resName,
     unsigned int major, unsigned int minor, unsigned int patch, bool isExec)
 {
+    if(moduleName.empty()) {
+        throw std::logic_error("error, the [moduleName] is empty.");
+    }
+    
+    if(resName.empty()) {
+        throw std::logic_error("error, the [resName] is empty.");
+    }
+    
     _trace = make_shared<mkTrace>(moduleName);
     _loger = make_shared<mkLog>(moduleName);
     _print = make_shared<mkPrint>(moduleName);

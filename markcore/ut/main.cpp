@@ -23,13 +23,7 @@ info:
 #include <gtest/gtest.h>
 #include "benchmark_helpers.h"
 
-#ifndef __MK_MODULE_NAME__
-    #error "error, need to define macro __MK_MODULE_NAME__ first"
-#endif
-
-//MK_DEFINE_EXEC_INSTANCE(use_markcore, use_markcore,1,1,1);
-MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance 
-    = std::make_shared<mkModuleInstance>(__MK_MODULE_NAME__, __MK_MODULE_NAME__, 1, 1, 1, true);
+MK_DEFINE_EXEC_INSTANCE_VERSION(1, 0, 0);
 
 int main(int argc, char** argv) 
 {
@@ -41,8 +35,9 @@ int main(int argc, char** argv)
     //run gtest
     if(std::get<0>(gbEnv) > 1) {
         testing::InitGoogleTest(&std::get<0>(gbEnv), std::get<1>(gbEnv));
-        RUN_ALL_TESTS ();
-         ++result;
+        if(RUN_ALL_TESTS () >= 0) {//Just to eliminate the warning
+            ++result;
+        }
     }
     
     //run benchmark
@@ -57,8 +52,7 @@ int main(int argc, char** argv)
     //run nothing
     if(!result) {
         testing::GTEST_FLAG(list_tests) = true;
-        RUN_ALL_TESTS ();
-        return result;
+        return RUN_ALL_TESTS ();
     }
     
     return result;
