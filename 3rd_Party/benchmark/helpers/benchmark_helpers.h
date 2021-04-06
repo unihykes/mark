@@ -113,42 +113,33 @@ static auto BENCHMARK_PRIVATE_NAME(n) = ::benchmark::RegisterBenchmark(#n, n);
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //方式4: 与gtest的TEST_F()搭配使用
 template<class GTEST_CLASS>
-class mkTestToBenchmark : public benchmark::Fixture
+class mkTestToBenchmark : public benchmark::Fixture, public GTEST_CLASS
 {
-
 public:
+    virtual void SetUp()
+    {
+        return GTEST_CLASS::SetUp();
+    }
+    
+    virtual void TearDown()
+    {
+        return GTEST_CLASS::TearDown();
+    }
+    
     virtual void SetUp(benchmark::State& st)
     {
-        _pTest = std::make_shared<mk_GTEST_CLASS_public>();
-        _pTest->SetUp();
+        SetUp();
     }
     
     virtual void TearDown(benchmark::State& st)
     {
-        _pTest->TearDown();
-        _pTest.reset();
+        TearDown();
     }
 private:
-    //将 SetUp 和 TearDown 从protected 转换为 public
-    class mk_GTEST_CLASS_public : public GTEST_CLASS
+    virtual void TestBody()
     {
-    public:
-        virtual void SetUp()
-        {
-            return GTEST_CLASS::SetUp();
-        }
-        virtual void TearDown()
-        {
-            return GTEST_CLASS::TearDown();
-        }
-  private:
-        virtual void TestBody()
-        {
-            //使该派生类可以实例化
-        }
-    };
-private:
-    std::shared_ptr<mk_GTEST_CLASS_public>    _pTest;
+        //使该派生类可以实例化
+    }
 };
 
 #define MK_BM_FROM_TEST_F_BEGIN(GTEST_CLASS, Method)                                                    \
@@ -166,6 +157,10 @@ private:
 #define MK_BM_FROM_TEST_F_END(GTEST_CLASS, Method)                                                      \
     static auto BENCHMARK_PRIVATE_NAME(GTEST_CLASS##_##Method##_Benchmark)                              \
         = ::benchmark::internal::RegisterBenchmarkInternal(new GTEST_CLASS##_##Method##_Benchmark())
-    
+
+
+
+
+
 
 #endif
