@@ -116,24 +116,16 @@ template<class GTEST_CLASS>
 class mkTestToBenchmark : public benchmark::Fixture, public GTEST_CLASS
 {
 public:
-    virtual void SetUp()
-    {
-        return GTEST_CLASS::SetUp();
-    }
-    
-    virtual void TearDown()
-    {
-        return GTEST_CLASS::TearDown();
-    }
-    
+    using GTEST_CLASS::SetUp;
     virtual void SetUp(benchmark::State& st)
     {
-        SetUp();
+        GTEST_CLASS::SetUp();
     }
     
+    using GTEST_CLASS::TearDown;
     virtual void TearDown(benchmark::State& st)
     {
-        TearDown();
+        GTEST_CLASS::TearDown();
     }
 private:
     virtual void TestBody()
