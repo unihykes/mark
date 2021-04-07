@@ -5,35 +5,27 @@
 @if "%1" == "32" goto 32
 
 :64
-set CMAKE_BUILD_VERSION=x64
+set MK_SYSTEM_TYPE=x64
 call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" x64
 goto env
 
 :32
-set CMAKE_BUILD_VERSION=i386
+set MK_SYSTEM_TYPE=i386
 call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" x86
 
 :env
 @echo on
 
-
+::设置环境变量
 ::进入项目根目录,转换反斜杠为斜杠, E:\AA\BB\CC -->> E:/AA/BB/CC
 cd ..\..\
 set MK_PATH=%cd:\=/%
 
 cd ..
-set MK_PACKAGE=%cd:\=/%
+set MK_PACKAGE=%cd:\=/%/cache/mark_win_all_%MK_SYSTEM_TYPE%
 cd %MK_PATH%
 
-::设置环境变量
-set CMAKE_PLATFORM_NAME=win
-set CMAKE_PLATFORM_VERSION=all
-
-set MK_PLATFORM=%CMAKE_PLATFORM_NAME%_%CMAKE_PLATFORM_VERSION%_%CMAKE_BUILD_VERSION%
-set MK_MAKE=%MK_PATH%/make
-set MK_TARGET=%MK_PACKAGE%/cache/mark_%MK_PLATFORM%/target
-set MK_BUILD=%MK_PACKAGE%/cache/mark_%MK_PLATFORM%/build
 
 @echo off
-set PATH=%MK_MAKE%/script_win;%PATH%
+set PATH=%MK_PATH%/make/script_win;%PATH%
 @echo on

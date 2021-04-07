@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 CMAKE_POLICY(VERSION 3.1)
 PROJECT(boost_bcp)
 
-INCLUDE($ENV{MK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
 SET(TARGET_TYPE LIBRARY)
 SET(TARGET_NAME boost_bcp)
@@ -237,4 +237,4 @@ IF(UNIX)
     ADD_SOURCE_DIRS(${BOOST_ROOT}/libs/wave/src/cpplexer/re2clex)
 ENDIF()
 
-INCLUDE($ENV{MK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_PATH}/make/end.cmake)

@@ -32,9 +32,8 @@ goto getcurrentname
 :endgetname
 echo [BUILD_RELATIVE_PATH]= %BUILD_RELATIVE_PATH%
 
-
 :: 进入build目录
-set BUILD_ABSOLUTE_PATH=%MK_BUILD:/=\%
+set BUILD_ABSOLUTE_PATH=%MK_PACKAGE:/=\%\build
 set BUILD_ABSOLUTE_PATH=%BUILD_ABSOLUTE_PATH%\%CMAKE_BUILD_TYPE%\%BUILD_RELATIVE_PATH%
 echo [cd]= %BUILD_ABSOLUTE_PATH%
 
@@ -42,11 +41,11 @@ echo [cd]= %BUILD_ABSOLUTE_PATH%
 echo ** ---make run------
 
 ::设置 cxx compiler
-if "%CMAKE_BUILD_VERSION%" == "x64" (
+if "%MK_SYSTEM_TYPE%" == "x64" (
     set MAKE_VERSION=x64
     set CMAKE_GENERATOR="Visual Studio 16 2019" -A x64
 )
-if "%CMAKE_BUILD_VERSION%" == "i386" (
+if "%MK_SYSTEM_TYPE%" == "i386" (
     set MAKE_VERSION=x86
     set CMAKE_GENERATOR="Visual Studio 16 2019" -A Win32
 )

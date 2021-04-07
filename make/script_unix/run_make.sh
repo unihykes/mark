@@ -8,7 +8,7 @@ CMAKE_BUILD_CURDIR=`pwd`
 CMAKE_BUILD_VERBOSE=0
 CMAKE_BUILD_CPU_COUNT=-j4
 CMAKE_CUSTOM_DEFINES=
-CMAKE_BUILD_DIR=${MK_BUILD}/${CMAKE_BUILD_TYPE}/${CMAKE_BUILD_CURDIR#*mark/}/Build
+CMAKE_BUILD_DIR=${MK_PACKAGE}/build/${CMAKE_BUILD_TYPE}/${CMAKE_BUILD_CURDIR#*mark/}/Build
 
 function compile ()
 {
@@ -27,11 +27,10 @@ function compile ()
     if [[ ! -f Makefile ]]
     then
         echo "...generate makefile in $DIR..."
-        cmake -DCMAKE_PLATFORM_NAME=${CMAKE_PLATFORM_NAME}          \
-              -DCMAKE_PLATFORM_VERSION=${CMAKE_PLATFORM_VERSION}    \
-              -DCMAKE_CXX_COMPILER=${MY_CXX_COMPILER}               \
-              -DCMAKE_C_COMPILER=${MY_C_COMPILER}                   \
-              -DCMAKE_BUILD_VERSION=${CMAKE_BUILD_VERSION}          \
+        
+        cmake -DCMAKE_CXX_COMPILER=/usr/bin/g++                     \
+              -DCMAKE_C_COMPILER=/usr/bin/gcc                       \
+              -DCMAKE_BUILD_VERSION=${MK_SYSTEM_TYPE}          \
               -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}                \
               -DAUTO_RUN=0                                          \
               $CMAKE_CUSTOM_DEFINES                                 \

@@ -6,7 +6,7 @@ PROJECT(ut_11)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
 
-INCLUDE($ENV{MK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
 SET(TARGET_TYPE RUNTIME)
 SET(TARGET_NAME ut_11)
@@ -29,7 +29,7 @@ ELSE()
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors")
 ENDIF()
 
-INCLUDE($ENV{MK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_PATH}/make/end.cmake)
 
 
 

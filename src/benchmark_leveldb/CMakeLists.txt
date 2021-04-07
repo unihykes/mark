@@ -5,7 +5,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 CMAKE_POLICY(VERSION 3.1)
 
 #begin
-INCLUDE($ENV{MK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
 #目标类型
 SET(TARGET_NAME bm_leveldb)
@@ -29,4 +29,4 @@ set(INCLUDE_SOURCE_FILES ${INCLUDE_SOURCE_FILES} ${MK_PATH}/3rd_Party/leveldb/le
 
 
 #end
-INCLUDE($ENV{MK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_PATH}/make/end.cmake)

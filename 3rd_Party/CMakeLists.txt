@@ -3,6 +3,9 @@ PROJECT(3rd_Party)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 CMAKE_POLICY(VERSION 3.1)
 
+IF(NOT EXISTS ${MK_DEPS_PKGS}/__build)
+    file(MAKE_DIRECTORY ${MK_DEPS_PKGS}/__build)
+ENDIF()
 
 #benchmark
 execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/benchmark/build.sh)

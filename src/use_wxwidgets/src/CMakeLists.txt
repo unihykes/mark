@@ -3,12 +3,12 @@ PROJECT(use_wxwidgets)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
 
-INCLUDE($ENV{MK_MAKE}/begin.cmake)
-INCLUDE(${MK_PATH}/3rd_Party/wxwidgets/usewxwidget.cmake)
+INCLUDE($ENV{MK_PATH}/make/begin.cmake)
+INCLUDE($ENV{MK_PATH}/3rd_Party/wxwidgets/usewxwidget.cmake)
 
 SET(TARGET_NAME use_wxwidgets)
 SET(TARGET_TYPE RUNTIME)
 SET(AUTO_RUN OFF)
 
 
-INCLUDE($ENV{MK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_PATH}/make/end.cmake)

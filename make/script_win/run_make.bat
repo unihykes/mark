@@ -34,7 +34,7 @@ echo [BUILD_RELATIVE_PATH]= %BUILD_RELATIVE_PATH%
 
 
 :: 进入build目录
-set BUILD_ABSOLUTE_PATH=%MK_BUILD:/=\%
+set BUILD_ABSOLUTE_PATH=%MK_PACKAGE:/=\%\build
 set BUILD_ABSOLUTE_PATH=%BUILD_ABSOLUTE_PATH%\%CMAKE_BUILD_TYPE%\%BUILD_RELATIVE_PATH%
 echo [cd]= %BUILD_ABSOLUTE_PATH%
 
@@ -46,11 +46,11 @@ echo ** ---make run------
 ::-- The CXX compiler identification is unknown
 ::若不需要支持windowXP,则可以将 v140_xp 修改为 v140
 
-if "%CMAKE_BUILD_VERSION%" == "x64" (
+if "%MK_SYSTEM_TYPE%" == "x64" (
     set MAKE_VERSION=x64
     set CMAKE_GENERATOR="Visual Studio 14 2015 Win64"
 )
-if "%CMAKE_BUILD_VERSION%" == "i386" (
+if "%MK_SYSTEM_TYPE%" == "i386" (
     set MAKE_VERSION=x86
     set CMAKE_GENERATOR="Visual Studio 14 2015"
 )

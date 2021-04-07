@@ -5,7 +5,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.17)
 CMAKE_POLICY(VERSION 3.17)
 
 #begin
-INCLUDE($ENV{MK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
 #目标类型
 SET(TARGET_NAME use_brpc_client)
@@ -29,4 +29,4 @@ SET(INCLUDE_SOURCE_FILES    ../proto/use_brpc.pb.cc)
 #ADD_BUILD_PROTO_FILES( ../  xxx.proto)
 
 #end
-INCLUDE($ENV{MK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_PATH}/make/end.cmake)

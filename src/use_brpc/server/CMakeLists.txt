@@ -5,7 +5,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.17)
 CMAKE_POLICY(VERSION 3.17)
 
 #begin
-INCLUDE($ENV{MK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
 #目标类型
 SET(TARGET_NAME use_brpc_server)
@@ -20,8 +20,8 @@ SET(NEED_BRPC TRUE)
 SET(NEED_MARKCORE TRUE)
 
 #编译proto
-INCLUDE(${MK_PATH}/3rd_Party/protobuf/compile_proto.cmake)
+INCLUDE($ENV{MK_PATH}/3rd_Party/protobuf/compile_proto.cmake)
 ADD_BUILD_PROTO_FILES( ../proto ../proto/use_brpc.proto)
 
 #end
-INCLUDE($ENV{MK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_PATH}/make/end.cmake)

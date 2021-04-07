@@ -5,7 +5,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 CMAKE_POLICY(VERSION 2.8)
 
 #begin
-INCLUDE($ENV{MK_MAKE}/begin.cmake)
+INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
 #目标类型
 SET(TARGET_NAME use_boost)
@@ -23,4 +23,4 @@ set(INCLUDE_SOURCE_FILES ${INCLUDE_SOURCE_FILES} ${MK_PATH}/markcore/ut/main.cpp
 
 
 #end
-INCLUDE($ENV{MK_MAKE}/end.cmake)
+INCLUDE($ENV{MK_PATH}/make/end.cmake)
