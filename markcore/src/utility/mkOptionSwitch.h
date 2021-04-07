@@ -199,8 +199,7 @@ public:
             _options.erase(iter);
         }
         else {
-            stringstream err; err<<index.name()<<" is invalid.";
-            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, err.str().c_str());
+            //忽略
         }
     }
     
