@@ -33,7 +33,6 @@ MK_DLL_EXPORT int get_boost_full_version()
     
     static void NoMemory ()
     {
-        assert (false);
         throw std::exception("Failed to allocate memory!\n");
     }
     

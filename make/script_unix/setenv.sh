@@ -6,7 +6,7 @@ set -x
 #参数检查
 if [ "$1" = "32" ];
 then
-    export MK_SYSTEM_TYPE=i386
+    export MK_SYSTEM_TYPE=x86
 else
 	export MK_SYSTEM_TYPE=x64
 fi

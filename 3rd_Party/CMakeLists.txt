@@ -3,12 +3,15 @@ PROJECT(3rd_Party)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 CMAKE_POLICY(VERSION 3.1)
 
-IF(NOT EXISTS ${MK_DEPS_PKGS}/__build)
-    file(MAKE_DIRECTORY ${MK_DEPS_PKGS}/__build)
+IF(NOT EXISTS $ENV{MK_DEPS_PKGS}/__build)
+    file(MAKE_DIRECTORY $ENV{MK_DEPS_PKGS}/__build)
+    MESSAGE([${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}]: "file(MAKE_DIRECTORY $ENV{MK_DEPS_PKGS}/__build)")
 ENDIF()
 
 #benchmark
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/benchmark/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/benchmark/build.sh)
+ENDIF()
 
 #boost
 #ADD_SUBDIRECTORY(boost/boost_full_1_75_0)
@@ -21,13 +24,19 @@ execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/benchmark/build.sh)
 #模板库,无需编译
 
 #crc32c
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/crc32c/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/crc32c/build.sh)
+ENDIF()
 
 #gflags
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gflags/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gflags/build.sh)
+ENDIF()
 
 #gtest
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gtest/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gtest/build.sh)
+ENDIF()
 
 #jemalloc
 #todo
@@ -36,38 +45,53 @@ execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gtest/build.sh)
 #todo
 
 #leveldb
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/leveldb/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/leveldb/build.sh)
+ENDIF()
 
 #libexpat
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/libexpat/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/libexpat/build.sh)
+ENDIF()
 
 #libressl
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/libressl/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/libressl/build.sh)
+ENDIF()
 
 #libunwind
 #todo
 
 #libuuid
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/libuuid/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/libuuid/build.sh)
+ENDIF()
 
 #protobuf
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/protobuf/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/protobuf/build.sh)
+ENDIF()
 
 #redis
 #todo
 
 #snappy
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/snappy/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/snappy/build.sh)
+ENDIF()
 
 #thrift
 #todo
 
 #zlib
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/zlib/build.sh)
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/zlib/build.sh)
+ENDIF()
 
 #zstd
-execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/zstd/build.sh)
-
+IF(UNIX)
+    execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/zstd/build.sh)
+ENDIF()
 
 #ai:对其他库有依赖,需要手动编译
 #ADD_SUBDIRECTORY(ai)

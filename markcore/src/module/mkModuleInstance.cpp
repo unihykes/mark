@@ -35,7 +35,6 @@ MK_DEFINE_MODULE_INSTANCE_VERSION(1, 0, 0);
     
     static void NoMemory ()
     {
-        assert (false);
         throw std::logic_error("Failed to allocate memory!\n");
     }
     
