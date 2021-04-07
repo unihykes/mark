@@ -6,7 +6,7 @@ CMAKE_POLICY(VERSION 3.18)
 INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
 SET(TARGET_NAME gmock)
-SET(TARGET_TYPE LIBRARY)
+SET(TARGET_TYPE ARCHIVE)
 
 INCLUDE_DIRECTORIES(../googletest/googletest/include;
 					../googletest/googlemock/include;

@@ -6,7 +6,7 @@ CMAKE_POLICY(VERSION 3.18)
 INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
 SET(TARGET_NAME gtest)
-SET(TARGET_TYPE LIBRARY)
+SET(TARGET_TYPE ARCHIVE)
 
 #ÒýÓÃÂ·¾¶
 INCLUDE_DIRECTORIES(../googletest/googletest/include;
