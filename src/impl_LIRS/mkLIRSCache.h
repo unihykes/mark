@@ -58,7 +58,8 @@ public:
     
     std::shared_ptr<mkBlock> Get(const int& key);
     
-    int64 GetHitCounts();
+    int64 GetHitCounts() const;
+    int64 GetMissCounts() const;
     vector<std::shared_ptr<mkBlock>> ListRedQ() const;
     vector<std::shared_ptr<mkBlock>> ListBlueQ() const;
     
@@ -78,7 +79,7 @@ private:
     
 private:
     int64 _hitCounts; //命中次数
-    int64 _mishitCounts;//未命中次数
+    int64 _missCounts;//未命中次数
     int _limitLIR;  //low IRR block set:热数据
     int _limitHIR;  //high IRR block set:冷数据
     

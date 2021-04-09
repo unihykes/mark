@@ -20,47 +20,103 @@ info:
 
 ***************************************************************************************************/
 #include <markcore.h>
+#include <initializer_list>
 #include <gtest/gtest.h>
 #include "mkLIRSCache.h"
 
 
-void Print(const int& key, std::shared_ptr<mkBlock> block, const mkLIRSCache& market)
+class mkLIRSCacheOption : public mkIOption
 {
-    static const char* stateName[] = {"LIR", "resident HIR","non-resident HIR","Invalid"};
-    
-    MK_PRINT("key = %d, block = {%d, %s}", key, block ? block->_key : -1, block ? stateName[block->_state] : stateName[3]);
-    
-    auto vBlockS = market.ListRedQ();
-    string itemS;
-    for(const auto& item : vBlockS) {
-        string str = mkSharedFormat{}("%d[%s], ", item->_key, stateName[item->_state]);
-        itemS += str;
-    }
-    MK_PRINT("redQ =  %s", itemS.c_str());
-    
-    auto vBlockQ = market.ListBlueQ();
-    string itemQ;
-    for(const auto& item : vBlockQ) {
-        string str = mkSharedFormat{}("%d[%s], ", item->_key, stateName[item->_state]);
-        itemQ += str;
-    }
-    MK_PRINT("blueQ =  %s\n", itemQ.c_str());
-}
-
-
-TEST(mkLIRSCache, run)
-{
-    mkLIRSCache market(3 , 2);
-    int a[] = {1 , 2 , 3 , 4 , 5  , 1 , 2 , 3 , 4};
-    for(int i = 0 ; i != 1 ; ++i)
+public:
+    mkLIRSCacheOption()
+        //: mkIOption()
     {
-        for(int j = 0 ; j != sizeof(a)/sizeof(int) ; ++j)
-        {
-            int key = a[j];
-            auto result = market.Get(key);
-            Print(key, result, market);
-        }
     }
-    std::cout << market.GetHitCounts() << "\n";
+    
+    virtual bool OnSetValue(const string& key, const string& value)
+    {
+        if("--lirlimit" == key) {
+            _lirlimit = std::stoi(value);
+            return true;
+        }
+        if("--hirlimit" == key) {
+            _hirlimit = std::stoi(value);
+            return true;
+        }
+        
+        return false;
+    }
+    virtual void OnApply()
+    {
+    }
+    
+public:
+    int     _lirlimit = 100;
+    int     _hirlimit = 100;
+};
+
+class use_mkLIRSCache : public testing::Test
+{
+protected:
+    static void SetUpTestCase()
+    {
+    }
+    
+    static void TearDownTestCase()
+    {
+    }
+    
+    virtual void SetUp()
+    {
+        //重置参数
+        g_moduleInstance->_switch->ClearOption<mkLIRSCacheOption>();
+        g_moduleInstance->_switch->ApplyOption<mkLIRSCacheOption>();
+        
+        int lirlimit = g_moduleInstance->_switch->GetOption<mkLIRSCacheOption>()->_lirlimit;
+        int hirlimit = g_moduleInstance->_switch->GetOption<mkLIRSCacheOption>()->_hirlimit;
+        _pMarket = std::make_shared<mkLIRSCache>(lirlimit, hirlimit);
+    }
+    
+    virtual void TearDown()
+    {
+    }
+    
+    void Print(const int& key, std::shared_ptr<mkBlock> block)
+    {
+        static const char* stateName[] = {"LIR", "resident HIR","non-resident HIR","Invalid"};
+        
+        MK_PRINT("key = %d, block = {%d, %s}", key, block ? block->_key : -1, block ? stateName[block->_state] : stateName[3]);
+        
+        auto vBlockS = _pMarket->ListRedQ();
+        string itemS;
+        for(const auto& item : vBlockS) {
+            string str = mkSharedFormat{}("%d[%s], ", item->_key, stateName[item->_state]);
+            itemS += str;
+        }
+        MK_PRINT("redQ =  %s", itemS.c_str());
+        
+        auto vBlockQ = _pMarket->ListBlueQ();
+        string itemQ;
+        for(const auto& item : vBlockQ) {
+            string str = mkSharedFormat{}("%d[%s], ", item->_key, stateName[item->_state]);
+            itemQ += str;
+        }
+        MK_PRINT("blueQ =  %s\n", itemQ.c_str());
+    }
+protected:
+    std::shared_ptr<mkLIRSCache> _pMarket;
+};
+
+//顺序扫描
+TEST_F(use_mkLIRSCache, scan)
+{
+    for(int cnt = 0 ; cnt !=5; ++cnt) {
+        for(int i = 0; i != 100; ++i) {
+            auto result = _pMarket->Get(i);
+            Print(i, result);
+        }
+        MK_PRINT("hit = %lld", _pMarket->GetHitCounts());
+        MK_PRINT("miss = %lld", _pMarket->GetMissCounts());
+    }
 }
 

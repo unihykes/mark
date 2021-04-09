@@ -26,7 +26,7 @@ info:
 
 mkLIRSCache::mkLIRSCache(int LIRSize , int HIRSize)
     :_hitCounts(0)
-    ,_mishitCounts(0)
+    ,_missCounts(0)
     ,_limitLIR(LIRSize)
     ,_limitHIR(HIRSize)
 {
@@ -80,10 +80,17 @@ mkLIRSCache::Get(const int& key)
 }
 
 int64 
-mkLIRSCache::GetHitCounts()
+mkLIRSCache::GetHitCounts() const
 {
     return _hitCounts;
 }
+
+int64 
+mkLIRSCache::GetMissCounts() const
+{
+    return _missCounts;
+}
+
 vector<std::shared_ptr<mkBlock>> 
 mkLIRSCache::ListRedQ() const
 {
@@ -101,10 +108,11 @@ std::shared_ptr<mkBlock>
 mkLIRSCache::InitLIR(const int& key)
 {
     std::shared_ptr<mkBlock> newBlock(new mkBlock(key , STATE_LIR));
+    BuildBlock(newBlock);
     _cacheMap.insert({key, newBlock});
     _redQ.Push_back(newBlock);
     --_limitLIR;
-    ++_mishitCounts;
+    ++_missCounts;
     return newBlock;
 }
 
@@ -112,11 +120,12 @@ std::shared_ptr<mkBlock>
 mkLIRSCache::InitResidentHIR(const int& key)
 {
     std::shared_ptr<mkBlock> newBlock(new mkBlock(key , STATE_HIR_resident));
+    BuildBlock(newBlock);
     _cacheMap.insert({key, newBlock});
     _redQ.Push_back(newBlock);
     _blueQ.Push_back(newBlock);
     --_limitHIR;
-    ++_mishitCounts;
+    ++_missCounts;
     return newBlock;
 }
 
@@ -163,7 +172,7 @@ mkLIRSCache::HitNonResidentHIR(std::shared_ptr<mkBlock> itemRed)
     discardBlock->_state = STATE_HIR_resident;
     _blueQ.Push_back(discardBlock);
     
-    ++_mishitCounts;
+    ++_missCounts;
     return newBlock;
 }
 
@@ -190,12 +199,14 @@ mkLIRSCache::HitNothing(const int& key)
     
     //将新key添加进缓存
     std::shared_ptr<mkBlock> newBlock(new mkBlock(key , STATE_HIR_resident));
+    BuildBlock(newBlock);
     _cacheMap.insert({key, newBlock});
     
     //添加新添加的数据块的索引
     _redQ.Push_back(newBlock);
     _blueQ.Push_back(newBlock);
     
+    ++_missCounts;
     return newBlock;
 }
 

@@ -37,7 +37,11 @@ template<class TypeKey, class TypeValue>
 class mkIOption_base
 {
 public:
-    mkIOption_base(std::initializer_list<TypeKey> keyList = {})
+    mkIOption_base()
+    {
+    }
+    
+    mkIOption_base(std::initializer_list<TypeKey> keyList)
     {
         //注册可用的key-list
         _keySet = keyList;
