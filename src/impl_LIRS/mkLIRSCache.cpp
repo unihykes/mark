@@ -132,10 +132,10 @@ mkLIRSCache::HitNonResidentHIR(std::shared_ptr<mkBlock> itemRed)
     std::shared_ptr<mkBlock> discard = _blueQ.Front();
     _blueQ.Pop_front();
     
-    //在S中将这个被移除的数据块修改为non-resident(如果存在的话)
-    auto locationDiscard = _redQ.Find(discard->_key);
-    if(locationDiscard != -1) {
-        _redQ.At(locationDiscard)->_state = STATE_HIR_nonResident;//todo:同时清理数据块的buf
+    //在redQ中将这个被移除的数据块修改为non-resident(如果存在的话)
+    auto discardRed = _redQ.Find(discard->_key);
+    if(discardRed) {
+        discardRed->_state = STATE_HIR_nonResident;//todo:同时清理数据块的buf
     }
     
     //将这个被移除的HIR从缓存中删除(注意:在缓存中被删除的数据块,在redQ中可能仍然以non-resident状态保留)
@@ -155,7 +155,7 @@ mkLIRSCache::HitNonResidentHIR(std::shared_ptr<mkBlock> itemRed)
     //将redQ头端的LIR数据块转变为resident-HIR并移动到blueQ尾部
     auto discardBlock = _redQ.Front();
     _redQ.Pop_front();
-    _redQ.pruning();//对redQ进行剪枝,保证头端一定为LIR
+    _redQ.Pruning();//对redQ进行剪枝,保证头端一定为LIR
     
     discardBlock->_state = STATE_HIR_resident;
     _blueQ.Push_back(discardBlock);
@@ -171,10 +171,10 @@ mkLIRSCache::HitNothing(const int& key)
     std::shared_ptr<mkBlock> discard = _blueQ.Front();
     _blueQ.Pop_front();
     
-    //在S中将这个被移除的数据块修改为non-resident(如果存在的话)
-    auto locationDiscard = _redQ.Find(discard->_key);
-    if(locationDiscard != -1) {
-        _redQ.At(locationDiscard)->_state = STATE_HIR_nonResident;//todo:同时清理数据块的buf
+    //在redQ中将这个被移除的数据块修改为non-resident(如果存在的话)
+    auto discardRed = _redQ.Find(discard->_key);
+    if(discardRed) {
+        discardRed->_state = STATE_HIR_nonResident;//todo:同时清理数据块的buf
     }
     
     //将这个被移除的HIR从缓存中删除(注意:在缓存中被删除的数据块,在redQ中可能仍然以non-resident状态保留)
@@ -201,7 +201,7 @@ mkLIRSCache::HitLIR(const int& key)
     //访问redQ中的LIR,将其移动到尾部(更新R)
     std::shared_ptr<mkBlock> item = _redQ.Remove(key);
     if(item) {
-        _redQ.pruning();//如果命中的数据块之前在队列头端,需要进行剪枝操作
+        _redQ.Pruning();//如果命中的数据块之前在队列头端,需要进行剪枝操作
         _redQ.Push_back(item);
         _hitCounts++;
     }
@@ -221,12 +221,12 @@ mkLIRSCache::HitResidentHIR(const int& key)
         itemRed->_state = STATE_LIR;
         _redQ.Push_back(itemRed);
         //blueQ中如果也存在这个数据块,则淘汰之(因为此时数据块已经变成了LIR,而blueQ中仅保留HIR)
-        _blueQ.eraseByBlockId(key);
+        _blueQ.Remove(key);
         
         //将redQ头端的LIR数据块淘汰(转变为resident-HIR并移动到blueQ尾部)
         auto discardBlock = _redQ.Front();
         _redQ.Pop_front();
-        _redQ.pruning();//对redQ进行剪枝,保证头端一定为LIR
+        _redQ.Pruning();//对redQ进行剪枝,保证头端一定为LIR
         discardBlock->_state = STATE_HIR_resident;
         _blueQ.Push_back(discardBlock);
     }
@@ -234,7 +234,7 @@ mkLIRSCache::HitResidentHIR(const int& key)
      // residentHIR 不在redQ中
     else {
         std::shared_ptr<mkBlock> itemBlue = _blueQ.Remove(key);
-        if(itemBlue) {
+        if(!itemBlue) {
             MK_THROW(1024, "error, data loss!");//索引与数据不一致
         }
         

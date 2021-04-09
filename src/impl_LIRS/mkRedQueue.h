@@ -17,7 +17,11 @@ Author:liu.hao(33852613@163.com)
 Time:2021-3
 
 info:
-
+    mkRedQueue:
+    负责热数据(LIR)汰换
+    FIFO队列,尾端插入,头端删除
+    存储 LIR 和 resident-HIR 以及 nonresident-HIR
+    越靠近尾端,R越小
 ***************************************************************************************************/
 
 #ifndef __mkRedQueue
@@ -25,43 +29,20 @@ info:
 
 #include "mkBlock.h"
 
-//FIFO队列,从尾端插入,头端删除,头端编号为0,
-//负责热数据(LIR)汰换, 
-//存储 LIR 和 resident-HIR 以及 nonresident-HIR
-//越靠近尾端,R越小
 class mkRedQueue
 {
 public:
-    //获取头部数据详情
-    std::shared_ptr<mkBlock> Front();
+    std::shared_ptr<mkBlock> Front();//获取头部数据详情
+    std::shared_ptr<mkBlock> Back();//获取尾部数据
+    std::shared_ptr<mkBlock> Find(const int key);//查找指定元素
+    std::shared_ptr<mkBlock> Remove(const int key);//删除并返回删除的对象
     
-    //获取尾部数据
-    std::shared_ptr<mkBlock> Back();
+    int64 Size() const;//获取队列size
+    vector<std::shared_ptr<mkBlock>> List() const;//枚举对象
     
-    //获取指定位置元素的数据详情
-    std::shared_ptr<mkBlock> At(int location);
-    
-    //枚举对象
-    vector<std::shared_ptr<mkBlock>> List() const;
-    
-    //获取队列size
-    int64 Size();
-    
-    //从尾端插入一个元素
-    void Push_back(std::shared_ptr<mkBlock> item);
-    
-    //删除头端元素
-    void Pop_front();
-
-    //删除并返回删除的对象
-    std::shared_ptr<mkBlock> Remove(const int key);
-    
-    //查找指定元素的在队列中的位置
-    int Find(int key);
-    
-    //剪枝, 保证头端为LIR，
-    //这样访问一个resident-HIR时就知道这个resident-HIR的新IRR一定小于头端LIR的recency。
-    void pruning();
+    void Push_back(std::shared_ptr<mkBlock> item);//从尾端插入一个元素
+    void Pop_front();//删除头端元素
+    void Pruning();//剪枝, 保证头端始终为LIR这样访问一个resident-HIR时就知道这个resident-HIR的新IRR一定小于头端LIR的recency。
     
 private:
     std::vector<std::shared_ptr<mkBlock>> _vBlocks;

@@ -28,30 +28,6 @@ mkBlueQueue::Front()
     return _vBlocks[0];
 }
 
-vector<std::shared_ptr<mkBlock>> 
-mkBlueQueue::List() const
-{
-    return _vBlocks;
-}
-
-int64 
-mkBlueQueue::Size()
-{
-    return _vBlocks.size();
-}
-
-void 
-mkBlueQueue::Push_back(std::shared_ptr<mkBlock> item)
-{
-    _vBlocks.push_back(item);
-}
-
-void 
-mkBlueQueue::Pop_front()
-{
-    _vBlocks.erase(_vBlocks.begin());
-}
-
 std::shared_ptr<mkBlock> 
 mkBlueQueue::Remove(const int key)
 {
@@ -71,28 +47,28 @@ mkBlueQueue::Remove(const int key)
     return result;
 }
 
-int 
-mkBlueQueue::Find(int key)
+int64 
+mkBlueQueue::Size() const
 {
-    int location = -1;
-    int step = 0;
-    for(auto it : _vBlocks) {
-        if(it->_key == key) {
-            location = step;
-            break;
-        }
-        else {
-            ++step;
-        }
-    }
-    return location;
+    return _vBlocks.size();
 }
 
-void mkBlueQueue::eraseByBlockId(int key)
+vector<std::shared_ptr<mkBlock>> 
+mkBlueQueue::List() const
 {
-    int location = Find(key);
-    if(location != -1) {
-        _vBlocks.erase(_vBlocks.begin() + location);
-    }
+    return _vBlocks;
 }
+
+void 
+mkBlueQueue::Push_back(std::shared_ptr<mkBlock> item)
+{
+    _vBlocks.push_back(item);
+}
+
+void 
+mkBlueQueue::Pop_front()
+{
+    _vBlocks.erase(_vBlocks.begin());
+}
+
 

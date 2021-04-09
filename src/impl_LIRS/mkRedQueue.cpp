@@ -36,33 +36,21 @@ mkRedQueue::Back()
 }
 
 std::shared_ptr<mkBlock> 
-mkRedQueue::At(int location)
+mkRedQueue::Find(const int key)
 {
-    return _vBlocks[location];
-}
-
-vector<std::shared_ptr<mkBlock>> 
-mkRedQueue::List() const
-{
-    return _vBlocks;
-}
-
-int64 
-mkRedQueue::Size()
-{
-    return _vBlocks.size();
-}
-
-void 
-mkRedQueue::Push_back(std::shared_ptr<mkBlock> item)
-{
-    _vBlocks.push_back(item);
-}
-
-void 
-mkRedQueue::Pop_front()
-{
-    _vBlocks.erase(_vBlocks.begin());
+    std::shared_ptr<mkBlock> result;
+    
+    //todo:可以添加一个non-residentHIR的 unorderedmap加速检索
+    auto iter = find_if(_vBlocks.begin(), _vBlocks.end(), 
+        [&](const std::shared_ptr<mkBlock>& dest) {
+            return (dest->_key == key);
+        }
+    );
+    
+    if(iter != _vBlocks.end()) {
+        result = *iter;
+    }
+    return result;
 }
 
 std::shared_ptr<mkBlock> 
@@ -85,25 +73,32 @@ mkRedQueue::Remove(const int key)
     return result;
 }
 
-int 
-mkRedQueue::Find(int key)
+int64 
+mkRedQueue::Size() const
 {
-    int location = -1;
-    int step = 0;
-    for(auto it : _vBlocks) {
-        if(it->_key == key) {
-            location = step;
-            break;
-        }
-        else {
-            ++step;
-        }
-    }
-    return location;
+    return _vBlocks.size();
+}
+
+vector<std::shared_ptr<mkBlock>> 
+mkRedQueue::List() const
+{
+    return _vBlocks;
 }
 
 void 
-mkRedQueue::pruning()
+mkRedQueue::Push_back(std::shared_ptr<mkBlock> item)
+{
+    _vBlocks.push_back(item);
+}
+
+void 
+mkRedQueue::Pop_front()
+{
+    _vBlocks.erase(_vBlocks.begin());
+}
+
+void 
+mkRedQueue::Pruning()
 {
     while (true) {
         mkBlockState state = Front()->_state;

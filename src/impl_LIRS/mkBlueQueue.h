@@ -17,7 +17,10 @@ Author:liu.hao(33852613@163.com)
 Time:2021-3
 
 info:
-
+    mkBlueQueue 
+    负责冷数据(HIR)汰换
+    FIFO队列,尾端插入,头端删除
+    存储resident-HIR
 ***************************************************************************************************/
 
 #ifndef __mkBlueQueue
@@ -25,34 +28,18 @@ info:
 
 #include "mkBlock.h"
 
-//FIFO队列,从尾端插入,头端删除, 头端编号为0,
-//队列Q存储所有冷数据:resident-HIR
 class mkBlueQueue
 {
 public:
-    //获取头部数据详情
-    std::shared_ptr<mkBlock> Front();
+    std::shared_ptr<mkBlock> Front();//获取头部数据详情
+    std::shared_ptr<mkBlock> Remove(const int key);//删除并返回删除的对象
     
-    //枚举对象
-    vector<std::shared_ptr<mkBlock>> List() const;
+    int64 Size() const;//获取队列size
+    vector<std::shared_ptr<mkBlock>> List() const;//枚举对象
     
-    //获取队列size
-    int64 Size();
+    void Push_back(std::shared_ptr<mkBlock> item);//从尾端插入一个元素
+    void Pop_front();//删除头端元素
     
-    //从尾端插入一个元素
-    void Push_back(std::shared_ptr<mkBlock> item);
-    
-    //删除头端元素
-    void Pop_front();
-
-    //删除并返回删除的对象
-    std::shared_ptr<mkBlock> Remove(const int key);
-    
-    //查找指定元素的在队列中的位置
-    int Find(int key);
-    
-    ////删除指定元素
-    void eraseByBlockId(int key);
 private:
     std::vector<std::shared_ptr<mkBlock>> _vBlocks;
 };
