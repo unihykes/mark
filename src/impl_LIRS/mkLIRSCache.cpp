@@ -30,6 +30,13 @@ mkLIRSCache::mkLIRSCache(int LIRSize , int HIRSize)
     ,_limitLIR(LIRSize)
     ,_limitHIR(HIRSize)
 {
+    if(_limitLIR <=1) {
+        MK_THROW(1024, "error, _limitLIR = %d", _limitLIR);
+    }
+    
+    if(_limitHIR <=1) {
+        MK_THROW(1024, "error, _limitHIR = %d", _limitHIR);
+    }
 }
 
 std::shared_ptr<mkBlock> 
