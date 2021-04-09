@@ -29,13 +29,6 @@ mkRedQueue::Front()
 }
 
 std::shared_ptr<mkBlock> 
-mkRedQueue::Back()
-{
-    //todo:溢出检测
-    return _vBlocks[_vBlocks.size() - 1];
-}
-
-std::shared_ptr<mkBlock> 
 mkRedQueue::Find(const int key)
 {
     std::shared_ptr<mkBlock> result;

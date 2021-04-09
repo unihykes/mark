@@ -33,7 +33,6 @@ class mkRedQueue
 {
 public:
     std::shared_ptr<mkBlock> Front();//获取头部数据详情
-    std::shared_ptr<mkBlock> Back();//获取尾部数据
     std::shared_ptr<mkBlock> Find(const int key);//查找指定元素
     std::shared_ptr<mkBlock> Remove(const int key);//删除并返回删除的对象
     

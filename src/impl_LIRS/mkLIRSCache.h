@@ -73,6 +73,9 @@ private:
     void HitLIR(const int& key);
     void HitResidentHIR(const int& key);
     
+    void BuildBlock(std::shared_ptr<mkBlock> newBlock);//从底层服务获取到指定数据块的具体信息
+    void ClearBlock(std::shared_ptr<mkBlock> newBlock);//释放数据块的内存,仅保留索引
+    
 private:
     int64 _hitCounts; //命中次数
     int64 _mishitCounts;//未命中次数

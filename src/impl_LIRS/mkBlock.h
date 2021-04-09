@@ -32,10 +32,14 @@ enum mkBlockState
     STATE_Invalid           = 3 //无效数据块
 };
 
+struct mkBlockBuffer
+{
+    
+};
+
 //数据块
 struct mkBlock
 {
-public:
     mkBlock(const int& key, const mkBlockState& state)
         :_key(key) 
         ,_state(state)
@@ -44,7 +48,7 @@ public:
     
     int             _key;
     mkBlockState    _state;
-    char*           _buf;
+    std::shared_ptr<mkBlockBuffer>  _pBuf;
 };
 
 #endif

@@ -135,7 +135,8 @@ mkLIRSCache::HitNonResidentHIR(std::shared_ptr<mkBlock> itemRed)
     //在redQ中将这个被移除的数据块修改为non-resident(如果存在的话)
     auto discardRed = _redQ.Find(discard->_key);
     if(discardRed) {
-        discardRed->_state = STATE_HIR_nonResident;//todo:同时清理数据块的buf
+        discardRed->_state = STATE_HIR_nonResident;
+        ClearBlock(discardRed);//释放资源
     }
     
     //将这个被移除的HIR从缓存中删除(注意:在缓存中被删除的数据块,在redQ中可能仍然以non-resident状态保留)
@@ -146,7 +147,9 @@ mkLIRSCache::HitNonResidentHIR(std::shared_ptr<mkBlock> itemRed)
     }
     
     //将新key添加进缓存
-    std::shared_ptr<mkBlock> newBlock(new mkBlock(itemRed->_key, STATE_LIR));//todo:更新数据
+    std::shared_ptr<mkBlock> newBlock(new mkBlock(itemRed->_key, STATE_LIR));
+    BuildBlock(newBlock);
+    
     _cacheMap.insert({newBlock->_key, newBlock});
     
     //将该数据块移动到redQ尾端,并设置为LIR
@@ -174,7 +177,8 @@ mkLIRSCache::HitNothing(const int& key)
     //在redQ中将这个被移除的数据块修改为non-resident(如果存在的话)
     auto discardRed = _redQ.Find(discard->_key);
     if(discardRed) {
-        discardRed->_state = STATE_HIR_nonResident;//todo:同时清理数据块的buf
+        discardRed->_state = STATE_HIR_nonResident;
+        ClearBlock(discardRed);//释放资源
     }
     
     //将这个被移除的HIR从缓存中删除(注意:在缓存中被删除的数据块,在redQ中可能仍然以non-resident状态保留)
@@ -246,4 +250,18 @@ mkLIRSCache::HitResidentHIR(const int& key)
         _blueQ.Push_back(itemBlue);
     }
     _hitCounts++;
+}
+
+void 
+mkLIRSCache::BuildBlock(std::shared_ptr<mkBlock> newBlock)
+{
+    newBlock->_pBuf = std::make_shared<mkBlockBuffer>();
+    //todo
+}
+
+void 
+mkLIRSCache::ClearBlock(std::shared_ptr<mkBlock> newBlock)
+{
+    newBlock->_pBuf = nullptr;
+    //todo
 }
