@@ -22,45 +22,45 @@ info:
 #include <markcore.h>
 #include "mkRedQueue.h"
 
-std::shared_ptr<mkBlock> 
+std::shared_ptr<mkLIRSValue> 
 mkRedQueue::Front()
 {
-    return _vBlocks[0];
+    return _values[0];
 }
 
-std::shared_ptr<mkBlock> 
+std::shared_ptr<mkLIRSValue> 
 mkRedQueue::Find(const int key)
 {
-    std::shared_ptr<mkBlock> result;
+    std::shared_ptr<mkLIRSValue> result;
     
     //todo:可以添加一个non-residentHIR的 unorderedmap加速检索
-    auto iter = find_if(_vBlocks.begin(), _vBlocks.end(), 
-        [&](const std::shared_ptr<mkBlock>& dest) {
+    auto iter = find_if(_values.begin(), _values.end(), 
+        [&](const std::shared_ptr<mkLIRSValue>& dest) {
             return (dest->_key == key);
         }
     );
     
-    if(iter != _vBlocks.end()) {
+    if(iter != _values.end()) {
         result = *iter;
     }
     return result;
 }
 
-std::shared_ptr<mkBlock> 
+std::shared_ptr<mkLIRSValue> 
 mkRedQueue::Remove(const int key)
 {
-    std::shared_ptr<mkBlock> result;
+    std::shared_ptr<mkLIRSValue> result;
     
     //todo:可以添加一个non-residentHIR的 unorderedmap加速检索
-    auto iter = find_if(_vBlocks.begin(), _vBlocks.end(), 
-        [&](const std::shared_ptr<mkBlock>& dest) {
+    auto iter = find_if(_values.begin(), _values.end(), 
+        [&](const std::shared_ptr<mkLIRSValue>& dest) {
             return (dest->_key == key);
         }
     );
     
-    if(iter != _vBlocks.end()) {
+    if(iter != _values.end()) {
         result = *iter;
-        _vBlocks.erase(iter);
+        _values.erase(iter);
     }
     
     return result;
@@ -69,32 +69,32 @@ mkRedQueue::Remove(const int key)
 int64 
 mkRedQueue::Size() const
 {
-    return _vBlocks.size();
+    return _values.size();
 }
 
-vector<std::shared_ptr<mkBlock>> 
+vector<std::shared_ptr<mkLIRSValue>> 
 mkRedQueue::List() const
 {
-    return _vBlocks;
+    return _values;
 }
 
 void 
-mkRedQueue::Push_back(std::shared_ptr<mkBlock> item)
+mkRedQueue::Push_back(std::shared_ptr<mkLIRSValue> item)
 {
-    _vBlocks.push_back(item);
+    _values.push_back(item);
 }
 
 void 
 mkRedQueue::Pop_front()
 {
-    _vBlocks.erase(_vBlocks.begin());
+    _values.erase(_values.begin());
 }
 
 void 
 mkRedQueue::Pruning()
 {
     while (true) {
-        mkBlockState state = Front()->_state;
+        mkLIRSState state = Front()->_state;
         //如果当前头部元素是HIR, 则丢弃之
         if(state == STATE_HIR_resident || state == STATE_HIR_nonResident) {
             Pop_front();

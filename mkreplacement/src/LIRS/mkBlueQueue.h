@@ -17,38 +17,31 @@ Author:liu.hao(33852613@163.com)
 Time:2021-3
 
 info:
-
+    mkBlueQueue 
+    负责冷数据(HIR)汰换
+    FIFO队列,尾端插入,头端删除
+    存储resident-HIR
 ***************************************************************************************************/
 
-#ifndef __mkBlock
-#define __mkBlock
+#ifndef __mkBlueQueue
+#define __mkBlueQueue
 
-//数据块状态
-enum mkBlockState
-{
-    STATE_LIR               = 0,//热数据块，已经被访问两次的数据块
-    STATE_HIR_resident      = 1,//冷数据块，还仅仅只被访问一次的数据块,有缓存 
-    STATE_HIR_nonResident   = 2,//冷数据块，还仅仅只被访问一次的数据块,无缓存
-    STATE_Invalid           = 3 //无效数据块
-};
+#include "mkILIRSReplacement.h"
 
-struct mkBlockBuffer
+class mkBlueQueue
 {
+public:
+    std::shared_ptr<mkLIRSValue> Front();//获取头部数据详情
+    std::shared_ptr<mkLIRSValue> Remove(const int key);//删除并返回删除的对象
     
-};
-
-//数据块
-struct mkBlock
-{
-    mkBlock(const int& key, const mkBlockState& state)
-        :_key(key) 
-        ,_state(state)
-    {
-    }
+    int64 Size() const;//获取队列size
+    vector<std::shared_ptr<mkLIRSValue>> List() const;//枚举对象
     
-    int             _key;
-    mkBlockState    _state;
-    std::shared_ptr<mkBlockBuffer>  _pBuf;
+    void Push_back(std::shared_ptr<mkLIRSValue> item);//从尾端插入一个元素
+    void Pop_front();//删除头端元素
+    
+private:
+    std::vector<std::shared_ptr<mkLIRSValue>> _values;
 };
 
 #endif

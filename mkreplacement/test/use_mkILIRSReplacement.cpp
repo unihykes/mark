@@ -20,15 +20,14 @@ info:
 
 ***************************************************************************************************/
 #include <markcore.h>
-#include <initializer_list>
 #include <gtest/gtest.h>
-#include "mkLIRSCache.h"
+#include "mkILIRSReplacement.h"
 
 
-class mkLIRSCacheOption : public mkIOption
+class mkLIRSReplacementOption : public mkIOption
 {
 public:
-    mkLIRSCacheOption()
+    mkLIRSReplacementOption()
         //: mkIOption()
     {
     }
@@ -55,7 +54,7 @@ public:
     int     _hirlimit = 100;
 };
 
-class use_mkLIRSCache : public testing::Test
+class use_mkILIRSReplacement : public testing::Test
 {
 protected:
     static void SetUpTestCase()
@@ -69,54 +68,58 @@ protected:
     virtual void SetUp()
     {
         //重置参数
-        g_moduleInstance->_switch->ClearOption<mkLIRSCacheOption>();
-        g_moduleInstance->_switch->ApplyOption<mkLIRSCacheOption>();
+        g_moduleInstance->_switch->ClearOption<mkLIRSReplacementOption>();
+        g_moduleInstance->_switch->ApplyOption<mkLIRSReplacementOption>();
         
-        int lirlimit = g_moduleInstance->_switch->GetOption<mkLIRSCacheOption>()->_lirlimit;
-        int hirlimit = g_moduleInstance->_switch->GetOption<mkLIRSCacheOption>()->_hirlimit;
-        _pMarket = std::make_shared<mkLIRSCache>(lirlimit, hirlimit);
+        int lirlimit = g_moduleInstance->_switch->GetOption<mkLIRSReplacementOption>()->_lirlimit;
+        int hirlimit = g_moduleInstance->_switch->GetOption<mkLIRSReplacementOption>()->_hirlimit;
+        
+        mkIReplacementBuilder builder;
+        auto pPlacement = builder.LIRS();
+        _pPlacement = std::dynamic_pointer_cast<mkILIRSReplacement>(pPlacement);
+        
     }
     
     virtual void TearDown()
     {
     }
     
-    void Print(const int& key, std::shared_ptr<mkBlock> block)
+    void Print(const int& key, std::shared_ptr<mkLIRSValue> item) 
     {
         static const char* stateName[] = {"LIR", "resident HIR","non-resident HIR","Invalid"};
         
-        MK_PRINT("key = %d, block = {%d, %s}", key, block ? block->_key : -1, block ? stateName[block->_state] : stateName[3]);
+        MK_PRINT("key = %d, item = {%d, %s}", key, item ? item->_key : -1, item ? stateName[item->_state] : stateName[3]);
         
-        auto vBlockS = _pMarket->ListRedQ();
+        auto vRedQ = _pPlacement->ListRedQ();
         string itemS;
-        for(const auto& item : vBlockS) {
-            string str = mkSharedFormat{}("%d[%s], ", item->_key, stateName[item->_state]);
+        for(const auto& elem : vRedQ) {
+            string str = mkSharedFormat{}("%d[%s], ", elem->_key, stateName[elem->_state]);
             itemS += str;
         }
         MK_PRINT("redQ =  %s", itemS.c_str());
         
-        auto vBlockQ = _pMarket->ListBlueQ();
+        auto vBlueQ = _pPlacement->ListBlueQ();
         string itemQ;
-        for(const auto& item : vBlockQ) {
-            string str = mkSharedFormat{}("%d[%s], ", item->_key, stateName[item->_state]);
+        for(const auto& elem : vBlueQ) {
+            string str = mkSharedFormat{}("%d[%s], ", elem->_key, stateName[elem->_state]);
             itemQ += str;
         }
         MK_PRINT("blueQ =  %s\n", itemQ.c_str());
-    }
+    };
 protected:
-    std::shared_ptr<mkLIRSCache> _pMarket;
+    std::shared_ptr<mkILIRSReplacement> _pPlacement;
 };
 
 //顺序扫描
-TEST_F(use_mkLIRSCache, scan)
+TEST_F(use_mkILIRSReplacement, LIRS_scan)
 {
     for(int cnt = 0 ; cnt !=5; ++cnt) {
         for(int i = 0; i != 100; ++i) {
-            auto result = _pMarket->Get(i);
+            auto result = _pPlacement->GetValue(i);
             Print(i, result);
         }
-        MK_PRINT("hit = %lld", _pMarket->GetHitCounts());
-        MK_PRINT("miss = %lld", _pMarket->GetMissCounts());
+        MK_PRINT("hit = %lld", _pPlacement->GetHitCounts());
+        MK_PRINT("miss = %lld", _pPlacement->GetMissCounts());
     }
 }
 

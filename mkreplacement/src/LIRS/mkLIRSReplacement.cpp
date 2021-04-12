@@ -20,11 +20,11 @@ info:
 
 ***************************************************************************************************/
 #include <markcore.h>
-#include "mkLIRSCache.h"
+#include "mkLIRSReplacement.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-mkLIRSCache::mkLIRSCache(int LIRSize , int HIRSize)
+mkLIRSReplacement::mkLIRSReplacement(int LIRSize , int HIRSize)
     :_hitCounts(0)
     ,_missCounts(0)
     ,_limitLIR(LIRSize)
@@ -39,8 +39,20 @@ mkLIRSCache::mkLIRSCache(int LIRSize , int HIRSize)
     }
 }
 
-std::shared_ptr<mkBlock> 
-mkLIRSCache::Get(const int& key)
+std::shared_ptr<mkIReplaceValue> 
+mkLIRSReplacement::Get(const int& key)
+{
+    auto pValue = GetValue(key);
+    if(pValue) {
+        return pValue->_pBuf;
+    }
+    else {
+        return nullptr;
+    }
+}
+
+std::shared_ptr<mkLIRSValue> 
+mkLIRSReplacement::GetValue(const int& key)
 {
     auto iter = _cacheMap.find(key);
     
@@ -67,7 +79,7 @@ mkLIRSCache::Get(const int& key)
     }
     //命中(key在缓存中)
     else {
-        const mkBlockState& state = iter->second->_state;
+        const mkLIRSState& state = iter->second->_state;
         
         //命中LIR
         if(state == STATE_LIR) {
@@ -87,75 +99,75 @@ mkLIRSCache::Get(const int& key)
 }
 
 int64 
-mkLIRSCache::GetHitCounts() const
+mkLIRSReplacement::GetHitCounts() const
 {
     return _hitCounts;
 }
 
 int64 
-mkLIRSCache::GetMissCounts() const
+mkLIRSReplacement::GetMissCounts() const
 {
     return _missCounts;
 }
 
-vector<std::shared_ptr<mkBlock>> 
-mkLIRSCache::ListRedQ() const
+vector<std::shared_ptr<mkLIRSValue>> 
+mkLIRSReplacement::ListRedQ() const
 {
     return _redQ.List();
 }
 
-vector<std::shared_ptr<mkBlock>> 
-mkLIRSCache::ListBlueQ() const
+vector<std::shared_ptr<mkLIRSValue>> 
+mkLIRSReplacement::ListBlueQ() const
 {
     return _blueQ.List();
 }
 
 //private
-std::shared_ptr<mkBlock> 
-mkLIRSCache::InitLIR(const int& key)
+std::shared_ptr<mkLIRSValue> 
+mkLIRSReplacement::InitLIR(const int& key)
 {
-    std::shared_ptr<mkBlock> newBlock(new mkBlock(key , STATE_LIR));
-    BuildBlock(newBlock);
-    _cacheMap.insert({key, newBlock});
-    _redQ.Push_back(newBlock);
+    std::shared_ptr<mkLIRSValue> newItem(new mkLIRSValue(key , STATE_LIR));
+    Build(newItem);
+    _cacheMap.insert({key, newItem});
+    _redQ.Push_back(newItem);
     --_limitLIR;
     ++_missCounts;
-    return newBlock;
+    return newItem;
 }
 
-std::shared_ptr<mkBlock> 
-mkLIRSCache::InitResidentHIR(const int& key)
+std::shared_ptr<mkLIRSValue> 
+mkLIRSReplacement::InitResidentHIR(const int& key)
 {
-    std::shared_ptr<mkBlock> newBlock(new mkBlock(key , STATE_HIR_resident));
-    BuildBlock(newBlock);
-    _cacheMap.insert({key, newBlock});
-    _redQ.Push_back(newBlock);
-    _blueQ.Push_back(newBlock);
+    std::shared_ptr<mkLIRSValue> newItem(new mkLIRSValue(key , STATE_HIR_resident));
+    Build(newItem);
+    _cacheMap.insert({key, newItem});
+    _redQ.Push_back(newItem);
+    _blueQ.Push_back(newItem);
     --_limitHIR;
     ++_missCounts;
-    return newBlock;
+    return newItem;
 }
 
-std::shared_ptr<mkBlock> 
-mkLIRSCache::HitNonResidentHIR(std::shared_ptr<mkBlock> itemRed)
+std::shared_ptr<mkLIRSValue> 
+mkLIRSReplacement::HitNonResidentHIR(std::shared_ptr<mkLIRSValue> itemRed)
 {
-    const mkBlockState& state = itemRed->_state;
+    const mkLIRSState& state = itemRed->_state;
     if(state != STATE_HIR_nonResident) {
         MK_THROW(1024, "error, something is wrong!");
     }
 
     //移除blueQ头端的residentHIR,
-    std::shared_ptr<mkBlock> discard = _blueQ.Front();
+    std::shared_ptr<mkLIRSValue> discard = _blueQ.Front();
     _blueQ.Pop_front();
     
-    //在redQ中将这个被移除的数据块修改为non-resident(如果存在的话)
+    //在redQ中将这个被移除的对象修改为non-resident(如果存在的话)
     auto discardRed = _redQ.Find(discard->_key);
     if(discardRed) {
         discardRed->_state = STATE_HIR_nonResident;
-        ClearBlock(discardRed);//释放资源
+        Clear(discardRed);//释放资源
     }
     
-    //将这个被移除的HIR从缓存中删除(注意:在缓存中被删除的数据块,在redQ中可能仍然以non-resident状态保留)
+    //将这个被移除的HIR从缓存中删除(注意:在缓存中被删除的对象,在redQ中可能仍然以non-resident状态保留)
     auto eraseCount = _cacheMap.erase(discard->_key);
     if(0 == eraseCount) {
         //发生错误:数据丢失
@@ -163,41 +175,41 @@ mkLIRSCache::HitNonResidentHIR(std::shared_ptr<mkBlock> itemRed)
     }
     
     //将新key添加进缓存
-    std::shared_ptr<mkBlock> newBlock(new mkBlock(itemRed->_key, STATE_LIR));
-    BuildBlock(newBlock);
+    std::shared_ptr<mkLIRSValue> newItem(new mkLIRSValue(itemRed->_key, STATE_LIR));
+    Build(newItem);
     
-    _cacheMap.insert({newBlock->_key, newBlock});
+    _cacheMap.insert({newItem->_key, newItem});
     
-    //将该数据块移动到redQ尾端,并设置为LIR
-    _redQ.Push_back(newBlock);
+    //将该对象移动到redQ尾端,并设置为LIR
+    _redQ.Push_back(newItem);
     
-    //将redQ头端的LIR数据块转变为resident-HIR并移动到blueQ尾部
-    auto discardBlock = _redQ.Front();
+    //将redQ头端的LIR对象转变为resident-HIR并移动到blueQ尾部
+    auto discardItem = _redQ.Front();
     _redQ.Pop_front();
     _redQ.Pruning();//对redQ进行剪枝,保证头端一定为LIR
     
-    discardBlock->_state = STATE_HIR_resident;
-    _blueQ.Push_back(discardBlock);
+    discardItem->_state = STATE_HIR_resident;
+    _blueQ.Push_back(discardItem);
     
     ++_missCounts;
-    return newBlock;
+    return newItem;
 }
 
-std::shared_ptr<mkBlock> 
-mkLIRSCache::HitNothing(const int& key)
+std::shared_ptr<mkLIRSValue> 
+mkLIRSReplacement::HitNothing(const int& key)
 {
     //移除blueQ头端的residentHIR,同时在S中将这个HIR修改为non-resident(如果存在的话)
-    std::shared_ptr<mkBlock> discard = _blueQ.Front();
+    std::shared_ptr<mkLIRSValue> discard = _blueQ.Front();
     _blueQ.Pop_front();
     
-    //在redQ中将这个被移除的数据块修改为non-resident(如果存在的话)
+    //在redQ中将这个被移除的对象修改为non-resident(如果存在的话)
     auto discardRed = _redQ.Find(discard->_key);
     if(discardRed) {
         discardRed->_state = STATE_HIR_nonResident;
-        ClearBlock(discardRed);//释放资源
+        Clear(discardRed);//释放资源
     }
     
-    //将这个被移除的HIR从缓存中删除(注意:在缓存中被删除的数据块,在redQ中可能仍然以non-resident状态保留)
+    //将这个被移除的HIR从缓存中删除(注意:在缓存中被删除的对象,在redQ中可能仍然以non-resident状态保留)
     auto eraseCount = _cacheMap.erase(discard->_key);
     if(0 == eraseCount) {
         //发生错误:数据丢失
@@ -205,25 +217,25 @@ mkLIRSCache::HitNothing(const int& key)
     }
     
     //将新key添加进缓存
-    std::shared_ptr<mkBlock> newBlock(new mkBlock(key , STATE_HIR_resident));
-    BuildBlock(newBlock);
-    _cacheMap.insert({key, newBlock});
+    std::shared_ptr<mkLIRSValue> newItem(new mkLIRSValue(key , STATE_HIR_resident));
+    Build(newItem);
+    _cacheMap.insert({key, newItem});
     
-    //添加新添加的数据块的索引
-    _redQ.Push_back(newBlock);
-    _blueQ.Push_back(newBlock);
+    //添加新添加的对象的索引
+    _redQ.Push_back(newItem);
+    _blueQ.Push_back(newItem);
     
     ++_missCounts;
-    return newBlock;
+    return newItem;
 }
 
 void
-mkLIRSCache::HitLIR(const int& key)
+mkLIRSReplacement::HitLIR(const int& key)
 {
     //访问redQ中的LIR,将其移动到尾部(更新R)
-    std::shared_ptr<mkBlock> item = _redQ.Remove(key);
+    std::shared_ptr<mkLIRSValue> item = _redQ.Remove(key);
     if(item) {
-        _redQ.Pruning();//如果命中的数据块之前在队列头端,需要进行剪枝操作
+        _redQ.Pruning();//如果命中的对象之前在队列头端,需要进行剪枝操作
         _redQ.Push_back(item);
         _hitCounts++;
     }
@@ -233,29 +245,29 @@ mkLIRSCache::HitLIR(const int& key)
 }
 
 void 
-mkLIRSCache::HitResidentHIR(const int& key)
+mkLIRSReplacement::HitResidentHIR(const int& key)
 {
-    std::shared_ptr<mkBlock> itemRed = _redQ.Remove(key);
+    std::shared_ptr<mkLIRSValue> itemRed = _redQ.Remove(key);
     
      // residentHIR 在redQ中
     if(itemRed) {
-        //将该HIR数据块移动到尾端,并修改为LIR
+        //将该HIR对象移动到尾端,并修改为LIR
         itemRed->_state = STATE_LIR;
         _redQ.Push_back(itemRed);
-        //blueQ中如果也存在这个数据块,则淘汰之(因为此时数据块已经变成了LIR,而blueQ中仅保留HIR)
+        //blueQ中如果也存在这个对象,则淘汰之(因为此时对象已经变成了LIR,而blueQ中仅保留HIR)
         _blueQ.Remove(key);
         
-        //将redQ头端的LIR数据块淘汰(转变为resident-HIR并移动到blueQ尾部)
-        auto discardBlock = _redQ.Front();
+        //将redQ头端的LIR对象淘汰(转变为resident-HIR并移动到blueQ尾部)
+        auto discardItem = _redQ.Front();
         _redQ.Pop_front();
         _redQ.Pruning();//对redQ进行剪枝,保证头端一定为LIR
-        discardBlock->_state = STATE_HIR_resident;
-        _blueQ.Push_back(discardBlock);
+        discardItem->_state = STATE_HIR_resident;
+        _blueQ.Push_back(discardItem);
     }
     
      // residentHIR 不在redQ中
     else {
-        std::shared_ptr<mkBlock> itemBlue = _blueQ.Remove(key);
+        std::shared_ptr<mkLIRSValue> itemBlue = _blueQ.Remove(key);
         if(!itemBlue) {
             MK_THROW(1024, "error, data loss!");//索引与数据不一致
         }
@@ -271,15 +283,15 @@ mkLIRSCache::HitResidentHIR(const int& key)
 }
 
 void 
-mkLIRSCache::BuildBlock(std::shared_ptr<mkBlock> newBlock)
+mkLIRSReplacement::Build(std::shared_ptr<mkLIRSValue> newItem)
 {
-    newBlock->_pBuf = std::make_shared<mkBlockBuffer>();
+    newItem->_pBuf = std::make_shared<mkIReplaceValue>();
     //todo
 }
 
 void 
-mkLIRSCache::ClearBlock(std::shared_ptr<mkBlock> newBlock)
+mkLIRSReplacement::Clear(std::shared_ptr<mkLIRSValue> newItem)
 {
-    newBlock->_pBuf = nullptr;
+    newItem->_pBuf = nullptr;
     //todo
 }

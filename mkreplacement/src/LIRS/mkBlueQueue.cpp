@@ -22,26 +22,26 @@ info:
 #include <markcore.h>
 #include "mkBlueQueue.h"
 
-std::shared_ptr<mkBlock> 
+std::shared_ptr<mkLIRSValue> 
 mkBlueQueue::Front()
 {
-    return _vBlocks[0];
+    return _values[0];
 }
 
-std::shared_ptr<mkBlock> 
+std::shared_ptr<mkLIRSValue> 
 mkBlueQueue::Remove(const int key)
 {
-    std::shared_ptr<mkBlock> result;
+    std::shared_ptr<mkLIRSValue> result;
     
-    auto iter = find_if(_vBlocks.begin(), _vBlocks.end(), 
-        [&](const std::shared_ptr<mkBlock>& dest) {
+    auto iter = find_if(_values.begin(), _values.end(), 
+        [&](const std::shared_ptr<mkLIRSValue>& dest) {
             return (dest->_key == key);
         }
     );
     
-    if(iter != _vBlocks.end()) {
+    if(iter != _values.end()) {
         result = *iter;
-        _vBlocks.erase(iter);
+        _values.erase(iter);
     }
     
     return result;
@@ -50,25 +50,25 @@ mkBlueQueue::Remove(const int key)
 int64 
 mkBlueQueue::Size() const
 {
-    return _vBlocks.size();
+    return _values.size();
 }
 
-vector<std::shared_ptr<mkBlock>> 
+vector<std::shared_ptr<mkLIRSValue>> 
 mkBlueQueue::List() const
 {
-    return _vBlocks;
+    return _values;
 }
 
 void 
-mkBlueQueue::Push_back(std::shared_ptr<mkBlock> item)
+mkBlueQueue::Push_back(std::shared_ptr<mkLIRSValue> item)
 {
-    _vBlocks.push_back(item);
+    _values.push_back(item);
 }
 
 void 
 mkBlueQueue::Pop_front()
 {
-    _vBlocks.erase(_vBlocks.begin());
+    _values.erase(_values.begin());
 }
 
 

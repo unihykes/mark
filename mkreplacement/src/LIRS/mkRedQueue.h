@@ -27,24 +27,24 @@ info:
 #ifndef __mkRedQueue
 #define __mkRedQueue
 
-#include "mkBlock.h"
+#include "mkILIRSReplacement.h"
 
 class mkRedQueue
 {
 public:
-    std::shared_ptr<mkBlock> Front();//获取头部数据详情
-    std::shared_ptr<mkBlock> Find(const int key);//查找指定元素
-    std::shared_ptr<mkBlock> Remove(const int key);//删除并返回删除的对象
+    std::shared_ptr<mkLIRSValue> Front();//获取头部数据详情
+    std::shared_ptr<mkLIRSValue> Find(const int key);//查找指定元素
+    std::shared_ptr<mkLIRSValue> Remove(const int key);//删除并返回删除的对象
     
     int64 Size() const;//获取队列size
-    vector<std::shared_ptr<mkBlock>> List() const;//枚举对象
+    vector<std::shared_ptr<mkLIRSValue>> List() const;//枚举对象
     
-    void Push_back(std::shared_ptr<mkBlock> item);//从尾端插入一个元素
+    void Push_back(std::shared_ptr<mkLIRSValue> item);//从尾端插入一个元素
     void Pop_front();//删除头端元素
     void Pruning();//剪枝, 保证头端始终为LIR这样访问一个resident-HIR时就知道这个resident-HIR的新IRR一定小于头端LIR的recency。
     
 private:
-    std::vector<std::shared_ptr<mkBlock>> _vBlocks;
+    std::vector<std::shared_ptr<mkLIRSValue>> _values;
 };
 
 #endif
