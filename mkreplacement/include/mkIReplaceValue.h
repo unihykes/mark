@@ -34,6 +34,9 @@ public:
 class mkIReplaceValue
 {
 public:
+    virtual void Hit() = 0;
+    virtual int64 GetHitCount() const = 0;
+    
     virtual void write(const string& in)
     {
         MK_THROW(1024, "Unimplemented interface");//按需重载

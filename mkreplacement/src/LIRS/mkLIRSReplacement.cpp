@@ -44,7 +44,8 @@ std::shared_ptr<mkIReplaceValue>
 mkLIRSReplacement::Get(const int& key)
 {
     auto pValue = GetValue(key);
-    if(pValue) {
+    if(pValue->_value) {
+        pValue->_value->Hit();
         return pValue->_value;
     }
     else {

@@ -57,6 +57,16 @@ public:
     {
     }
     
+    virtual void Hit()
+    {
+        ++_hit;
+    }
+    
+    virtual int64 GetHitCount() const
+    {
+        return _hit;
+    }
+    
     virtual void write(const string& in)
     {
         _buf = in;
@@ -71,6 +81,7 @@ public:
 private:
     int _key;
     string _buf;
+    int64 _hit = -1;
 };
 
 class mkReplaceValueBuilder : public mkIReplaceValueBuilder

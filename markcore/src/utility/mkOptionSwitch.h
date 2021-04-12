@@ -115,7 +115,8 @@ public:
             }
         }
         if(!validKey) {
-            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "key(%s) is invalid", key.c_str());//todo:TypeKey::c_str()
+            mkPrint p("mkIOptionSwitch_base"); 
+            p(__FILE__, __LINE__, __func__, "key(%s) is invalid", key.c_str());//todo:TypeKey::c_str()
         }
     }
     
@@ -140,7 +141,9 @@ public:
             }
             else {
                 //key无效
-                mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, "key(%s) is invalid", key.c_str());//todo:TypeKey::c_str()
+                //stringstream err; err<<index.name();
+                //mkPrint p("mkIOptionSwitch_base"); 
+                //p(__FILE__, __LINE__, __func__, "key(%s::%s) is invalid", err.str().c_str(), key.c_str());//todo:TypeKey::c_str()
             }
         }
         else {
