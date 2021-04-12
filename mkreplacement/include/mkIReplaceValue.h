@@ -27,9 +27,7 @@ info:
 class mkIReplacePiece
 {
 public:
-    virtual int GetOffset() = 0;
-    virtual int GetLength() = 0;
-    virtual const char* GetBuffer() = 0;
+    virtual void SetData(const char* buf, const int& length) = 0;
 };
 
 //数据结构:value
@@ -38,21 +36,16 @@ class mkIReplaceValue
 public:
     virtual void write(const string& in)
     {
-        //按需重载
+        MK_THROW(1024, "Unimplemented interface");//按需重载
     }
     virtual void read(string& out)
     {
-        //按需重载
+        MK_THROW(1024, "Unimplemented interface");//按需重载
     }
     
-    virtual std::shared_ptr<mkIReplacePiece> GetPiece(const int& offset, const int& length)
+    virtual void GetPiece(mkIReplacePiece* out, const int& offset, const int& length)
     {
-        //按需重载
-    }
-    
-    virtual void ListPieces(vector<std::shared_ptr<mkIReplacePiece> >& out)
-    {
-        //按需重载
+        MK_THROW(1024, "Unimplemented interface");//按需重载
     }
 };
 
