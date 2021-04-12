@@ -46,7 +46,7 @@ struct mkLIRSValue
     
     int             _key;
     mkLIRSState    _state;
-    std::shared_ptr<mkIReplaceValue>  _pBuf;
+    std::shared_ptr<mkIReplaceValue>  _value;
 };
 
 //基于LIRS算法的缓存器

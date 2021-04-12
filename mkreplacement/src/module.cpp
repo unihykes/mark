@@ -39,8 +39,8 @@ mkIReplacementBuilder::PushOptions(const string& key, const string& value)
 }
 
 std::shared_ptr<mkIReplacement> 
-mkIReplacementBuilder::LIRS()
+mkIReplacementBuilder::LIRS(shared_ptr<mkIReplaceValueBuilder> pBuilder)
 {
     //todo
-    return make_shared<mkLIRSReplacement>(100,100);
+    return make_shared<mkLIRSReplacement>(100,100, pBuilder);
 }

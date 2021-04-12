@@ -24,11 +24,12 @@ info:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-mkLIRSReplacement::mkLIRSReplacement(int LIRSize , int HIRSize)
+mkLIRSReplacement::mkLIRSReplacement(int LIRSize , int HIRSize, std::shared_ptr<mkIReplaceValueBuilder> pValueBuilder)
     :_hitCounts(0)
     ,_missCounts(0)
     ,_limitLIR(LIRSize)
     ,_limitHIR(HIRSize)
+    ,_pValueBuilder(pValueBuilder)
 {
     if(_limitLIR <=1) {
         MK_THROW(1024, "error, _limitLIR = %d", _limitLIR);
@@ -44,7 +45,7 @@ mkLIRSReplacement::Get(const int& key)
 {
     auto pValue = GetValue(key);
     if(pValue) {
-        return pValue->_pBuf;
+        return pValue->_value;
     }
     else {
         return nullptr;
@@ -285,13 +286,13 @@ mkLIRSReplacement::HitResidentHIR(const int& key)
 void 
 mkLIRSReplacement::Build(std::shared_ptr<mkLIRSValue> newItem)
 {
-    newItem->_pBuf = std::make_shared<mkIReplaceValue>();
+    newItem->_value = _pValueBuilder->Create(newItem->_key);
     //todo
 }
 
 void 
 mkLIRSReplacement::Clear(std::shared_ptr<mkLIRSValue> newItem)
 {
-    newItem->_pBuf = nullptr;
+    newItem->_value = nullptr;
     //todo
 }

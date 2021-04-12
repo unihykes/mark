@@ -55,7 +55,7 @@ https://cloud.tencent.com/developer/article/1464670
 class mkLIRSReplacement : public mkILIRSReplacement
 {
 public:
-    mkLIRSReplacement(int LIRSize, int HIRSize);
+    mkLIRSReplacement(int LIRSize, int HIRSize, std::shared_ptr<mkIReplaceValueBuilder> pValueBuilder);
     virtual std::shared_ptr<mkIReplaceValue> Get(const int& key);
     
     virtual std::shared_ptr<mkLIRSValue> GetValue(const int& key);
@@ -87,6 +87,8 @@ private:
     std::unordered_map<int, std::shared_ptr<mkLIRSValue>> _cacheMap;//所有缓存对象的key集合,只保留LIR和resident-HIR, non-residentHIR不在缓存中
     mkRedQueue _redQ;//热数据(LIR)汰换
     mkBlueQueue _blueQ; //冷数据（HIR块）淘汰
+    
+    std::shared_ptr<mkIReplaceValueBuilder> _pValueBuilder;
 };
 
 

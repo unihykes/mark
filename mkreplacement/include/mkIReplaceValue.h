@@ -17,31 +17,49 @@ Author:liu.hao(33852613@163.com)
 Time:2021-4
 
 info:
-
+    
 ***************************************************************************************************/
 
-#ifndef __mkIReplacement
-#define __mkIReplacement
+#ifndef __mkIReplaceValue
+#define __mkIReplaceValue
 
-#include "mkIReplaceValue.h"
-
-//接口:汰换器
-class MK_DLL_EXPORT mkIReplacement
+//数据结构:piece
+class mkIReplacePiece
 {
 public:
-    virtual std::shared_ptr<mkIReplaceValue> Get(const int& key) = 0;
+    virtual int GetOffset() = 0;
+    virtual int GetLength() = 0;
+    virtual const char* GetBuffer() = 0;
 };
 
-class MK_DLL_EXPORT mkIReplacementBuilder
+//数据结构:value
+class mkIReplaceValue
 {
 public:
-    mkIReplacementBuilder();
-    ~mkIReplacementBuilder();
+    virtual void write(const string& in)
+    {
+        //按需重载
+    }
+    virtual void read(string& out)
+    {
+        //按需重载
+    }
     
-    void PushOptions(const string& key, const string& value);
+    virtual std::shared_ptr<mkIReplacePiece> GetPiece(const int& offset, const int& length)
+    {
+        //按需重载
+    }
     
-    //创建连接,调用失败会抛异常
-    std::shared_ptr<mkIReplacement> LIRS(shared_ptr<mkIReplaceValueBuilder> pBuilder);
+    virtual void ListPieces(vector<std::shared_ptr<mkIReplacePiece> >& out)
+    {
+        //按需重载
+    }
+};
+
+class mkIReplaceValueBuilder
+{
+public:
+    virtual std::shared_ptr<mkIReplaceValue> Create(const int& key) = 0;
 };
 
 #endif

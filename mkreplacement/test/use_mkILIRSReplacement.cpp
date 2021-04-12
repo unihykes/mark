@@ -27,11 +27,6 @@ info:
 class mkLIRSReplacementOption : public mkIOption
 {
 public:
-    mkLIRSReplacementOption()
-        //: mkIOption()
-    {
-    }
-    
     virtual bool OnSetValue(const string& key, const string& value)
     {
         if("--lirlimit" == key) {
@@ -54,6 +49,40 @@ public:
     int     _hirlimit = 100;
 };
 
+class mkReplaceValue : public mkIReplaceValue
+{
+public:
+    mkReplaceValue(const int& key)
+        : _key(key)
+    {
+    }
+    
+    virtual void write(const string& in)
+    {
+        _buf = in;
+    }
+    
+    virtual void read(string& out)
+    {
+        out.append(std::to_string(_key));
+        out.append(_buf);
+    }
+    
+private:
+    int _key;
+    string _buf;
+};
+
+class mkReplaceValueBuilder : public mkIReplaceValueBuilder
+{
+public:
+    virtual std::shared_ptr<mkIReplaceValue> Create(const int& key)
+    {
+        std::shared_ptr<mkIReplaceValue> result = std::make_shared<mkReplaceValue>(key);
+        return result;
+    }
+};
+
 class use_mkILIRSReplacement : public testing::Test
 {
 protected:
@@ -74,8 +103,9 @@ protected:
         int lirlimit = g_moduleInstance->_switch->GetOption<mkLIRSReplacementOption>()->_lirlimit;
         int hirlimit = g_moduleInstance->_switch->GetOption<mkLIRSReplacementOption>()->_hirlimit;
         
+        std::shared_ptr<mkIReplaceValueBuilder> valueBuilder = std::make_shared<mkReplaceValueBuilder>();
         mkIReplacementBuilder builder;
-        auto pPlacement = builder.LIRS();
+        auto pPlacement = builder.LIRS(valueBuilder);
         _pPlacement = std::dynamic_pointer_cast<mkILIRSReplacement>(pPlacement);
         
     }
@@ -88,7 +118,16 @@ protected:
     {
         static const char* stateName[] = {"LIR", "resident HIR","non-resident HIR","Invalid"};
         
-        MK_PRINT("key = %d, item = {%d, %s}", key, item ? item->_key : -1, item ? stateName[item->_state] : stateName[3]);
+        if(!item) {
+            MK_THROW(1024, "key = %d, item = {%d, %s}", key, -1, stateName[3]);
+        }
+        
+        MK_PRINT("key = %d, item = {%d, %s}", key, item->_key, stateName[item->_state]);
+        if(item->_value) {
+            string out;
+            item->_value->read(out);
+            MK_PRINT("value = %s", out.c_str());
+        }
         
         auto vRedQ = _pPlacement->ListRedQ();
         string itemS;
