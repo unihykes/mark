@@ -15,6 +15,7 @@ IF(WIN32)
     ADD_SOURCE_DIRS(./${3rdparty_os}/win-iconv;)
     SET(EXCLUDE_SOURCE_FILES ./${3rdparty_os}/win-iconv/win_iconv_test.c)
 ELSE()
+    set(NEED_LIBUUID true)
 	set(3rdparty_os 3rdparty/_unix)
 ENDIF()
 

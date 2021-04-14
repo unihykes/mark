@@ -1,0 +1,57 @@
+syntax="proto3";
+package mkops;
+
+option cc_generic_services = true;
+
+message RequestListState {
+};
+
+message ResponseListState {
+    repeated string guid= 1;
+    repeated string name= 2;
+};
+
+message RequestPut {
+    string guid = 1;
+    string key = 2;
+    string value =3;
+};
+
+message ResponsePut {
+    
+};
+
+message RequestGet {
+    string guid = 1;
+    string key = 2;
+};
+
+message ResponseGet {
+    string value= 1;
+};
+
+message RequestDelete {
+    string guid = 1;
+    string key = 2;
+};
+
+message ResponseDelete {
+    
+};
+
+message RequestList {
+    string guid = 1;
+    string key = 2;
+};
+
+message ResponseList {
+    repeated string value= 1;
+};
+
+service mkIOpsRpc {
+    rpc ListState(RequestListState) returns (ResponseListState);
+    rpc Put(RequestPut) returns (ResponsePut);
+    rpc Get(RequestGet) returns (ResponseGet);
+    rpc Delete(RequestDelete) returns (ResponseDelete);
+    rpc List(RequestList) returns (ResponseList);
+};

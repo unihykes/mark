@@ -38,6 +38,15 @@ mkLIRSReplacement::mkLIRSReplacement(int LIRSize , int HIRSize, std::shared_ptr<
     if(_limitHIR <=1) {
         MK_THROW(1024, "error, _limitHIR = %d", _limitHIR);
     }
+    
+    _pState = std::make_shared<mkLIRSReplacementState>(this);
+    mkIOpsRegister::Register(_pState);
+}
+
+mkLIRSReplacement::~mkLIRSReplacement()
+{
+    mkIOpsRegister::UnRegister(_pState);
+    _pState = nullptr;
 }
 
 std::shared_ptr<mkIReplaceValue> 
@@ -296,4 +305,59 @@ mkLIRSReplacement::Clear(std::shared_ptr<mkLIRSValue> newItem)
 {
     newItem->_value = nullptr;
     //todo
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+mkLIRSReplacementState::mkLIRSReplacementState(mkLIRSReplacement* pTarget)
+    : _pTarget(pTarget)
+{
+    _guid = mkGuid::Generate();
+    MK_PRINT("");
+}
+
+mkLIRSReplacementState::~mkLIRSReplacementState()
+{
+    MK_PRINT("");
+    _pTarget = nullptr;
+}
+
+mkIOpsState::Config 
+mkLIRSReplacementState::GetConfig() const 
+{
+    return {_guid, "mkLIRSReplacementState"};
+}
+
+void 
+mkLIRSReplacementState::Put(const std::string& key, const std::string& value)
+{
+    MK_PRINT("");
+}
+
+bool 
+mkLIRSReplacementState::Get(const std::string& key, std::string& value)
+{
+    MK_PRINT("");
+    
+    if(_pTarget) {
+        MK_PRINT("_hitCounts = %lld", _pTarget->_hitCounts);
+        MK_PRINT("_missCounts = %lld", _pTarget->_missCounts);
+        MK_PRINT("_limitLIR = %lld", _pTarget->_limitLIR);
+        MK_PRINT("_limitHIR = %lld", _pTarget->_limitHIR);
+        MK_PRINT("_cacheMap.size = %lld", _pTarget->_cacheMap.size());
+    }
+    
+    value = "todo";
+}
+
+void 
+mkLIRSReplacementState::Delete(const std::string& key)
+{
+    MK_PRINT("");
+}
+
+void 
+mkLIRSReplacementState::List(const std::string& key, vector<std::string>& values)
+{
+    MK_PRINT("");
 }

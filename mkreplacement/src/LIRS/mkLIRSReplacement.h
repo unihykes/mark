@@ -50,12 +50,17 @@ https://cloud.tencent.com/developer/article/1464670
 #include "mkILIRSReplacement.h"
 #include "mkRedQueue.h"
 #include "mkBlueQueue.h"
+#include "mkIOpsRegister.h"
+
+class mkLIRSReplacementState;
 
 //基于LIRS算法的缓存器
 class mkLIRSReplacement : public mkILIRSReplacement
 {
 public:
     mkLIRSReplacement(int LIRSize, int HIRSize, std::shared_ptr<mkIReplaceValueBuilder> pValueBuilder);
+    virtual ~mkLIRSReplacement();
+    
     virtual std::shared_ptr<mkIReplaceValue> Get(const int& key);
     
     virtual std::shared_ptr<mkLIRSValue> GetValue(const int& key);
@@ -89,7 +94,24 @@ private:
     mkBlueQueue _blueQ; //冷数据（HIR块）淘汰
     
     std::shared_ptr<mkIReplaceValueBuilder> _pValueBuilder;
+    
+    friend class mkLIRSReplacementState;
+    std::shared_ptr<mkLIRSReplacementState> _pState;
 };
 
+class mkLIRSReplacementState : public mkIOpsState
+{
+public:
+    mkLIRSReplacementState(mkLIRSReplacement* pTarget);
+    virtual ~mkLIRSReplacementState();
+    virtual mkIOpsState::Config GetConfig() const ;
+    virtual void Put(const std::string& key, const std::string& value);
+    virtual bool Get(const std::string& key, std::string& value);
+    virtual void Delete(const std::string& key);
+    virtual void List(const std::string& key, vector<std::string>& values);
+private:
+    string _guid;
+    mkLIRSReplacement* _pTarget;
+};
 
 #endif

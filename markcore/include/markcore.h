@@ -44,6 +44,7 @@ info:
 #include "utility/mkTime.h"
 #include "utility/mkTimer.h"
 #include "utility/mkRandom.h"
+#include "utility/mkGuid.h"
 
 //print
 #include "print/mkTablePrinter.h"
