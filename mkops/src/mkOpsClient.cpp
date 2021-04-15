@@ -193,18 +193,14 @@ mkOpsClient::State(const std::string& guid)
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-mkIOpsClientBuilder::mkIOpsClientBuilder()
-{
-    g_moduleInstance->_switch->ClearOption<mkRpcChannelOption>();
-}
-
-mkIOpsClientBuilder::~mkIOpsClientBuilder()
-{
-}
 
 void 
 mkIOpsClientBuilder::PushOptions(const string& key, const string& value)
 {
+    MK_CALL_ONCE_BEGIN
+        g_moduleInstance->_switch->ClearOption<mkRpcChannelOption>();
+    MK_CALL_ONCE_END
+    
     g_moduleInstance->_switch->SetOptions(key, value, false);
 }
 

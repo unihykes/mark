@@ -23,23 +23,7 @@ info:
 #ifndef __mkIOpsService
 #define __mkIOpsService
 
-
-class mkIOpsState
-{
-public:
-    struct Config
-    {
-        std::string      _guid;
-        std::string      _name;
-    };
-    virtual ~mkIOpsState(){}
-    virtual mkIOpsState::Config GetConfig() const = 0;
-    virtual void Put(const std::string& key, const std::string& value) = 0;
-    virtual bool Get(const std::string& key, std::string& value) = 0;
-    virtual void Delete(const std::string& key) = 0;
-    virtual void List(const std::string& key, vector<std::string>& values) = 0;
-};
-
+#include "mkIOpsState.h"
 
 class mkIOpsService
 {

@@ -50,8 +50,6 @@ public:
 class MK_DLL_EXPORT mkIOpsClientBuilder
 {
 public:
-    mkIOpsClientBuilder();
-    virtual ~mkIOpsClientBuilder();
     void PushOptions(const string& key, const string& value);
     std::shared_ptr<mkIOpsClient> Build();
 };

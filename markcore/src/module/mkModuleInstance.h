@@ -90,11 +90,30 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
         throw __e__;                                                        \
     } while(0)
     
-#endif
-
 //全局宏:perf (性能桩)
 #ifdef __MK_PERF_ENABLE__
 	#define MK_PERF() mkPerf::Point __mkPerf_Point(g_moduleInstance->_perf, __func__, __LINE__);
 #else
 	#define MK_PERF()
+#endif
+
+
+////static对象初始化理论伤比 std::call_once 更高效
+#define MK_CALL_ONCE_BEGIN                  \
+    struct mkCallOnce                       \
+    {                                       \
+        mkCallOnce()                        \
+        {
+
+#define MK_CALL_ONCE_END                    \
+        }                                   \
+    };                                      \
+    static const mkCallOnce __mk_call_once__;
+    
+    
+    
+    
+    
+    
+    
 #endif

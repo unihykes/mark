@@ -20,25 +20,25 @@ info:
 
 ***************************************************************************************************/
 
-#ifndef __mkIOpsRegister
-#define __mkIOpsRegister
+#ifndef __mkIOpsState
+#define __mkIOpsState
 
-#include "mkIOpsState.h"
 
-class MK_DLL_EXPORT mkIOpsRegister
+class mkIOpsState
 {
 public:
-    static void Register(std::shared_ptr<mkIOpsState> state);
-    static void UnRegister(std::shared_ptr<mkIOpsState> state);
+    struct Config
+    {
+        std::string      _guid;
+        std::string      _name;
+    };
+    virtual ~mkIOpsState(){}
+    virtual mkIOpsState::Config GetConfig() const = 0;
+    virtual void Put(const std::string& key, const std::string& value) = 0;
+    virtual bool Get(const std::string& key, std::string& value) = 0;
+    virtual void Delete(const std::string& key) = 0;
+    virtual void List(const std::string& key, vector<std::string>& values) = 0;
 };
-
-
-
-
-
-
-
-
 
 
 #endif
