@@ -148,8 +148,10 @@ public:
         }
         else {
             //选项不存在
-            stringstream err; err<<index.name()<<" is invalid.";
-            mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, err.str().c_str());
+            Register<T>();
+            return SetOption<T>(key, value);
+            //stringstream err; err<<index.name()<<" is invalid.";
+            //mkPrint p("mkIOptionSwitch_base"); p(__FILE__, __LINE__, __func__, err.str().c_str());
         }
     }
     

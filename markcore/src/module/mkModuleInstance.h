@@ -51,8 +51,8 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 
 //定义全局变量: g_moduleInstance
 #define MK_DEFINE_MODULE_INSTANCE_S(moduleName, resName, major, minor, patch)                   \
-    MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(                    \
-        std::make_shared<mkModuleInstance>(moduleName, resName, major, minor, patch, false));
+    MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance =                   \
+        std::make_shared<mkModuleInstance>(moduleName, resName, major, minor, patch, false)
         
 #define MK_DEFINE_MODULE_INSTANCE(moduleName, resName, major, minor, patch)                     \
     MK_DEFINE_MODULE_INSTANCE_S(#moduleName, #resName, major, minor, patch)
@@ -62,8 +62,8 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
     
 //定义全局变量: g_moduleInstance
 #define MK_DEFINE_EXEC_INSTANCE_S(moduleName, resName, major, minor, patch)                     \
-    MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance(                    \
-        std::make_shared<mkModuleInstance>(moduleName, resName, major, minor, patch, true));
+    MK_VISIBILITY_HIDDEN std::shared_ptr<mkModuleInstance> g_moduleInstance =                   \
+        std::make_shared<mkModuleInstance>(moduleName, resName, major, minor, patch, true)
         
 #define MK_DEFINE_EXEC_INSTANCE(moduleName, resName, major, minor, patch)                       \
     MK_DEFINE_EXEC_INSTANCE_S(#moduleName, #resName, major, minor, patch)

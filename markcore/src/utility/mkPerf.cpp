@@ -164,7 +164,9 @@ mkPerf::mkPerf(const string& moduleName)
 
 mkPerf::~mkPerf()
 {
-    Output();
+    if(!_threadInfos.empty()) {
+        Output();
+    }
 }
 
 void 

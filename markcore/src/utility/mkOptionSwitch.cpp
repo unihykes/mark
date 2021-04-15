@@ -123,9 +123,9 @@ mkExecOptionSwitch::InitEnv(int argc, char** argv)
             string gtestArg = "--gtest_filter=";
             gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vGtestArgs.push_back(gtestArg);
-            string benchmarkArg = "--benchmark_filter=";
-            benchmarkArg += arg.substr(arg.find_first_of('=') + 1) ;
-            _vBenchmarkArgs.push_back(benchmarkArg);
+            //string benchmarkArg = "--benchmark_filter=";
+            //benchmarkArg += arg.substr(arg.find_first_of('=') + 1) ;
+            //_vBenchmarkArgs.push_back(benchmarkArg);
         }
         
         //自定义参数
