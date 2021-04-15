@@ -1,0 +1,40 @@
+/*
+ * Your Stylesheet
+ *
+ * This stylesheet is loaded when Atom starts up and is reloaded automatically
+ * when it is changed and saved.
+ *
+ * Add your own CSS or Less to fully customize Atom.
+ * If you are unfamiliar with Less, you can read more about it here:
+ * http://lesscss.org
+ */
+
+
+/*
+ * Examples
+ * (To see them, uncomment and save)
+ */
+
+// style the background color of the tree view
+.tree-view {
+    //background-color: whitesmoke;
+    //background-color: RGB(208, 255, 255);//目录树背景色
+}
+
+// style the background and foreground colors on the atom-text-editor-element itself
+atom-text-editor {
+    // color: white;//前景色(普通字体颜色)
+    //background-color: RGB(208, 255, 255);//编辑框背景色
+}
+
+// style UI elements inside atom-text-editor
+atom-text-editor .cursor {
+     //border-color: blue;//光标颜色
+}
+
+//注释风格
+atom-text-editor .syntax--comment {
+    font-style: normal; //将注释的斜体修改为正常体
+    //font-size: 12px; //注释字号
+    color:  #458B74; //注释颜色
+}

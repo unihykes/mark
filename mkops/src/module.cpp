@@ -21,6 +21,7 @@ info:
 ***************************************************************************************************/
 
 #include <markcore.h>
+#include <gof/mkSingleton.h>
 #include <brpc/server.h>
 #include "mkOpsService.h"
 #include "mkIOpsRegister.h"

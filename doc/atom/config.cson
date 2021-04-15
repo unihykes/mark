@@ -1,0 +1,116 @@
+"*":
+  "auto-encoding":
+    disallowEncTypes: "windows1252"
+  "autocomplete-plus":
+    autoActivationDelay: 3
+  "bracket-matcher":
+    autocompleteBrackets: false
+    highlightMatchingLineNumber: true
+  core:
+    closeDeletedFileTabs: true
+    disabledPackages: [
+      "whitespace"
+      "spell-check"
+      "welcome"
+      "timecop"
+      "language-yaml"
+      "language-typescript"
+      "language-sass"
+      "language-ruby-on-rails"
+      "language-ruby"
+      "language-php"
+      "language-perl"
+      "language-objective-c"
+      "language-mustache"
+      "language-javascript"
+      "language-java"
+      "language-hyperlink"
+      "language-css"
+      "language-csharp"
+      "language-coffee-script"
+      "language-clojure"
+      "metrics"
+      "exception-reporting"
+      "bookmarks"
+      "background-tips"
+      "autoflow"
+      "autocomplete-css"
+      "autocomplete-html"
+      "autocomplete-atom-api"
+      "autocomplete-plus"
+      "package-generator"
+      "language-rust-bundled"
+      "language-gfm"
+      "markdown-preview"
+      "language-c"
+    ]
+    packagesWithKeymapsDisabled: [
+      "bracket-matcher"
+    ]
+    reopenProjectMenuCount: 10
+    telemetryConsent: "no"
+    uriHandlerRegistration: "always"
+  editor:
+    autoIndentOnPaste: false
+    invisibles: {}
+    lineHeight: 1.1
+    preferredLineLength: 100
+    scrollPastEnd: true
+    showIndentGuide: true
+    showInvisibles: true
+    tabLength: 4
+    tabType: "soft"
+  "exception-reporting":
+    userId: "fb7193ae-67e0-479a-ae72-e9dad3b0861b"
+  "find-and-replace":
+    autocompleteSearches: true
+    liveSearchMinimumCharacters: 2
+    projectSearchResultsPaneSplitDirection: "down"
+    scrollToResultOnLiveSearch: true
+  "fuzzy-finder":
+    preserveLastSearch: true
+    scoringSystem: "fast"
+    useRipGrep: true
+  "highlight-selected":
+    highlightBackground: true
+    minimumLength: 1
+  "line-ending-selector":
+    defaultLineEnding: "LF"
+  "markdown-preview":
+    breakOnSingleNewline: true
+    useGitHubStyle: true
+  "markdown-preview-enhanced":
+    enableCriticMarkupSyntax: true
+    enableExtendedTableSyntax: true
+    enableTypographer: true
+    previewTheme: "one-light.css"
+    singlePreview: false
+  "one-dark-ui":
+    stickyHeaders: true
+    tabSizing: "Minimum"
+  "one-light-ui":
+    stickyHeaders: true
+  "platformio-ide-terminal":
+    core:
+      shell: "C:\\Windows\\System32\\cmd.exe"
+    style:
+      theme: "one-dark"
+  tabs:
+    addNewTabsAtEnd: true
+    enableVcsColoring: true
+  "tree-view":
+    hideIgnoredNames: true
+    hideVcsIgnoredFiles: true
+  welcome:
+    showOnStartup: false
+  "wrap-guide": {}
+".c.source":
+  editor:
+    autoIndent: false
+    autoIndentOnPaste: false
+".cpp.source":
+  editor:
+    autoIndentOnPaste: false
+    showInvisibles: true
+    softWrap: false
+    softWrapAtPreferredLineLength: false

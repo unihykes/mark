@@ -23,7 +23,6 @@ info:
 #ifndef __mkIOpsRegister
 #define __mkIOpsRegister
 
-#include <gof/mkSingleton.h>
 #include "mkIOpsService.h"
 
 class mkIOpsRegister
