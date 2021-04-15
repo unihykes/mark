@@ -56,17 +56,17 @@ void
 mkIReplacementBuilder::PushOptions(const string& key, const string& value)
 {
     MK_CALL_ONCE_BEGIN
-        g_moduleInstance->_switch->ClearOption<mkLIRSReplacementOption>();
+        g_switch->ClearOption<mkLIRSReplacementOption>();
     MK_CALL_ONCE_END
     
-    g_moduleInstance->_switch->SetOptions(key, value, false);
+    g_switch->SetOptions(key, value, false);
 }
 
 std::shared_ptr<mkIReplacement> 
 mkIReplacementBuilder::LIRS(shared_ptr<mkIReplaceValueBuilder> pBuilder)
 {
-    const auto& lir_size = g_moduleInstance->_switch->GetOption<mkLIRSReplacementOption>()->lir_size;
-    const auto& hir_Size = g_moduleInstance->_switch->GetOption<mkLIRSReplacementOption>()->hir_Size;
+    const auto& lir_size = g_switch->GetOption<mkLIRSReplacementOption>()->lir_size;
+    const auto& hir_Size = g_switch->GetOption<mkLIRSReplacementOption>()->hir_Size;
     
     return make_shared<mkLIRSReplacement>(lir_size, hir_Size, pBuilder);
 }
