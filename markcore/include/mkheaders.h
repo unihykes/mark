@@ -170,5 +170,21 @@ typedef uint64_t			uint64;
 #endif
 
 
+////static对象初始化理论伤比 std::call_once 更高效
+#define MK_CALL_ONCE_BEGIN                  \
+    struct mkCallOnce                       \
+    {                                       \
+        mkCallOnce()                        \
+        {
+
+#define MK_CALL_ONCE_END                    \
+        }                                   \
+    };                                      \
+    static const mkCallOnce __mk_call_once__;
+    
+    
+    
+    
+    
 
 #endif // __mkheaders

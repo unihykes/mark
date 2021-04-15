@@ -71,6 +71,9 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 #define MK_DEFINE_EXEC_INSTANCE_VERSION(major, minor, patch)                                    \
     MK_DEFINE_EXEC_INSTANCE_S(__MK_MODULE_NAME__, __MK_MODULE_NAME__, major, minor, patch)
 
+//定义全局变量
+#define g_switch    g_moduleInstance->_switch
+
 
 //全局宏:print
 #define MK_PRINT(...)       (*g_moduleInstance->_print)(__FILE__, __LINE__, __func__, ##__VA_ARGS__)
@@ -98,22 +101,6 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 #endif
 
 
-////static对象初始化理论伤比 std::call_once 更高效
-#define MK_CALL_ONCE_BEGIN                  \
-    struct mkCallOnce                       \
-    {                                       \
-        mkCallOnce()                        \
-        {
-
-#define MK_CALL_ONCE_END                    \
-        }                                   \
-    };                                      \
-    static const mkCallOnce __mk_call_once__;
-    
-    
-    
-    
-    
     
     
 #endif
