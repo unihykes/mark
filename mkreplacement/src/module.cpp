@@ -25,17 +25,47 @@ info:
 
 MK_DEFINE_MODULE_INSTANCE_VERSION(1, 0, 0);
 
-mkIReplacementBuilder::mkIReplacementBuilder()
-{
-}
 
-mkIReplacementBuilder::~mkIReplacementBuilder()
+class mkLIRSReplacementOption : public mkIOption
 {
-}
+public:
+    virtual bool OnSetValue(const string& key, const string& value)
+    {
+        if("--lir_size" == key) {
+            lir_size = std::stoi(value);
+            return true;
+        }
+        if("--hir_Size" == key) {
+            hir_Size = std::stoi(value);
+            return true;
+        }
+        return false;
+    }
+    virtual void OnApply()
+    {
+    }
+    
+public:
+    int lir_size = 100;
+    int hir_Size = 100;
+};
+
+
 
 void 
 mkIReplacementBuilder::PushOptions(const string& key, const string& value)
 {
+    struct __mkModuleInit__
+    {
+        __mkModuleInit__()
+        {
+            g_moduleInstance->_switch->ClearOption<mkLIRSReplacementOption>();
+        }
+        
+    };
+    static __mkModuleInit__   g_init;
+    
+    g_moduleInstance->_switch->SetOptions(key, value, false);
 }
 
 std::shared_ptr<mkIReplacement> 

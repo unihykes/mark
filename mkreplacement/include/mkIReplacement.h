@@ -35,9 +35,6 @@ public:
 class MK_DLL_EXPORT mkIReplacementBuilder
 {
 public:
-    mkIReplacementBuilder();
-    ~mkIReplacementBuilder();
-    
     void PushOptions(const string& key, const string& value);
     
     //创建连接,调用失败会抛异常
