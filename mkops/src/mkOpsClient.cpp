@@ -198,10 +198,10 @@ void
 mkIOpsClientBuilder::PushOptions(const string& key, const string& value)
 {
     MK_CALL_ONCE_BEGIN
-        g_moduleInstance->_switch->ClearOption<mkRpcChannelOption>();
+        g_switch->ClearOption<mkRpcChannelOption>();
     MK_CALL_ONCE_END
     
-    g_moduleInstance->_switch->SetOptions(key, value, false);
+    g_switch->SetOptions(key, value, false);
 }
 
 std::shared_ptr<mkIOpsClient> 

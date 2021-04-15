@@ -64,9 +64,9 @@ void
 mkRpcChannel::Login()
 {
     //创建sub channel
-    const brpc::ChannelOptions& sub_options = g_moduleInstance->_switch->GetOption<mkRpcChannelOption>()->_subOptions;
-    const string& load_balancer = g_moduleInstance->_switch->GetOption<mkRpcChannelOption>()->_load_balancer;
-    const set<string>& ipPorts = g_moduleInstance->_switch->GetOption<mkRpcChannelOption>()->_ipPorts;
+    const brpc::ChannelOptions& sub_options = g_switch->GetOption<mkRpcChannelOption>()->_subOptions;
+    const string& load_balancer = g_switch->GetOption<mkRpcChannelOption>()->_load_balancer;
+    const set<string>& ipPorts = g_switch->GetOption<mkRpcChannelOption>()->_ipPorts;
     for(const auto& server : ipPorts) {
         auto pSubChannel = std::make_shared<brpc::Channel>();
         if (pSubChannel->Init(server.c_str(), load_balancer.c_str(), &sub_options) != 0) {
@@ -83,7 +83,7 @@ mkRpcChannel::Login()
     _pLatency = std::make_shared<bvar::LatencyRecorder>("latency_main");
     
     //是否开启内置服务
-    const int& dummy_port = g_moduleInstance->_switch->GetOption<mkRpcChannelOption>()->_dummy_port;
+    const int& dummy_port = g_switch->GetOption<mkRpcChannelOption>()->_dummy_port;
     if (dummy_port >= 0) {
         brpc::StartDummyServerAt(dummy_port);
     }

@@ -108,11 +108,11 @@ protected:
     virtual void SetUp()
     {
         //重置参数
-        g_moduleInstance->_switch->ClearOption<mkLIRSReplacementOption>();
-        g_moduleInstance->_switch->ApplyOption<mkLIRSReplacementOption>();
+        g_switch->ClearOption<mkLIRSReplacementOption>();
+        g_switch->ApplyOption<mkLIRSReplacementOption>();
         
-        int lirlimit = g_moduleInstance->_switch->GetOption<mkLIRSReplacementOption>()->_lirlimit;
-        int hirlimit = g_moduleInstance->_switch->GetOption<mkLIRSReplacementOption>()->_hirlimit;
+        int lirlimit = g_switch->GetOption<mkLIRSReplacementOption>()->_lirlimit;
+        int hirlimit = g_switch->GetOption<mkLIRSReplacementOption>()->_hirlimit;
         
         std::shared_ptr<mkIReplaceValueBuilder> valueBuilder = std::make_shared<mkReplaceValueBuilder>();
         mkIReplacementBuilder builder;
