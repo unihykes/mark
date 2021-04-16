@@ -103,12 +103,12 @@ mkExecOptionSwitch::InitEnv(int argc, char** argv)
     for(int i = 1; i != argc; ++i) {
         string arg(argv[i]);
         
-        if(mkStringHelper::starts_with<string>(arg, "--cmdg")) {
+        if(mkStringHelper::starts_with<string>(arg, "--cmd")) {
             string gtestArg = "--gtest_filter=";
             gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vGtestArgs.push_back(gtestArg);
         }
-        else if(mkStringHelper::starts_with<string>(arg, "--cmdb")) {
+        else if(mkStringHelper::starts_with<string>(arg, "--bench")) {
             string benchmarkArg = "--benchmark_filter=";
             benchmarkArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vBenchmarkArgs.push_back(benchmarkArg);
@@ -119,15 +119,6 @@ mkExecOptionSwitch::InitEnv(int argc, char** argv)
         else if(mkStringHelper::starts_with<string>(arg, "--benchmark_")) {
             _vBenchmarkArgs.push_back(arg);
         }
-        else if(mkStringHelper::starts_with<string>(arg, "--cmd")) {
-            string gtestArg = "--gtest_filter=";
-            gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
-            _vGtestArgs.push_back(gtestArg);
-            //string benchmarkArg = "--benchmark_filter=";
-            //benchmarkArg += arg.substr(arg.find_first_of('=') + 1) ;
-            //_vBenchmarkArgs.push_back(benchmarkArg);
-        }
-        
         //自定义参数
         else {
             string key = arg.substr(0, arg.find_first_of('='));

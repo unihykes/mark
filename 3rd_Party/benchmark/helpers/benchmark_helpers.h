@@ -134,7 +134,7 @@ private:
     }
 };
 
-#define MK_BM_FROM_TEST_F_BEGIN(GTEST_CLASS, Method)                                                    \
+#define MK_BM_TEST_F_BEGIN(GTEST_CLASS, Method)                                                    \
     class GTEST_CLASS##_##Method##_Benchmark : public mkTestToBenchmark<GTEST_CLASS>                    \
     {                                                                                                   \
     public:                                                                                             \
@@ -146,7 +146,7 @@ private:
     };                                                                                                  \
     void GTEST_CLASS##_##Method##_Benchmark::BenchmarkCase(::benchmark::State& __state__)
     
-#define MK_BM_FROM_TEST_F_END(GTEST_CLASS, Method)                                                      \
+#define MK_BM_TEST_F_END(GTEST_CLASS, Method)                                                      \
     static auto BENCHMARK_PRIVATE_NAME(GTEST_CLASS##_##Method##_Benchmark)                              \
         = ::benchmark::internal::RegisterBenchmarkInternal(new GTEST_CLASS##_##Method##_Benchmark())
 
