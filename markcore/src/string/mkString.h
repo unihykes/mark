@@ -28,7 +28,8 @@ info:
 
 //using mstring_view = std::basic_string_view<mkChar>;
 using mkCharTraits = std::char_traits<mkChar>;
-using mkString = std::basic_string<mkChar>;
+using mkCharAlloc = std::allocator<mkChar>;
+using mkString = std::basic_string<mkChar, mkCharTraits, mkCharAlloc>;
 
 class MK_DLL_EXPORT mkStringHelper
 {
