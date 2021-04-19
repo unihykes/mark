@@ -95,7 +95,7 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
     
 //全局宏:perf (性能桩)
 #ifdef __MK_PERF_ENABLE__
-	#define MK_PERF() mkPerf::Point __mkPerf_Point(g_moduleInstance->_perf, __func__, __LINE__);
+	#define MK_PERF() mkPerf::Point __mkPerf_Point_##__LINE__(g_moduleInstance->_perf, __func__, __LINE__);
 #else
 	#define MK_PERF()
 #endif
