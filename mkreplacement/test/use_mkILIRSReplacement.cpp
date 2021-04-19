@@ -29,12 +29,12 @@ class mkLIRSReplacementOption : public mkIOption
 public:
     virtual bool OnSetValue(const string& key, const string& value)
     {
-        if("--lirlimit" == key) {
-            _lirlimit = std::stoi(value);
+        if("--lir_size" == key) {
+            lir_size = std::stoi(value);
             return true;
         }
-        if("--hirlimit" == key) {
-            _hirlimit = std::stoi(value);
+        if("--hir_Size" == key) {
+            hir_Size = std::stoi(value);
             return true;
         }
         
@@ -45,8 +45,8 @@ public:
     }
     
 public:
-    int     _lirlimit = 100;
-    int     _hirlimit = 100;
+    int     lir_size = 100;
+    int     hir_Size = 100;
 };
 
 class mkReplaceValue : public mkIReplaceValue
@@ -111,11 +111,10 @@ protected:
         g_switch->ClearOption<mkLIRSReplacementOption>();
         g_switch->ApplyOption<mkLIRSReplacementOption>();
         
-        int lirlimit = g_switch->GetOption<mkLIRSReplacementOption>()->_lirlimit;
-        int hirlimit = g_switch->GetOption<mkLIRSReplacementOption>()->_hirlimit;
-        
         std::shared_ptr<mkIReplaceValueBuilder> valueBuilder = std::make_shared<mkReplaceValueBuilder>();
         mkIReplacementBuilder builder;
+        builder.PushOptions("--lir_size", std::to_string(g_switch->GetOption<mkLIRSReplacementOption>()->lir_size));
+        builder.PushOptions("--hir_Size", std::to_string(g_switch->GetOption<mkLIRSReplacementOption>()->hir_Size));
         auto pPlacement = builder.LIRS(valueBuilder);
         _pPlacement = std::dynamic_pointer_cast<mkILIRSReplacement>(pPlacement);
         

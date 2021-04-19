@@ -28,12 +28,15 @@ class mkIReplacePiece
 {
 public:
     virtual void SetData(const char* buf, const int& length) = 0;
+    virtual void AppendData(const char* buf, const int& length) = 0;
 };
 
 //数据结构:value
 class mkIReplaceValue
 {
 public:
+    virtual ~mkIReplaceValue(){}
+    
     virtual void Hit() = 0;
     virtual int64 GetHitCount() const = 0;
     
@@ -55,6 +58,8 @@ public:
 class mkIReplaceValueBuilder
 {
 public:
+    virtual ~mkIReplaceValueBuilder(){}
+    
     virtual std::shared_ptr<mkIReplaceValue> Create(const int& key) = 0;
 };
 

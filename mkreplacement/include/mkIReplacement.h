@@ -29,6 +29,8 @@ info:
 class MK_DLL_EXPORT mkIReplacement
 {
 public:
+    virtual ~mkIReplacement(){}
+    
     virtual std::shared_ptr<mkIReplaceValue> Get(const int& key) = 0;
 };
 

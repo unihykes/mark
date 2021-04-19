@@ -53,6 +53,8 @@ struct mkLIRSValue
 class MK_DLL_EXPORT mkILIRSReplacement : public mkIReplacement
 {
 public:
+    virtual ~mkILIRSReplacement(){}
+    
     virtual std::shared_ptr<mkLIRSValue> GetValue(const int& key) = 0;
     virtual int64 GetHitCounts() const = 0;
     virtual int64 GetMissCounts() const = 0;
