@@ -27,7 +27,7 @@ info:
 class MK_DLL_EXPORT mkMD5
 {
 public:
-    static bool GetMd5(std::string &str_md5, const char* const buffer, size_t buffer_size);
+    static bool Get(std::string &str_md5, const char* const buffer, size_t buffer_size);
 };
 
 #endif

@@ -26,7 +26,7 @@ info:
 #include"mkMD5.h"
  
 bool 
-mkMD5::GetMd5(std::string &str_md5, const char* const buffer, size_t buffer_size)
+mkMD5::Get(std::string &str_md5, const char* const buffer, size_t buffer_size)
 {
 	if (buffer == nullptr) {
 		return false;

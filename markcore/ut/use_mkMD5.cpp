@@ -28,6 +28,6 @@ TEST(mkMD5, run)
 {
     string in = "abcedfghi";
     string out;
-    mkMD5::GetMd5(out, in.c_str(), in.size());
+    mkMD5::Get(out, in.c_str(), in.size());
     MK_PRINT("in = %s, out = %s", in.c_str(), out.c_str());
 }
