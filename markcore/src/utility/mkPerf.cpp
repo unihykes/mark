@@ -26,7 +26,7 @@ info:
 #endif
 #include <iostream>
 #include <mkheaders.h>
-#include "module/mkModuleInstance.h"
+#include "mkModuleInstance.h"
 #include "mkPerf.h"
 
 

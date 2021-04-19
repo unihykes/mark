@@ -26,7 +26,6 @@ INCLUDE_DIRECTORIES(../include;
 
 ADD_SOURCE_DIRS(./algorithm;
                 ./gof;
-                ./module;
                 ./print;
                 ./string;
                 ./thread;

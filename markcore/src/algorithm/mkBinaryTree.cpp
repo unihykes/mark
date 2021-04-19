@@ -20,9 +20,21 @@ info:
 
 ***************************************************************************************************/
 
-#include<mkheaders.h>
-#include "module/mkModuleInstance.h"
+#include <mkheaders.h>
+#include "mkModuleInstance.h"
+#include "print/mkPrint.h"
 #include "mkBinaryTree.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+mkBinaryNode::mkBinaryNode(const unsigned char& ch)
+    : data(ch)
+{
+}
+void 
+mkBinaryNode::Visit()
+{
+    MK_PRINT("%c ",data);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 mkBinaryTree::mkBinaryTree(std::shared_ptr<mkBinaryNode> pRootNode)

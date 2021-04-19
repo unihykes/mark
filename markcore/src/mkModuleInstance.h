@@ -23,9 +23,9 @@ info:
 #ifndef __mkModuleInstance
 #define __mkModuleInstance
 
-#include "print/mkPrint.h"
 class mkTrace;
 class mkLog;
+class mkPrint;
 class mkOptionSwitch;
 class mkVersion;
 class mkPerf;

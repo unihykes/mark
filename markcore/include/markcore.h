@@ -25,6 +25,12 @@ info:
 
 //common
 #include "mkheaders.h"
+#include "mkModuleInstance.h"
+
+//print
+#include "print/mkPrint.h"
+#include "print/mkTablePrinter.h"
+#include "print/mkLinenoise.h"
 
 //3rdparty
 #include "3rdparty/cpptoml/cpptoml.h"
@@ -46,17 +52,11 @@ info:
 #include "utility/mkRandom.h"
 #include "utility/mkGuid.h"
 
-//print
-#include "print/mkTablePrinter.h"
-#include "print/mkLinenoise.h"
-
-//module
-#include "module/mkModuleInstance.h"
-
 //thread
 #include "thread/mkThread.h"
 #include "thread/mkUniqueThread.h"
 #include "thread/mkTimerThread.h"
 #include "thread/mkScopeLimiter.h"
+
 
 #endif // __markcore

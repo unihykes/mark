@@ -27,14 +27,8 @@ info:
 class mkBinaryNode
 {
 public:
-    mkBinaryNode(const unsigned char& ch)
-        : data(ch)
-    {
-    }
-    void Visit()
-    {
-        MK_PRINT("%c ",data);
-    }
+    mkBinaryNode(const unsigned char& ch);
+    void Visit();
     
 public:
     unsigned char data = 0;//数据
