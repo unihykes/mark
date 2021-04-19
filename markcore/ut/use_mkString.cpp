@@ -24,6 +24,41 @@ info:
 #include <gtest/gtest.h>
 #include "benchmark_helpers.h"
 
+static const mkChar* _SOME_STR_= _T("\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+$\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+abcdefghijklmnopqrstuvwxyz0123456789零一二三四五六七八九ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+#");
+
+TEST(mkString, constructor)
+{
+    mkString empty;
+    
+    mkString str1(_SOME_STR_);
+    
+    mkString str2(str1);
+    
+    mkString str3(std::move(str2));
+}
+
 TEST(mkString, util)
 {
     string text{"  abc中文DEF  "};
@@ -149,7 +184,7 @@ MK_BM_BEGIN(mkStringHelper, to_upper)
 }
 MK_BM_END(mkStringHelper, to_upper);
 
-
+/*
 TEST(boostStringHelper, to_upper)
 {
     string src("abc中文DEF");
@@ -164,3 +199,4 @@ MK_BM_BEGIN(boostStringHelper, to_upper)
     }
 }
 MK_BM_END(boostStringHelper, to_upper);
+*/
