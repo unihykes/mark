@@ -148,8 +148,8 @@ TEST_F(FibonacciUT, Fibonacci_T)
 {
 	//short
 	for(short i = 0; i != 1000; ++i) {
-		short ret = imp_Fibonacci_T(i, short(SHRT_MAX));
-		if(ret == short(SHRT_MAX)) {
+		short ret = imp_Fibonacci_T(i, short(INT16_MAX));
+		if(ret == short(INT16_MAX)) {
 			break;
 		}
 		cout << "step" << i << "=" << ret <<endl;//max step = 22, 下一阶,ret就越界了
@@ -157,8 +157,8 @@ TEST_F(FibonacciUT, Fibonacci_T)
 	
 	//unsigned short
 	for(unsigned short i = 0; i != 1000; ++i) {
-		unsigned short ret = imp_Fibonacci_T(i, unsigned short(USHRT_MAX));
-		if(ret == unsigned short(USHRT_MAX)) {
+		unsigned short ret = imp_Fibonacci_T(i, (unsigned short)(UINT16_MAX));
+		if(ret == (unsigned short)(UINT16_MAX)) {
 			break;
 		}
 		cout << "step" << i << "=" << ret <<endl;//max step = 23, 下一阶,ret就越界了
@@ -166,8 +166,8 @@ TEST_F(FibonacciUT, Fibonacci_T)
 	
 	//int
 	for(int i = 0; i != 1000; ++i) {
-		int ret = imp_Fibonacci_T(i, int(INT_MAX));
-		if(ret == int(INT_MAX)) {
+		int ret = imp_Fibonacci_T(i, int(INT32_MAX));
+		if(ret == int(INT32_MAX)) {
 			break;
 		}
 		cout << "step" << i << "=" << ret <<endl;//max step = 45, 下一阶,ret就越界了
@@ -175,7 +175,7 @@ TEST_F(FibonacciUT, Fibonacci_T)
 	
 	//unsigned int
 	for(unsigned int i = 0; i != 1000; ++i) {
-		unsigned int ret = imp_Fibonacci_T(i, unsigned int(UINT_MAX));
+		unsigned int ret = imp_Fibonacci_T(i, (unsigned int)(UINT32_MAX));
 		if(ret == unsigned(-1)) {
 			break;
 		}
@@ -184,8 +184,8 @@ TEST_F(FibonacciUT, Fibonacci_T)
 	
 	//long long
 	for(int64_t i = 0; i != 1000; ++i) {
-		int64_t ret = imp_Fibonacci_T(i, int64_t(LLONG_MAX));
-		if(ret == int64_t(LLONG_MAX)) {
+		int64_t ret = imp_Fibonacci_T(i, int64_t(INT64_MAX));
+		if(ret == int64_t(INT64_MAX)) {
 			break;
 		}
 		cout << "step" << i << "=" << ret <<endl;//max step = 91, 下一阶,ret就越界了
@@ -193,8 +193,8 @@ TEST_F(FibonacciUT, Fibonacci_T)
 	
 	//unsigned long long
 	for(uint64_t i = 0; i != 1000; ++i) {
-		uint64_t ret = imp_Fibonacci_T(i, uint64_t(ULLONG_MAX));
-		if(ret == uint64_t(ULLONG_MAX) ) {
+		uint64_t ret = imp_Fibonacci_T(i, uint64_t(UINT64_MAX));
+		if(ret == uint64_t(UINT64_MAX) ) {
 			break;
 		}
 		cout << "step" << i << "=" << ret <<endl;//max step = 92, 下一阶,ret就越界了

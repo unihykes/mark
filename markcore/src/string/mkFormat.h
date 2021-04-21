@@ -23,97 +23,109 @@ info:
 #ifndef __mkFormat
 #define __mkFormat
 
-//#include <memory>//for xx
+#include <stdexcept>
 #include "utility/mkTypeCast.h"
 
-class mkSharedFormat
+class MK_DLL_EXPORT mkFormat
 {
 public:
     template<typename ... TArgs>
-    static shared_ptr<char> fmt(const char* format, TArgs... args)
+    static unique_ptr<char[]> unique(const char* fmt, TArgs... args)
     {
         //计算缓冲区size
-        int size = std::snprintf(nullptr, 0, format, args...);
+        int size = std::snprintf(nullptr, 0, fmt, args...);
+        unique_ptr<char[]> buf (new char[size+1]);
+        std::snprintf(buf.get(), size+1, fmt, args...);
+        return buf;
+    }
+    
+    template<typename ... TArgs>
+    static unique_ptr<char[]> unique(const wchar_t* fmt, TArgs... args)
+    {
+        throw std::logic_error("mkString::todo");
+    }
+    
+    template<typename ... TArgs>
+    static unique_ptr<wchar_t[]> uniqueW(const char* fmt, TArgs... args)
+    {
+        throw std::logic_error("mkString::todo");
+    }
+    
+    template<typename ... TArgs>
+    static unique_ptr<wchar_t[]> uniqueW(const wchar_t* fmt, TArgs... args)
+    {
+        //计算缓冲区size
+        int size = std::swprintf(nullptr, 0, fmt, args...);
+        unique_ptr<wchar_t[]> buf(new wchar_t[size+1]);
+        std::swprintf(buf.get(), size+1, fmt, args...);
+        return buf;
+    }
+    
+    template<typename ... TArgs>
+    static shared_ptr<char> shared(const char* fmt, TArgs... args)
+    {
+        //计算缓冲区size
+        int size = std::snprintf(nullptr, 0, fmt, args...);
         shared_ptr<char> buf = shared_ptr<char>(new char[size+1], std::default_delete<char[]>());
-        std::snprintf(buf.get(), size+1, format, args...);
+        std::snprintf(buf.get(), size+1, fmt, args...);
         return buf;
     }
     
     template<typename ... TArgs>
-    static shared_ptr<wchar_t> fmt(const wchar_t* format, TArgs... args)
+    static shared_ptr<char> shared(const wchar_t* fmt, TArgs... args)
+    {
+        throw std::logic_error("mkString::todo");
+    }
+    
+    template<typename ... TArgs>
+    static shared_ptr<wchar_t> sharedW(const char* fmt, TArgs... args)
+    {
+        throw std::logic_error("mkString::todo");
+    }
+    
+    template<typename ... TArgs>
+    static shared_ptr<wchar_t> sharedW(const wchar_t* fmt, TArgs... args)
     {
         //计算缓冲区size
-        int size = std::swprintf(nullptr, 0, format, args...);
+        int size = std::swprintf(nullptr, 0, fmt, args...);
         shared_ptr<wchar_t> buf = shared_ptr<wchar_t>(new wchar_t[size+1], std::default_delete<wchar_t[]>());
-        std::swprintf(buf.get(), size+1, format, args...);
+        std::swprintf(buf.get(), size+1, fmt, args...);
         return buf;
     }
     
     template<typename ... TArgs>
-    string operator()(const char* format, TArgs... args)
+    static string str(const char* fmt, TArgs... args)
     {
-        shared_ptr<char> buf = fmt(format, args...);
+        shared_ptr<char> buf = shared(fmt, args...);
         return string(buf.get());
     }
     
     template<typename ... TArgs>
-    string operator()(const wchar_t* format, TArgs... args)
+    static string str(const wchar_t* fmt, TArgs... args)
     {
-        shared_ptr<wchar_t> bufW = mkSharedFormat::fmt(format, args...);
+        shared_ptr<wchar_t> bufW = sharedW(fmt, args...);
         shared_ptr<char> buf = WcharToChar(bufW.get());
         return string(buf.get());
     }
     
-private:
-    //wchar -> char
-    static shared_ptr<char> WcharToChar(const wchar_t* wp) 
-    {
-        #ifdef __WINDOWS__ 
-            const unsigned int m_encode = CP_ACP;//默认
-            int len = WideCharToMultiByte(m_encode, 0, wp, (int)wcslen(wp), NULL, 0, NULL, NULL);
-            
-            shared_ptr<char> buf = shared_ptr<char>(new char[len+1], std::default_delete<char[]>());
-            WideCharToMultiByte(m_encode, 0, wp, (int)wcslen(wp), buf.get(), len, NULL, NULL);
-            buf.get()[len] = '\0';
-            return buf;
-        #else
-            return nullptr;
-        #endif
-    }
-
-    //char -> wchar
-    static shared_ptr<wchar_t> CharToWchar(const char* wp) 
-    {
-        #ifdef __WINDOWS__ 
-            return nullptr;
-        #else
-            return nullptr;
-        #endif
-    }
-};
-
-class mkUniqueFormat
-{
-public:
     template<typename ... TArgs>
-    static unique_ptr<char[]> fmt(const char* format, TArgs... args)
+    static wstring wstr(const char* fmt, TArgs... args)
     {
-        //计算缓冲区size
-        int size = std::snprintf(nullptr, 0, format, args...);
-        unique_ptr<char[]> buf (new char[size+1]);
-        std::snprintf(buf.get(), size+1, format, args...);
-        return buf;
+        throw std::logic_error("mkString::todo");
     }
     
     template<typename ... TArgs>
-    static unique_ptr<wchar_t[]> fmt(const wchar_t* format, TArgs... args)
+    static wstring wstr(const wchar_t* fmt, TArgs... args)
     {
-        //计算缓冲区size
-        int size = std::swprintf(nullptr, 0, format, args...);
-        unique_ptr<wchar_t[]> buf(new wchar_t[size+1]);
-        std::swprintf(buf.get(), size+1, format, args...);
-        return buf;
+        throw std::logic_error("mkString::todo");
     }
+    
+private:
+    //wchar -> char
+    static shared_ptr<char> WcharToChar(const wchar_t* wp);
+    
+    //char -> wchar
+    static shared_ptr<wchar_t> CharToWchar(const char* p);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,9 +141,9 @@ public:
     
     //使用时需要确保对象不被析构,否则返回值是野指针
     template<typename ... TArgs>
-    const char* operator()(const char* format, TArgs... args)
+    const char* operator()(const char* fmt, TArgs... args)
     {
-        std::snprintf(_buf, N, format, args...);
+        std::snprintf(_buf, N, fmt, args...);
         return _buf;
     }
     
@@ -152,9 +164,9 @@ public:
     
     //使用时需要确保对象不被析构,否则返回值是野指针
     template<typename ... TArgs>
-    const wchar_t* operator()(const wchar_t* format, TArgs... args)
+    const wchar_t* operator()(const wchar_t* fmt, TArgs... args)
     {
-        std::swprintf(_buf, N, format, args...);
+        std::swprintf(_buf, N, fmt, args...);
         return _buf;
     }
     

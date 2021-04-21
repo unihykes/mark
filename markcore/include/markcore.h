@@ -36,8 +36,10 @@ info:
 #include "3rdparty/cpptoml/cpptoml.h"
 
 //string
+#include "string/mkConversion.h"
 #include "string/mkFormat.h"
 #include "string/mkString.h"
+
 
 //utility
 #include "utility/mkException.h"

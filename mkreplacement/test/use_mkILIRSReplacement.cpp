@@ -142,7 +142,7 @@ protected:
         auto vRedQ = _pPlacement->ListRedQ();
         string itemS;
         for(const auto& elem : vRedQ) {
-            string str = mkSharedFormat{}("%d[%s], ", elem->_key, stateName[elem->_state]);
+            string str = mkFormat::str("%d[%s], ", elem->_key, stateName[elem->_state]);
             itemS += str;
         }
         MK_PRINT("redQ =  %s", itemS.c_str());
@@ -150,7 +150,7 @@ protected:
         auto vBlueQ = _pPlacement->ListBlueQ();
         string itemQ;
         for(const auto& elem : vBlueQ) {
-            string str = mkSharedFormat{}("%d[%s], ", elem->_key, stateName[elem->_state]);
+            string str = mkFormat::str("%d[%s], ", elem->_key, stateName[elem->_state]);
             itemQ += str;
         }
         MK_PRINT("blueQ =  %s\n", itemQ.c_str());

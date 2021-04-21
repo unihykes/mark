@@ -103,20 +103,20 @@ mkExecOptionSwitch::InitEnv(int argc, char** argv)
     for(int i = 1; i != argc; ++i) {
         string arg(argv[i]);
         
-        if(mkStringHelper::starts_with<string>(arg, "--cmd")) {
+        if(mkStringHelper::startsWith(arg, "--cmd")) {
             string gtestArg = "--gtest_filter=";
             gtestArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vGtestArgs.push_back(gtestArg);
         }
-        else if(mkStringHelper::starts_with<string>(arg, "--bench")) {
+        else if(mkStringHelper::startsWith(arg, "--bench")) {
             string benchmarkArg = "--benchmark_filter=";
             benchmarkArg += arg.substr(arg.find_first_of('=') + 1) ;
             _vBenchmarkArgs.push_back(benchmarkArg);
         }
-        else if(mkStringHelper::starts_with<string>(arg, "--gtest_")) {
+        else if(mkStringHelper::startsWith(arg, "--gtest_")) {
             _vGtestArgs.push_back(arg);
         }
-        else if(mkStringHelper::starts_with<string>(arg, "--benchmark_")) {
+        else if(mkStringHelper::startsWith(arg, "--benchmark_")) {
             _vBenchmarkArgs.push_back(arg);
         }
         //自定义参数

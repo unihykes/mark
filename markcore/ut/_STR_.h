@@ -1,4 +1,4 @@
-﻿/***************************************************************************************************
+/***************************************************************************************************
 LICENSE:
     Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,32 +14,11 @@ LICENSE:
    
 Author:liu.hao(33852613@163.com)
 
-Time:2021-1
+Time:2021-2
 
 info:
 
 ***************************************************************************************************/
-#include <iostream>
-#include <mkheaders.h>
-#include "utility/mkTime.h"
-#include "utility/mkSourceLocation.h"
-#include"mkPrint.h"
 
-mkPrint::mkPrint(const std::string& moduleName)
-    : _moduleName(moduleName)
-{
-
-}
-
-mkPrint::~mkPrint()
-{
-}
-
-void 
-mkPrint::Output(const char* file, int line, const char* func, const char* msg)
-{
-    shared_ptr<char> buf = mkFormat::shared("[%s] [%s]: (%s:%d) %s() %s", 
-        _moduleName.c_str(), mkTime::GetCurrentTimeStr().c_str(), mkSourceLocation::file_name(file), line, func, msg);
-    
-    std::cout<<buf.get()<<endl;//将消息打印到标准输出
-}
+extern const mkChar* T_CHAR_STR;
+extern const char* CHAR_STR;

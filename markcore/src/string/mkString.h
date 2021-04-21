@@ -23,10 +23,9 @@ info:
 #ifndef __mkString
 #define __mkString
 
-#include <iostream> //for std::hex()
-#include <iomanip> //for std::setw()
+#include "mkFormat.h"
+#include "mkConversion.h"
 
-//using mstring_view = std::basic_string_view<mkChar>;
 using mkCharTraits = std::char_traits<mkChar>;
 using mkCharAlloc = std::allocator<mkChar>;
 using mkString = std::basic_string<mkChar, mkCharTraits, mkCharAlloc>;
@@ -34,202 +33,82 @@ using mkString = std::basic_string<mkChar, mkCharTraits, mkCharAlloc>;
 class MK_DLL_EXPORT mkStringHelper
 {
 public:
-    //string to xx
-    template<class Str> static int stoi(const Str& str, size_t* idx = 0, int base = 10);
+    static size_t findAny(const mkString& src, size_t offset, const mkString& dest);
+    static size_t findAny(const mkString& src, const mkString& dest);
+    static size_t findLastOfAny(const mkString& src, size_t offset, const mkString& dest);
+    static size_t findLastOfAny(const mkString& src, const mkString& dest);
     
-    template<class Str> static long stol(const Str& str, size_t* idx = 0, int base = 10);
+    static int compareIgnoreCase(const mkString& src, const mkString& dest);
+    static int compareIgnoreCase(const mkString& src, size_t offset, size_t number, const mkString& dest);
+    static int compareIgnoreCase(const mkString& src, size_t offset, size_t number, const mkString& dest, size_t roffset, size_t count);
+    static int compareIgnoreCase(const mkString& src, const mkChar *ptr);
+    static int compareIgnoreCase(const mkString& src, size_t offset, size_t number, const mkChar *ptr);
+    static int compareIgnoreCase(const mkString& src, size_t offset, size_t number, const mkChar* ptr, size_t count );
     
-    template<class Str> static unsigned long stoul(const Str& str, size_t* idx = 0, int base = 10);
+    static void replace (mkString& src, mkChar oldValue, mkChar newValue, bool replaceAll = false);
     
-    template<class Str> static long long stoll(const Str& str, size_t* idx = 0, int base = 10);
+    static void toUpper(mkString& src);
+    static void toLower(mkString& src);
     
-    template<class Str> static unsigned long long stoull(const Str& str, size_t* idx = 0, int base = 10);
+    static mkString trim(const mkString& src);
+    static mkString trim_left(const mkString& src);
+    static mkString trim_right(const mkString& src);
     
-    template<class Str> static float stof(const Str& str, size_t* idx = 0);
+    static mkString leftString(const mkString& src, size_t count);
+    static mkString rightString(const mkString& src, size_t count);
+    static mkString beforeFirst(const mkString& src, mkChar ch);
+    static mkString beforeLast(const mkString& src, mkChar ch);
+    static mkString afterFirst(const mkString& src, mkChar ch);
+    static mkString afterLast(const mkString& src, mkChar ch);
     
-    template<class Str> static double stod(const Str& str, size_t* idx = 0);
+    static bool startsWith(const mkString & src, const mkString& prefix);
+    static bool startsWith(const mkString & src, const mkChar* prefix);
+    static bool endsWith(const mkString & src, const mkString& suffix);
     
-    template<class Str> static long double stold(const Str& str, size_t* idx = 0);
+    static int freq(const mkString & src, mkChar ch);
     
-    template<class Str> static int hexstoi(const Str& str)
+    static void split(const mkString& src, const mkString& separators, std::vector<mkString>& substrs);
+    static void split(const mkString& src, mkChar separator, std::vector<mkString>& substrs);
+    
+    static mkString toString(const bool& val);
+    static mkString toString(const short val);
+    static mkString toString(const unsigned short val);
+    static mkString toString(const int val);
+    static mkString toString(const unsigned int val);
+    static mkString toString(const int64_t val);
+    static mkString toString(const uint64_t val);
+    static mkString toString(const float val);
+    static mkString toString(const double val);
+    
+    template<typename ... TArgs>
+    static mkString format(const mkChar* fmt, TArgs... args)
     {
-        int obj;
-        std::basic_istringstream<typename Str::value_type> temp(str);
-        temp >> std::hex >> obj;
-        return obj;
-    }
-    
-    //xx to string
-    template<class Str> static Str to_string(int val);
-    
-    template<class Str> static Str to_string(unsigned val);
-    
-    template<class Str> static Str to_string(long val);
-    
-    template<class Str> static Str to_string(unsigned long val);
-    
-    template<class Str> static Str to_string(long long val);
-    
-    template<class Str> static Str to_string(unsigned long long val);
-    
-    template<class Str> static Str to_string(float val);
-    
-    template<class Str> static Str to_string(double val);
-    
-    template<class Str> static Str to_string(long double val);
-    
-    template<class Str> static Str hex_to_string(const int& var, int width)
-    {
-        std::basic_ostringstream<typename Str::value_type> temp;
-        temp << std::hex;
-        if(width > 0)
-        {
-            temp << std::setw(width) << std::setfill<typename Str::value_type>('0');
-        }
-        temp << var;
-        return temp.str();
-    }
-    
-    //
-    template<class Str> static void swap(Str& lhs, Str& rhs) noexcept;
-    //
-    template<class Str> static Str to_upper(const Str& str)
-    {
-        Str temp(str);
-        std::transform(temp.begin(), temp.end(), temp.begin(), ::toupper);
-        return temp;
-    }
-    
-    template<class Str> static Str to_lower(const Str& str)
-    {
-        Str temp(str);
-        std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
-        return temp;
-    }
-    
-    template<class Str> static Str trim_left(const Str& str)
-    {
-        Str temp(str);
-        auto it = temp.begin();
-        for (it = temp.begin(); it != temp.end(); it++) {
-            if (!isspace(*it)) {
-                break;
-            }
-        }
-        if (it == temp.end()) {
-            temp.clear();
-        } else {
-            temp.erase(temp.begin(), it);
-        }
-        return temp;
+        #ifdef __WINDOWS__
+            auto buf = mkFormat::uniqueW(fmt, args...);
+            return mkString(buf.get());
+        #else
+            auto buf = mkFormat::unique(fmt, args...);
+            return mkString(buf.get());
+        #endif
     }
 
-    template<class Str> static Str trim_right(const Str& str)
+//windows下特定方法
+#ifdef __WINDOWS__
+    template<typename ... TArgs>
+    static mkString format(const char* fmt, TArgs... args)
     {
-        Str temp(str);
-        for (auto it = temp.end() - 1; ;it--) {
-            if (!isspace(*it)) {
-                temp.erase(it + 1, temp.end());
-                break;
-            }
-            if (it == temp.begin()) {
-                temp.clear();
-                break;
-            }
-        }
-        return temp;
+        auto buf = mkFormat::unique(fmt, args...);
+        return mkString(mkUTF16LE::wstr(buf.get()).get());
     }
     
-    template<class Str> static Str trim(const Str& str)
-    {
-        Str temp = trim_left(str);
-        return trim_right(temp);
-    }
+    static bool startsWith(const std::string& src, const char* prefix);
+    static unique_ptr<wchar_t[]> conv(const char* ptr);
+    static unique_ptr<wchar_t[]> conv(const char* ptr, size_t size);
+    static unique_ptr<wchar_t[]> conv(const char* ptr, size_t offset, size_t size);
+#endif
     
-
-    template<class Str> static bool starts_with(Str const & value, Str const & starting)
-    {
-        if (starting.size() > value.size()) return false;
-        return std::equal(starting.begin(), starting.end(), value.begin());
-    }
-
-    template<class Str> static bool ends_with(Str const & value, Str const & ending)
-    {
-        if (ending.size() > value.size()) return false;
-        return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
-    }
-
-    template<class Str> static bool equals_ignore_case(const Str& str1, const Str& str2)
-    {
-        return to_lower(str1) == to_lower(str2);
-    }
-
-    template<class Str> static bool starts_with_ignore_case(Str const & value, Str const & starting)
-    {
-        if (starting.size() > value.size()) return false;
-        Str temp = value.substr(0, starting.size());
-        return equals_ignore_case(starting, temp);
-    }
-
-    template<class Str> static bool ends_with_ignore_case(Str const & value, Str const & ending)
-    {
-        if (ending.size() > value.size()) return false;
-        Str temp = value.substr(value.size() - ending.size(), ending.size());
-        return equals_ignore_case(ending, temp);
-    }
-
-
-    template<class Str> static std::vector<Str> split(Str const& str, Str const& delimiters)
-    {
-        struct tokenizer
-        {
-            tokenizer(Str const& str)
-                : _string(str)
-                , _offset(0)
-            {
-            }
-            
-            bool next_token(Str const& delimiters)
-            {
-                size_t i = _string.find_first_not_of(delimiters, _offset);
-                if (i == Str::npos) {
-                    _offset = _string.length();
-                    return false;
-                }
-                size_t j = _string.find_first_of(delimiters, i);
-                if (j == Str::npos) {
-                    _token = _string.substr(i);
-                    _offset = _string.length();
-                    return true;
-                }
-                _token = _string.substr(i, j - i);
-                _offset = j;
-                return true;
-            }
-
-            const Str get_token() const
-            {
-                return _token;
-            }
-            size_t _offset;
-            const Str _string;
-            Str _token;
-        };
-        
-        std::vector<Str> result;
-        tokenizer token(str);
-        while (token.next_token(delimiters)) {
-            result.push_back(token.get_token());
-        }
-        return result;
-    }
-    
-    //hash
-    //todo
+public:
+    static const mkString EMPTY;
 };
-template<class Str> 
-void mkStringHelper::swap(Str& lhs, Str& rhs) noexcept
-{
-}
 
 #endif //__mkString

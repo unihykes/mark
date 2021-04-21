@@ -26,14 +26,14 @@ static void run1(benchmark::State& state)
 {
     int i = 0;
     for (auto _ : state) {
-        string x = mkSharedFormat{}("%s, %d", "run1", i++);
+        string x = mkFormat::str("%s, %d", "run1", i++);
     }
 }
 
 auto run2 = [](benchmark::State& state){
     int i = 0;
     for (auto _ : state) {
-        shared_ptr<char> p = mkSharedFormat::fmt("%s, %d", "run2", i++);
+        shared_ptr<char> p = mkFormat::shared("%s, %d", "run2", i++);
     }
 };
 

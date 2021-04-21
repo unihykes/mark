@@ -87,7 +87,7 @@ MK_VISIBILITY_HIDDEN extern std::shared_ptr<mkModuleInstance> g_moduleInstance;
 //全局宏:throw
 #define MK_THROW(errorid, ...)                                              \
     do {                                                                    \
-        auto __errMsg__ = mkSharedFormat::fmt(__VA_ARGS__);                 \
+        auto __errMsg__ = mkFormat::shared(__VA_ARGS__);                 \
         MK_LOG(__VA_ARGS__);                                                \
         mkException __e__(string(__errMsg__.get()), __FILE__, __LINE__, errorid);   \
         throw __e__;                                                        \

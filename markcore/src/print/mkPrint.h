@@ -40,14 +40,14 @@ public:
     template<typename ... TArgs>
     void operator()(const char* file, int line, const char* func, const char* format, TArgs... args)
     {
-        shared_ptr<char> msg = mkSharedFormat::fmt(format, args...);
+        shared_ptr<char> msg = mkFormat::shared(format, args...);
         Output(file, line, func, msg.get());
     }
     
     template<typename ... TArgs>
     void operator()(const char* file, int line, const char* func, const wchar_t* format, TArgs... args)
     {
-        string msg = mkSharedFormat{}(format, args...);
+        string msg = mkFormat::str(format, args...);
         Output(file, line, func, msg.c_str());
     }
     
