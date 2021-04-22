@@ -58,29 +58,26 @@ mkStringHelper::findAny(const mkString& src, const mkString& dest)
 size_t 
 mkStringHelper::findLastOfAny(const mkString& src, size_t offset, const mkString& dest)
 {
-    if (offset > src.size()) {
+    if (offset >= src.size()) {
         MK_THROW(1024, _T("IDS_OFFSET_OFR"));
     }
-    size_t roffset = src.size()-offset;
     
-    size_t pos = 0;
-    for(auto iter = src.begin(); iter != src.end(); ++iter) {
-        if(pos >= roffset) {
-            for(const auto& item : dest) {
-                if(*iter == item) {
-                    return pos;
-                }
-            }
-        }
-        ++pos;
+    size_t destSize = dest.size();
+    
+    for (size_t pos = offset; pos != mkString::npos; --pos) {
+        for (size_t loop = 0; loop != destSize; loop++)
+            if (src[pos] == dest[loop])
+                return pos;
     }
+
     return mkString::npos;
+    
 }
 
 size_t 
 mkStringHelper::findLastOfAny(const mkString& src, const mkString& dest)
 {
-    return findLastOfAny (src, 0, dest);
+    return findLastOfAny (src, src.size()-1, dest);
 }
 
 int 
@@ -159,7 +156,7 @@ mkStringHelper::compareIgnoreCase(const mkString& src, size_t offset, size_t num
     return (answer != 0 ? (int)answer : number < count ? -1    : number == count ? 0 : +1);
 }
 
-void 
+mkString& 
 mkStringHelper::replace(mkString& src, mkChar oldValue, mkChar newValue, bool replaceAll)
 {
     if (oldValue != newValue) {
@@ -172,6 +169,7 @@ mkStringHelper::replace(mkString& src, mkChar oldValue, mkChar newValue, bool re
             }
         }
     }
+    return src;
 }
 
 void 
@@ -195,6 +193,32 @@ mkStringHelper::trim(const mkString& src)
 {
     mkString temp = trim_left(src);
     return trim_right(temp);
+}
+
+mkString 
+mkStringHelper::trim(const mkString& src, mkChar ch)
+{
+    if (src.empty()) {
+        return src;
+    }
+    
+    const mkChar* ptr = src.c_str();
+    const size_t size = src.size();
+    size_t preLen = 0;
+    
+    // traverse from the begining
+    while (*ptr == ch && preLen < size) {
+        ++preLen, ++ptr;
+    }
+
+    // traverse from the end
+    size_t postLen = size;
+    ptr = src.c_str() + size - 1;
+    while (*ptr == ch && (postLen > preLen)) {
+        --postLen, --ptr;
+    }
+    
+    return mkString(src.c_str() + preLen, postLen - preLen);
 }
 
 mkString 
@@ -369,7 +393,41 @@ mkStringHelper::split(const mkString& src, const mkString& separators, std::vect
 void 
 mkStringHelper::split (const mkString& src, mkChar separator, std::vector<mkString>& substrs)
 {
-    split (src, mkString(separator, 1), substrs);
+    split(src, mkString(1, separator), substrs);
+}
+
+void 
+mkStringHelper::splitAny(const mkString& src, const mkString& separators, std::vector<mkString>& substrs)
+{
+    if (src.empty())
+        return;
+    
+    if (separators.empty ()) {
+        substrs.push_back (src);
+        return;
+    }
+    
+    size_t off = 0;
+    size_t index = findAny (src, off, separators);
+    size_t sepslength = separators.size (); 
+    while (true) {
+        if (index == mkString::npos) {
+            substrs.push_back (src.substr(off));
+            break;
+        }
+        else {
+            substrs.push_back(src.substr(off, index - off));
+        }
+
+        off = index + 1;
+        if (off >= src.size()) {
+            // last is a seperator
+            substrs.push_back(mkStringHelper::EMPTY);
+            break;
+        }
+        
+        index = findAny (src, off, separators);
+    }
 }
 
 mkString 

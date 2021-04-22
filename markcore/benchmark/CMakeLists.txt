@@ -24,8 +24,5 @@ ELSE()
     ADD_SOURCE_DIRS(./ai)
 ENDIF()
 
-#借用 main.cpp
-set(INCLUDE_SOURCE_FILES ${INCLUDE_SOURCE_FILES} ${MK_PATH}/markcore/ut/main.cpp)
-
 #end
 INCLUDE($ENV{MK_PATH}/make/end.cmake)

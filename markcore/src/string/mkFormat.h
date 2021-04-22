@@ -131,7 +131,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<int N>
-class mkFixedFormat
+class MK_DLL_EXPORT mkFixedFormat
 {
 public:
     ~mkFixedFormat()
@@ -154,7 +154,7 @@ template<> class mkFixedFormat<0>;//禁用偏特化:<0>
 
 
 template<int N>
-class mkFixedFormatW
+class MK_DLL_EXPORT mkFixedFormatW
 {
 public:
     ~mkFixedFormatW()
@@ -194,5 +194,11 @@ using Format256W = mkFixedFormatW<256>;
 using Format512W = mkFixedFormatW<512>;
 using Format1024W = mkFixedFormatW<1024>;
 using Format4096W = mkFixedFormatW<4096>;
+
+class MK_DLL_EXPORT mkBytesFormat
+{
+public:
+    static string str(const int64& bytes, int acc = 0);
+};
 
 #endif //__mkFormat

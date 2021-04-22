@@ -50,3 +50,81 @@ mkFormat::CharToWchar(const char* p)
         return nullptr;
     #endif
 }
+
+string 
+mkBytesFormat::str(const int64& bytes, int acc)
+{
+    string ret;
+    if(bytes < 0) {
+        //todo:不允许负数
+        ret = mkFormat::str(_T("-"));
+    }
+
+    else if (bytes == 0) {
+    	ret = mkFormat::str(_T("0.00 B"));
+    }
+    else {
+    	int bits = 0;
+    	int64 temp = bytes;
+    	for (; temp > 0; bits++) {
+    		temp >>= 10;
+        }
+        
+    	switch (bits) {
+    	case 1:
+            if(acc == 0) {
+                ret = mkFormat::str(_T("%lld B"), bytes);
+            }
+    		else {
+                ret = mkFormat::str(_T("%.2f B"), (double)bytes);
+            }
+    		break;
+
+    	case 2:
+            if(acc == 0) {
+                ret = mkFormat::str(_T("%lld KB"), bytes>>10);
+            }
+    		else {
+    		    ret = mkFormat::str(_T("%.2f KB"), (double)bytes/1024.0);
+            }
+    		break;
+
+    	case 3:
+    		if(acc == 0) {
+                ret = mkFormat::str(_T("%lld MB"), bytes>>20);
+            }
+    		else {
+                ret = mkFormat::str(_T("%.2f MB"), (double)bytes/1048576.0);
+            }
+    		break;
+
+    	case 4:
+            if(acc == 0) {
+                ret = mkFormat::str(_T("%lld GB"), bytes>>30);
+            }
+    		else {
+    		    ret = mkFormat::str(_T("%.2f GB"), (double)bytes/1073741824.0);
+            }
+    		break;
+
+    	case 5:
+    		if(acc == 0) {
+                ret = mkFormat::str(_T("%lld TB"), bytes>>40);
+            }
+    		else {
+                ret = mkFormat::str(_T("%.2f TB"), (double)bytes/1099511627776.0);
+            }
+    		break;
+
+    	default:
+            if(acc == 0) {
+                ret = mkFormat::str(_T("%lld PB"), bytes>>50);
+            }
+            else {
+    		     ret = mkFormat::str(_T("%.2f PB"), (double)bytes/1125899906842624.0);
+            }
+    		break;
+    	}
+    }
+    return ret;
+}

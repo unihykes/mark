@@ -45,12 +45,13 @@ public:
     static int compareIgnoreCase(const mkString& src, size_t offset, size_t number, const mkChar *ptr);
     static int compareIgnoreCase(const mkString& src, size_t offset, size_t number, const mkChar* ptr, size_t count );
     
-    static void replace (mkString& src, mkChar oldValue, mkChar newValue, bool replaceAll = false);
+    static mkString& replace(mkString& src, mkChar oldValue, mkChar newValue, bool replaceAll = false);
     
     static void toUpper(mkString& src);
     static void toLower(mkString& src);
     
     static mkString trim(const mkString& src);
+    static mkString trim(const mkString& src, mkChar ch);
     static mkString trim_left(const mkString& src);
     static mkString trim_right(const mkString& src);
     
@@ -69,6 +70,7 @@ public:
     
     static void split(const mkString& src, const mkString& separators, std::vector<mkString>& substrs);
     static void split(const mkString& src, mkChar separator, std::vector<mkString>& substrs);
+    static void splitAny(const mkString& src, const mkString& separators, std::vector<mkString>& substrs);
     
     static mkString toString(const bool& val);
     static mkString toString(const short val);
