@@ -223,7 +223,7 @@ TEST(mkString, copy)
 {
     mkString str(_T("0123456789"));
     mkChar dest[10];
-    memset(dest, '\0', 10);
+    memset(dest, '\0', sizeof(mkChar)*10);
     
     str.copy(dest, 6);
     MK_PRINT(dest);EXPECT_TRUE(mkString(dest) == _T("012345"));
@@ -823,7 +823,7 @@ TEST(mkString, format)
 {
     mkString str;
     str = mkStringHelper::format(_T("12345"));
-    str = mkStringHelper::format(_T("12345%d_%s"), 678, "xy");
+    str = mkStringHelper::format(_T("12345%d_%s"), 678, _T("xy"));
     
 #ifdef __WINDOWS__
     str = mkStringHelper::format("12345");

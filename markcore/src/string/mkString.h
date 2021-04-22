@@ -82,32 +82,35 @@ public:
     static mkString toString(const float val);
     static mkString toString(const double val);
     
-    template<typename ... TArgs>
-    static mkString format(const mkChar* fmt, TArgs... args)
-    {
-        #ifdef __WINDOWS__
+    //不同平台差异接口
+    #ifdef __WINDOWS__
+        static bool startsWith(const std::string& src, const char* prefix);
+        
+        static unique_ptr<wchar_t[]> conv(const char* ptr);
+        static unique_ptr<wchar_t[]> conv(const char* ptr, size_t size);
+        static unique_ptr<wchar_t[]> conv(const char* ptr, size_t offset, size_t size);
+        
+        template<typename ... TArgs>
+        static mkString format(const char* fmt, TArgs... args)
+        {
+            auto buf = mkFormat::unique(fmt, args...);
+            return mkString(mkUTF16LE::wstr(buf.get()).get());
+        }
+        
+        template<typename ... TArgs>
+        static mkString format(const wchar_t* fmt, TArgs... args)
+        {
             auto buf = mkFormat::uniqueW(fmt, args...);
             return mkString(buf.get());
-        #else
+        }
+    #else
+        template<typename ... TArgs>
+        static mkString format(const char* fmt, TArgs... args)
+        {
             auto buf = mkFormat::unique(fmt, args...);
             return mkString(buf.get());
-        #endif
-    }
-
-//windows下特定方法
-#ifdef __WINDOWS__
-    template<typename ... TArgs>
-    static mkString format(const char* fmt, TArgs... args)
-    {
-        auto buf = mkFormat::unique(fmt, args...);
-        return mkString(mkUTF16LE::wstr(buf.get()).get());
-    }
-    
-    static bool startsWith(const std::string& src, const char* prefix);
-    static unique_ptr<wchar_t[]> conv(const char* ptr);
-    static unique_ptr<wchar_t[]> conv(const char* ptr, size_t size);
-    static unique_ptr<wchar_t[]> conv(const char* ptr, size_t offset, size_t size);
-#endif
+        }
+    #endif
     
 public:
     static const mkString EMPTY;
