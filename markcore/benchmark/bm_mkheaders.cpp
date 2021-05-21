@@ -35,3 +35,23 @@ MK_BM_BEGIN(mkheaders, call_once2)
     }
 }
 MK_BM_END(mkheaders, call_once2);
+
+
+MK_BM_BEGIN(mkheaders, memcpy)
+{
+    auto size = __state__.range(0);
+    
+    std::unique_ptr<char[]> src(new char[size]);
+    std::unique_ptr<char[]> dest(new char[size]);
+    
+    for (auto _ : __state__) {
+        memcpy(dest.get(), src.get(), size);
+        memcpy(src.get(), dest.get(), size);
+    }
+    
+    __state__.SetItemsProcessed(__state__.iterations());
+    __state__.SetBytesProcessed(__state__.iterations() * size*2);
+    __state__.SetLabel(mkFormat::str("per_size : %s", mkBytesFormat::str(size).c_str()));
+}
+MK_BM_END(mkheaders, memcpy)->UseRealTime()->Range(1, 1<<22);
+

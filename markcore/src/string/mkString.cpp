@@ -191,8 +191,7 @@ mkStringHelper::toLower(mkString& src)
 mkString 
 mkStringHelper::trim(const mkString& src)
 {
-    mkString temp = trim_left(src);
-    return trim_right(temp);
+    return trim(src, _T(' '));
 }
 
 mkString 

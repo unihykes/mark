@@ -24,7 +24,7 @@ info:
 #include <mkheaders.h>
 
 #ifdef __WINDOWS__
-	#include "linenoise/linenoise.h"
+	//#include "linenoise/linenoise.h"
 #else
 	#include "linenoise/linenoise.c"
 #endif

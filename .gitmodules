@@ -64,3 +64,6 @@
 [submodule "3rd_Party/libexpat/libexpat"]
 	path = 3rd_Party/libexpat/libexpat
 	url = https://github.com/libexpat/libexpat.git
+[submodule "3rd_Party/linenoise/linenoise"]
+	path = 3rd_Party/linenoise/linenoise
+	url = https://github.com/antirez/linenoise.git

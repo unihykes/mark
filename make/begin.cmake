@@ -155,6 +155,9 @@ IF(WIN32)
                         -D__ENABLE_CXX11__  
                         -D__ENABLE_CXX0X__)
         ADD_DEFINITIONS(${CXX_VERSION})
+        #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
+        
         MESSAGE([${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}]: "MSVC_VERSION = ${MSVC_VERSION}, CXX_VERSION = ${CXX_VERSION}")
     ENDIF()
 ELSE()

@@ -19,8 +19,8 @@ Time:2018-6
 info:
 
 ***************************************************************************************************/
-#ifndef __mkAddTimeoutForFunc
-#define __mkAddTimeoutForFunc
+#ifndef __mkTimerThread
+#define __mkTimerThread
 
 #include <thread>
 #include <future>
@@ -80,4 +80,4 @@ private:
 };
 
 
-#endif //__mkAddTimeoutForFunc
+#endif

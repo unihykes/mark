@@ -79,8 +79,8 @@ static auto BENCHMARK_PRIVATE_NAME(n) = ::benchmark::RegisterBenchmark(#n, n);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //方式1:单独使用benchmark, 上层定义全局函数,直接注册
-#define MK_BM_REGISTER_FUNC(Fun) \
-    static auto BENCHMARK_PRIVATE_NAME(Fun) = ::benchmark::RegisterBenchmark(#Fun, Fun)
+#define MK_BM_FUNC(Fun) \
+    static auto BENCHMARK_PRIVATE_NAME(Fun) = ::benchmark::RegisterBenchmark(#Fun, Fun)->UseRealTime()
     
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,14 +99,14 @@ static auto BENCHMARK_PRIVATE_NAME(n) = ::benchmark::RegisterBenchmark(#n, n);
     void BM_CLASS##_##Method##_Benchmark::BenchmarkCase(::benchmark::State& __state__)
     
 
-#define MK_BM_END(BM_CLASS, Method) BENCHMARK_REGISTER_F(BM_CLASS, Method)
+#define MK_BM_END(BM_CLASS, Method) BENCHMARK_REGISTER_F(BM_CLASS, Method)->UseRealTime()
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //方式3:单独使用benchmark, 样式类似成员函数, 上层需要定义类 BM_CLASS, 
 #define MK_BM_F_BEGIN(BM_CLASS, Method) BENCHMARK_DEFINE_F(BM_CLASS, Method)(::benchmark::State& __state__)
 
-#define MK_BM_F_END(BM_CLASS, Method)   BENCHMARK_REGISTER_F(BM_CLASS, Method)
+#define MK_BM_F_END(BM_CLASS, Method)   BENCHMARK_REGISTER_F(BM_CLASS, Method)->UseRealTime()
 
 
 
@@ -148,7 +148,7 @@ private:
     
 #define MK_BM_TEST_F_END(GTEST_CLASS, Method)                                                      \
     static auto BENCHMARK_PRIVATE_NAME(GTEST_CLASS##_##Method##_Benchmark)                              \
-        = ::benchmark::internal::RegisterBenchmarkInternal(new GTEST_CLASS##_##Method##_Benchmark())
+        = ::benchmark::internal::RegisterBenchmarkInternal(new GTEST_CLASS##_##Method##_Benchmark())->UseRealTime()
 
 
 

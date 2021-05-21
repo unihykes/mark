@@ -27,10 +27,16 @@ info:
 #include <mkheaders.h>
 #include "mkGuid.h"
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 #ifdef __LINUX__
 string mkGuid::Generate()
 {
     uuid_t guid;
+    uuid_generate(guid);
+    
     char buf [40];
     ::memset (buf, 0, sizeof(char) * 40);
     uuid_unparse(guid, buf);
@@ -40,7 +46,16 @@ string mkGuid::Generate()
 #else
 string mkGuid::Generate()
 {
-    return "todo";
+    return Generate2();
 }
 #endif
 
+string 
+mkGuid::Generate2()
+{
+    /*todo
+    boost::uuids::uuid _uuid = boost::uuids::random_generator()();
+    return boost::uuids::to_string(_uuid);
+    */
+    return "todo";
+}

@@ -20,8 +20,8 @@ info:
     线程管理
 ***************************************************************************************************/
 
-#ifndef __mkLoopThread
-#define __mkLoopThread
+#ifndef __mkThread
+#define __mkThread
 
 #include <thread>
 
@@ -44,4 +44,4 @@ public:
     }
 };
 
-#endif // __mkThread
+#endif 

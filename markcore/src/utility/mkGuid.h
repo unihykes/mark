@@ -28,6 +28,7 @@ class MK_DLL_EXPORT mkGuid
 {
 public:
     static string Generate();
+    static string Generate2();
 };
 
 #endif
