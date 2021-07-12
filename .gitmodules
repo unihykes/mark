@@ -67,3 +67,6 @@
 [submodule "3rd_Party/linenoise/linenoise"]
 	path = 3rd_Party/linenoise/linenoise
 	url = https://github.com/antirez/linenoise.git
+[submodule "3rd_Party/plantuml/C4"]
+	path = 3rd_Party/plantuml/C4
+	url = https://github.com/plantuml-stdlib/C4-PlantUML.git

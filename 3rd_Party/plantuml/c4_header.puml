@@ -1,0 +1,19 @@
+
+
+!define RELATIVE_INCLUDE %getenv("C4_HEADER")\C4
+!include %get_variable_value("RELATIVE_INCLUDE")\C4.puml
+!include %get_variable_value("RELATIVE_INCLUDE")\C4_Component.puml
+!include %get_variable_value("RELATIVE_INCLUDE")\C4_Container.puml
+!include %get_variable_value("RELATIVE_INCLUDE")\C4_Context.puml
+!include %get_variable_value("RELATIVE_INCLUDE")\C4_Deployment.puml
+'!include %get_variable_value("RELATIVE_INCLUDE")\C4_Dynamic.puml
+hide stereotype
+
+' usage:
+' 预先设置系统环境变量: C4_HEADER=C:\unihykes\mark\3rd_Party\plantuml 然后重启atom
+' 
+' ```plantuml
+' !include %getenv("C4_HEADER")\c4_header.puml
+' 
+' System(System0, "System")
+' ```

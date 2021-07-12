@@ -42,3 +42,4 @@ build_temp*
 *.pb.cc
 
 *ai
+*.pptx
