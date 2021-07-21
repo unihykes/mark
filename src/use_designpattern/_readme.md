@@ -301,6 +301,7 @@ Rel_(write_cache, db, " ", +..+)
 class Cache #8099BF {
     - _pKvApi;          //用来执行数据库相关操作
     - _pReplaceThread;  //用来异步执行缓存汰换
+    - _pUploadThread;   //用来异步执行数据上传
     - _pIndexTable;     //用来管理缓存的索引表
     - _pContainer;      //用来管理缓存的数据
     - _pState;          //用来记录缓存的状态
