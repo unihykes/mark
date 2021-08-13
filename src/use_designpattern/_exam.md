@@ -32,9 +32,9 @@ Info:   demo
 #include <map>
 #include <list>
 #include <vector>
-#include <optional>
 #include <random>
 #include <chrono>
+#include <algorithm>
 using namespace std;
 
 class ObjectList
@@ -42,16 +42,16 @@ class ObjectList
 public:
     void Put(int&& key, string&& value)
     {
-        _data.emplace_back(ObjectInfo{ key, value});
+        _data.emplace_back(ObjectInfo{ key, value });
     }
 private:
-    std::optional<string> Find(const int& key)
+    string Find(const int& key)
     {
         auto iter = find_if(_data.begin(), _data.end(),
             [&](const ObjectInfo& info) ->bool {return info.key == key; });
 
         if (iter == _data.end()) {
-            return std::nullopt;
+            return "";
         }
         else {
             return iter->value;
@@ -70,7 +70,7 @@ private:
 class ObjectMap
 {
 public:
-    ObjectMap(ObjectList* pList) 
+    ObjectMap(ObjectList* pList)
         : _pList(pList)
     {
     }
@@ -84,13 +84,13 @@ public:
         string result;
         for (const auto& elem : keys) {
             auto ret = Find(elem);
-            if (ret) {
-                result.append(*ret).append("_");
+            if (!ret.empty()) {
+                result.append(ret).append("_");
             }
             else {
                 auto ret2 = _pList->Find(elem);
-                if (ret2) {
-                    result.append(*ret2).append("_");
+                if (!ret2.empty()) {
+                    result.append(ret2).append("_");
                 }
                 else {
                     result.append("*").append("_");
@@ -99,13 +99,13 @@ public:
         }
         return result;
     }
-    
+
 private:
-    std::optional<string> Find(const int& key)
+    string Find(const int& key)
     {
         auto iter = _data.find(key);
         if (iter == _data.end()) {
-            return std::nullopt;
+            return "";
         }
         else {
             return iter->second;
@@ -130,16 +130,28 @@ void Init(ObjectList& objList, ObjectMap& objMap, vector<int>& keys)
     std::default_random_engine randomEngine;
     randomEngine.seed(static_cast<unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
     std::uniform_int_distribution<int> dis(minKey, maxKey);
-    
+
+    string objListStr;
+    string objMapStr;
+    string keysStr;
     for (int i = minKey; i != maxKey; ++i) {
         auto key1 = dis(randomEngine);
         objList.Put(int(key1), std::to_string(key1));
+        objListStr.append(std::to_string(key1)).append("_");
 
         auto key2 = dis(randomEngine);
         objMap.Put(int(key2), std::to_string(key2));
+        objMapStr.append(std::to_string(key2)).append("_");
 
-        keys.emplace_back(dis(randomEngine));
+        auto key3 = dis(randomEngine);
+        keys.emplace_back(key3);
+        keysStr.append(std::to_string(key3)).append("_");
     }
+
+    cout << "[objList] = " << objListStr << endl;
+    cout << "[objMap]  = " << objMapStr << endl;
+    cout << "[keys]  = " << keysStr << endl;
+
 }
 
 int main()
@@ -147,14 +159,15 @@ int main()
     ObjectList objList;
     ObjectMap objMap(&objList);
     vector<int> keys;
-    
+
     //模拟初始化
     Init(objList, objMap, keys);
 
     //进行一次查询操作
     auto result = objMap.FindRange(keys);
-    cout << result << endl;
+    cout << "[result]  = " << result << endl;
 }
+
 ```
 
 # 作业题:
