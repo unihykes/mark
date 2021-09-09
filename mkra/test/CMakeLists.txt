@@ -17,7 +17,7 @@ SET(NEED_BENCHMARK TRUE)
 SET(NEED_MARKCORE TRUE)
 
 #“¿¿µø‚
-include(${MK_PATH}/mkreplacement/config.cmake)
+include(${MK_PATH}/mkra/config.cmake)
 
 #ΩË”√ main.cpp
 set(INCLUDE_SOURCE_FILES ${INCLUDE_SOURCE_FILES} ${MK_PATH}/markcore/ut/main.cpp)

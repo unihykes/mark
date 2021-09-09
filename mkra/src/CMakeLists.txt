@@ -1,4 +1,4 @@
-PROJECT(mkreplacement)
+PROJECT(mkra)
 
 #version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
@@ -7,11 +7,11 @@ CMAKE_POLICY(VERSION 3.1)
 #begin
 INCLUDE($ENV{MK_PATH}/make/begin.cmake)
 
-#Ä¿±êÀàÐÍ
+#Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 SET(TARGET_TYPE LIBRARY)
-SET(TARGET_NAME mkreplacement)
+SET(TARGET_NAME mkra)
 
-#ÒÀÀµ¿â
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 SET(NEED_MARKCORE TRUE)
 include(${MK_PATH}/mkops/config.cmake)
 
