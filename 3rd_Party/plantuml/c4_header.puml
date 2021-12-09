@@ -7,6 +7,12 @@
 !include %get_variable_value("RELATIVE_INCLUDE")\C4_Context.puml
 !include %get_variable_value("RELATIVE_INCLUDE")\C4_Deployment.puml
 '!include %get_variable_value("RELATIVE_INCLUDE")\C4_Dynamic.puml
+
+
+!define ComponentDb(e_alias, e_label) database "==e_label\n" <<component>> as e_alias
+!define Container(e_alias, e_label) rectangle "==e_label\n" <<container>> as e_alias
+!define ContainerDb(e_alias, e_label) database "==e_label\n" <<container>> as e_alias
+!define Container_Boundary(e_alias, e_label) Boundary(e_alias, e_label, "Container")
 hide stereotype
 
 ' usage:
