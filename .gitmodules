@@ -73,3 +73,9 @@
 [submodule "3rd_Party/cachelib/CacheLib"]
 	path = 3rd_Party/cachelib/CacheLib
 	url = https://github.com/facebook/CacheLib.git
+[submodule "3rd_Party/spdlog/spdlog"]
+	path = 3rd_Party/spdlog/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "3rd_Party/fmt/fmt"]
+	path = 3rd_Party/fmt/fmt
+	url = https://github.com/fmtlib/fmt
