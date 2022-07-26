@@ -148,7 +148,7 @@ ENDIF()
 
 # ºÏ≤ÈC++∞Ê±æ
 IF(WIN32)
-    IF(MSVC_VERSION EQUAL 1928)
+    IF(MSVC_VERSION EQUAL 1929)
         SET(CXX_VERSION -D__ENABLE_CXX20__
                         -D__ENABLE_CXX17__ 
                         -D__ENABLE_CXX14__ 
