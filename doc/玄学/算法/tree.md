@@ -2,7 +2,7 @@
 
 ## 关系
 ```plantuml
-!include C:/unihykes/mark/3rd_Party/c4-plantuml/C4_Component.puml
+!include %getenv("C4_HEADER")\c4_header.puml
 
 Boundary(binary_tree, "二叉树(Binary tree)") {
     Component(二叉树, 二叉树) {
@@ -20,7 +20,7 @@ Boundary(binary_tree, "二叉树(Binary tree)") {
 ```
 
 ```plantuml
-!include C:/unihykes/mark/3rd_Party/c4-plantuml/C4_Component.puml
+!include %getenv("C4_HEADER")\c4_header.puml
 
 Boundary(binary_server_tree, "二叉查找树(Binary Search Tree)") {
     Component(BST, 二叉查找树(BST) \n二叉搜索树) {    

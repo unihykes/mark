@@ -11,7 +11,7 @@ https://real-world-plantuml.com/?type=component
 https://github.com/ebbypeter/Archimate-PlantUML
 
 ```plantuml
-!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
+'!includeurl https://raw.githubusercontent.com/ebbypeter/Archimate-PlantUML/master/Archimate.puml
 
 ```
 
@@ -19,7 +19,7 @@ https://github.com/ebbypeter/Archimate-PlantUML
 https://github.com/RicardoNiepel/C4-PlantUML
 
 ```plantuml
-!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
+'!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
 
 ```
 
@@ -29,8 +29,7 @@ https://m.fontke.com/tool/rgb/abb3bf/
 
 ## 语法示例:
 ```plantuml
-!include C:/unihykes/mark/3rd_Party/c4-plantuml/C4_Component.puml
-hide stereotype
+!include %getenv("C4_HEADER")\c4_header.puml
 
 title 示例
 

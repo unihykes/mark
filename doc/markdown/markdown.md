@@ -6,7 +6,7 @@ https://www.bookstack.cn/read/mpe/zh-cn-_sidebar.md
 
 # 画图
 ```plantuml
-!include C:/unihykes/mark/3rd_Party/c4-plantuml/C4_Component.puml
+!include %getenv("C4_HEADER")\c4_header.puml
 hide stereotype
 
 title 示例
@@ -46,8 +46,9 @@ System_Boundary(System_Boundary, "System_Boundary") {
     ComponentDb(ComponentDb1,"ComponentDb","sss", "do something")
 }
 
-Enterprise_Boundary(Enterprise_Boundary,"Enterprise_Boundary"){
+Enterprise_Boundary(Enterprise_Boundary,"Enterprise_Boundary") {
 }
+
 
 Container_Boundary(Container_Boundary, "Container_Boundary") {
 }
