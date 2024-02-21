@@ -16,6 +16,7 @@ SET(LIBS_PATH ${MK_PACKAGE}/target/${CMAKE_BUILD_TYPE})
 
 #设置cmake的 include() or find_package() 的查找路径
 SET(CMAKE_MODULE_PATH ${MK_PATH}/make)
+SET(CMAKE_PREFIX_PATH ${MK_PATH}/3rd_Party)
 
 #设置if和else的控制开关选项
 SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)

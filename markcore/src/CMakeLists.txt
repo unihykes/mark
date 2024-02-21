@@ -10,6 +10,9 @@ SET(TARGET_NAME markcore)
 
 set(NEED_BOOST_FULL true)
 
+find_package(highwayhash)
+find_package(spdlog)
+
 IF(WIN32)
 	set(3rdparty_os 3rdparty/_win)
     SET(MK_BUILD_SOURCE_FILES ./${3rdparty_os}/win-iconv/win_iconv.c)

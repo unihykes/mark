@@ -79,3 +79,6 @@
 [submodule "3rd_Party/fmt/fmt"]
 	path = 3rd_Party/fmt/fmt
 	url = https://github.com/fmtlib/fmt
+[submodule "3rd_Party/highwayhash/highwayhash"]
+	path = 3rd_Party/highwayhash/highwayhash
+	url = https://github.com/google/highwayhash.git

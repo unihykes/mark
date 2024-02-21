@@ -20,8 +20,8 @@ IF(WIN32)
 ELSE()
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors") #禁用返回值优化RVO
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-variable") #忽略一些警告
-    include(${MK_PATH}/3rd_Party/ai/config.cmake)
-    ADD_SOURCE_DIRS(./ai)
+    #include(${MK_PATH}/3rd_Party/ai/config.cmake)
+    #ADD_SOURCE_DIRS(./ai)
 ENDIF()
 
 #end
