@@ -33,9 +33,6 @@ execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/gtest/build.sh)
 #jemalloc
 #todo
 
-#jsoncpp
-#todo
-
 #leveldb
 execute_process(COMMAND sh $ENV{MK_PATH}/3rd_Party/leveldb/build.sh)
 
